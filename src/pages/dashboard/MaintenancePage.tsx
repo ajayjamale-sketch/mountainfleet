@@ -5,22 +5,22 @@ import { Wrench } from 'lucide-react';
 
 const MaintenancePage: React.FC = () => {
   const initialMaintenance = [
-    { id: '1', vehicle: 'Volvo FH16', task: 'Oil Change', date: '2024-05-25', cost: 150, status: 'Scheduled' },
-    { id: '2', vehicle: 'Mercedes Sprinter', task: 'Brake Check', date: '2024-05-22', cost: 450, status: 'In Progress' },
+    { id: '1', vehicle: 'Volvo FH16', task: 'Propulsion Calibration', date: '2024-05-25', cost: 150, status: 'Scheduled' },
+    { id: '2', vehicle: 'Mercedes Sprinter', task: 'Brake Integrity Check', date: '2024-05-22', cost: 450, status: 'In Progress' },
   ];
 
   const columns: any[] = [
-    { key: 'vehicle', label: 'Vehicle', type: 'text' },
-    { key: 'task', label: 'Maintenance Task', type: 'text' },
-    { key: 'date', label: 'Scheduled Date', type: 'text' },
-    { key: 'cost', label: 'Est. Cost ($)', type: 'number' },
-    { key: 'status', label: 'Status', type: 'status', options: ['Scheduled', 'In Progress', 'Completed', 'Overdue'] },
+    { key: 'vehicle', label: 'Fleet Unit', type: 'text' },
+    { key: 'task', label: 'Calibration Task', type: 'text' },
+    { key: 'date', label: 'Protocol Date', type: 'text' },
+    { key: 'cost', label: 'Resource Cost ($)', type: 'number' },
+    { key: 'status', label: 'System Status', type: 'status', options: ['Scheduled', 'In Progress', 'Completed', 'Overdue'] },
   ];
 
   return (
     <GenericCRUD
-      title="Fleet Maintenance"
-      description="Schedule and track vehicle health and repair logs."
+      title="Calibration Hub"
+      description="Schedule and track unit health and system repair protocols."
       storageKey={STORAGE_KEYS.MAINTENANCE}
       initialData={initialMaintenance}
       columns={columns}

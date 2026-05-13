@@ -50,7 +50,12 @@ export function Footer() {
       <div className="border-t border-white/10">
         <div className="container mx-auto px-4 py-6 flex flex-col md:flex-row items-center justify-between text-xs text-slate-500">
           <span>© {new Date().getFullYear()} MountainFleet. All rights reserved.</span>
-          <span>Privacy · Terms · Security</span>
+          <div className="flex gap-6 mt-4 md:mt-0">
+            <Link to="/privacy" className="hover:text-primary transition-colors">Privacy Policy</Link>
+            <Link to="/terms" className="hover:text-primary transition-colors">Terms of Service</Link>
+            <Link to="/cookies" className="hover:text-primary transition-colors">Cookie Policy</Link>
+            <Link to="/sla" className="hover:text-primary transition-colors">SLA</Link>
+          </div>
         </div>
       </div>
     </footer>

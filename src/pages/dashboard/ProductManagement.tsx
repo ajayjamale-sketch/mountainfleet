@@ -6,16 +6,16 @@ import { Package } from 'lucide-react';
 
 const ProductManagement: React.FC = () => {
   const columns: any[] = [
-    { key: 'name', label: 'Product Name', type: 'text' },
-    { key: 'category', label: 'Category', type: 'select', options: ['Fleet', 'Logistics', 'Last Mile', 'Software'] },
-    { key: 'price', label: 'Price ($)', type: 'number' },
-    { key: 'stock', label: 'Stock', type: 'number' },
+    { key: 'name', label: 'Unit Identifier', type: 'text' },
+    { key: 'category', label: 'Operational Class', type: 'select', options: ['Fleet', 'Logistics', 'Last Mile', 'Software'] },
+    { key: 'price', label: 'Unit Cost ($)', type: 'number' },
+    { key: 'stock', label: 'Inventory Node', type: 'number' },
   ];
 
   return (
     <GenericCRUD
-      title="Products"
-      description="Manage your fleet hardware and equipment inventory."
+      title="Hardware Registry"
+      description="Orchestrate and monitor fleet hardware and equipment inventory levels."
       storageKey={STORAGE_KEYS.PRODUCTS}
       initialData={initialProducts}
       columns={columns}

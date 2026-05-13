@@ -32,3 +32,15 @@ export const initialExpenses = [
   { id: '1', type: 'Fuel', amount: 450, date: '2024-05-12', status: 'Approved', driver: 'Alex Morgan' },
   { id: '2', type: 'Maintenance', amount: 1200, date: '2024-05-10', status: 'Pending', driver: 'Admin' },
 ];
+
+export const initialProducts = [
+  { id: '1', name: 'MF-Alpha Telematics', category: 'Software', price: 1200, stock: 50 },
+  { id: '2', name: 'MF-Heavy Duty Axle', category: 'Fleet', price: 4500, stock: 12 },
+  { id: '3', name: 'MF-Solar Charging Kit', category: 'Last Mile', price: 850, stock: 24 },
+];
+
+export const initialServices = [
+  { id: '1', name: 'Route Orchestration', description: 'AI-powered real-time route optimization.', price: 299 },
+  { id: '2', name: 'Predictive Analytics', description: 'Advanced telemetry for fleet health monitoring.', price: 499 },
+  { id: '3', name: 'Global Asset Sync', description: 'Cross-border logistical data synchronization.', price: 799 },
+];

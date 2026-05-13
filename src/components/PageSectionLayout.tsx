@@ -8,9 +8,10 @@ interface PageSectionLayoutProps {
   main: { title: string; content: React.ReactNode; image?: string };
   features: { title: string; items: { title: string; desc: string; icon: any }[] };
   cta: { title: string; subtitle: string; buttonText: string; link: string };
+  children?: React.ReactNode;
 }
 
-const PageSectionLayout: React.FC<PageSectionLayoutProps> = ({ banner, main, features, cta }) => {
+const PageSectionLayout: React.FC<PageSectionLayoutProps> = ({ banner, main, features, cta, children }) => {
   return (
     <div className="bg-background text-foreground transition-colors duration-300 technical-grid">
       {/* 1. Banner Section */}
@@ -90,6 +91,9 @@ const PageSectionLayout: React.FC<PageSectionLayoutProps> = ({ banner, main, fea
           </div>
         </div>
       </section>
+
+      {/* Custom Sections */}
+      {children}
 
       {/* 4. CTA Section */}
       <section className="py-20 sm:py-24">

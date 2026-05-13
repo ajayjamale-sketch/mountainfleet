@@ -36,6 +36,9 @@ const FleetPage = lazy(() => import('./pages/FleetPage'));
 const NewsPage = lazy(() => import('./pages/NewsPage'));
 const PrivacyPage = lazy(() => import('./pages/PrivacyPage'));
 const TermsPage = lazy(() => import('./pages/TermsPage'));
+const CookiePolicyPage = lazy(() => import('./pages/CookiePolicyPage'));
+const SLAPage = lazy(() => import('./pages/SLAPage'));
+const SustainabilityPage = lazy(() => import('./pages/SustainabilityPage'));
 
 const LoadingFallback = () => (
   <div className="h-screen w-full flex items-center justify-center bg-background text-foreground">
@@ -65,6 +68,9 @@ const App: React.FC = () => {
                 <Route path="news" element={<NewsPage />} />
                 <Route path="privacy" element={<PrivacyPage />} />
                 <Route path="terms" element={<TermsPage />} />
+                <Route path="cookies" element={<CookiePolicyPage />} />
+                <Route path="sla" element={<SLAPage />} />
+                <Route path="sustainability" element={<SustainabilityPage />} />
               </Route>
 
               {/* Auth Routes */}

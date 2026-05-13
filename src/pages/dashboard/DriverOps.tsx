@@ -6,16 +6,16 @@ import { Users } from 'lucide-react';
 
 const DriverOps: React.FC = () => {
   const columns: any[] = [
-    { key: 'name', label: 'Driver Name', type: 'text' },
-    { key: 'license', label: 'License Number', type: 'text' },
-    { key: 'performance', label: 'Rating', type: 'number' },
-    { key: 'status', label: 'Status', type: 'status', options: ['Available', 'On Trip', 'Off Duty'] },
+    { key: 'name', label: 'Operator Name', type: 'text' },
+    { key: 'license', label: 'Auth License', type: 'text' },
+    { key: 'performance', label: 'Efficiency Rating', type: 'number' },
+    { key: 'status', label: 'System Status', type: 'status', options: ['Available', 'On Trip', 'Off Duty'] },
   ];
 
   return (
     <GenericCRUD
-      title="Driver Operations"
-      description="Monitor driver performance and availability."
+      title="Personnel Hub"
+      description="Monitor operator performance and identity synchronization."
       storageKey={STORAGE_KEYS.DRIVERS}
       initialData={initialDrivers}
       columns={columns}

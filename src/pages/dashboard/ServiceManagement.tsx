@@ -6,15 +6,15 @@ import { Map } from 'lucide-react';
 
 const ServiceManagement: React.FC = () => {
   const columns: any[] = [
-    { key: 'name', label: 'Service Name', type: 'text' },
-    { key: 'description', label: 'Description', type: 'text' },
-    { key: 'price', label: 'Monthly Fee ($)', type: 'number' },
+    { key: 'name', label: 'Module Name', type: 'text' },
+    { key: 'description', label: 'Protocol Specs', type: 'text' },
+    { key: 'price', label: 'Subscription Fee ($)', type: 'number' },
   ];
 
   return (
     <GenericCRUD
-      title="Services"
-      description="Configure and manage your digital service offerings."
+      title="Operational Modules"
+      description="Configure and synchronize digital service protocols across the network."
       storageKey={STORAGE_KEYS.SERVICES}
       initialData={initialServices}
       columns={columns}

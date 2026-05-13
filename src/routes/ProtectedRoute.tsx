@@ -11,8 +11,12 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ allowedRoles }) => {
 
   if (isLoading) {
     return (
-      <div className="flex h-screen items-center justify-center bg-slate-950 text-white">
-        <div className="animate-pulse text-2xl font-bold text-sky-500">Loading MountainFleet...</div>
+      <div className="flex h-screen items-center justify-center bg-slate-950 text-white overflow-hidden relative">
+        <div className="absolute inset-0 technical-grid opacity-10" />
+        <div className="relative z-10 flex flex-col items-center gap-6">
+          <div className="w-16 h-16 border-2 border-primary border-t-transparent animate-spin" />
+          <div className="animate-pulse text-[10px] font-black uppercase tracking-[0.5em] text-primary">Initializing Command Center...</div>
+        </div>
       </div>
     );
   }

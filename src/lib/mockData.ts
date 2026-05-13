@@ -103,41 +103,42 @@ export interface NotificationItem {
 }
 
 const fleetImages = [
-  "https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?w=600&h=400&fit=crop",
-  "https://images.unsplash.com/photo-1592805144716-feeccccef5ac?w=600&h=400&fit=crop",
-  "https://images.unsplash.com/photo-1586191582056-b7f0fa7b3d1f?w=600&h=400&fit=crop",
-  "https://images.unsplash.com/photo-1558981806-ec527fa84c39?w=600&h=400&fit=crop",
-  "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=600&h=400&fit=crop",
-  "https://images.unsplash.com/photo-1570125909232-eb263c188f7e?w=600&h=400&fit=crop",
+  "https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?w=600&h=400&fit=crop", // Heavy Truck
+  "https://images.unsplash.com/photo-1591768793355-74d04bb6608f?w=600&h=400&fit=crop", // Delivery Truck
+  "https://images.unsplash.com/photo-1549194388-f61be84a6e9e?w=600&h=400&fit=crop", // Delivery Van
+  "https://images.unsplash.com/photo-1519003722824-194d4455a60c?w=600&h=400&fit=crop", // Refrigerated Van
+  "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=600&h=400&fit=crop", // Tour Bus
+  "https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=600&h=400&fit=crop", // Electric SUV
+];
+
+// Industrial/Technical assets for "Identity Nodes" (replacing human avatars)
+const identityIcons = [
+  "https://images.unsplash.com/photo-1563986768609-322da13575f3?w=150&h=150&fit=crop", // Dashboard node
+  "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=150&h=150&fit=crop", // Cyber node
+  "https://images.unsplash.com/photo-1553877526-0ddf7397c6ee?w=150&h=150&fit=crop", // Technical sync
+  "https://images.unsplash.com/photo-1581091226835-a5a24e1d821a?w=150&h=150&fit=crop", // Industrial sensor
+  "https://images.unsplash.com/photo-1518770660439-4636190af475?w=150&h=150&fit=crop", // Microchip
+  "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=150&h=150&fit=crop", // Data globe
 ];
 
 export const vehicles: Vehicle[] = [
   { id: "V-1024", plate: "MTN-1024", model: "Volvo FH16", type: "Truck", year: 2023, status: "Active", fuelLevel: 78, mileage: 124500, driver: "Ethan Cole", location: { lat: 39.7392, lng: -104.9903, city: "Denver, CO" }, image: fleetImages[0], insuranceExpiry: "2026-08-12", health: 92 },
   { id: "V-1025", plate: "MTN-1025", model: "Mercedes Sprinter", type: "Van", year: 2024, status: "Active", fuelLevel: 54, mileage: 38240, driver: "Sara Lin", location: { lat: 40.0150, lng: -105.2705, city: "Boulder, CO" }, image: fleetImages[1], insuranceExpiry: "2026-04-22", health: 88 },
-  { id: "V-1026", plate: "MTN-1026", model: "Ford F-150", type: "SUV", year: 2022, status: "Idle", fuelLevel: 32, mileage: 56700, driver: "Marco Vega", location: { lat: 39.5501, lng: -105.7821, city: "Aspen, CO" }, image: fleetImages[2], insuranceExpiry: "2025-12-01", health: 76 },
-  { id: "V-1027", plate: "MTN-1027", model: "Scania R450", type: "Truck", year: 2021, status: "Maintenance", fuelLevel: 12, mileage: 198200, driver: "—", location: { lat: 39.7392, lng: -104.9903, city: "Denver, CO" }, image: fleetImages[3], insuranceExpiry: "2026-06-18", health: 58 },
+  { id: "V-1026", plate: "MTN-1026", model: "Ford F-150", type: "SUV", year: 2022, status: "Idle", fuelLevel: 32, mileage: 56700, driver: "Marco Vega", location: { lat: 39.5501, lng: -105.7821, city: "Aspen, CO" }, image: fleetImages[5], insuranceExpiry: "2025-12-01", health: 76 },
+  { id: "V-1027", plate: "MTN-1027", model: "Scania R450", type: "Truck", year: 2021, status: "Maintenance", fuelLevel: 12, mileage: 198200, driver: "—", location: { lat: 39.7392, lng: -104.9903, city: "Denver, CO" }, image: fleetImages[1], insuranceExpiry: "2026-06-18", health: 58 },
   { id: "V-1028", plate: "MTN-1028", model: "Toyota Coaster", type: "Bus", year: 2023, status: "Active", fuelLevel: 89, mileage: 42100, driver: "Aiden Park", location: { lat: 39.1911, lng: -106.8175, city: "Aspen, CO" }, image: fleetImages[4], insuranceExpiry: "2027-01-09", health: 95 },
   { id: "V-1029", plate: "MTN-1029", model: "Tesla Model Y", type: "SUV", year: 2024, status: "Active", fuelLevel: 67, mileage: 12400, driver: "Olivia Reyes", location: { lat: 39.5807, lng: -105.6388, city: "Idaho Springs" }, image: fleetImages[5], insuranceExpiry: "2027-03-15", health: 97 },
-  { id: "V-1030", plate: "MTN-1030", model: "Iveco Daily", type: "Van", year: 2022, status: "Offline", fuelLevel: 0, mileage: 84300, driver: "—", location: { lat: 39.7392, lng: -104.9903, city: "Denver, CO" }, image: fleetImages[1], insuranceExpiry: "2025-11-22", health: 41 },
+  { id: "V-1030", plate: "MTN-1030", model: "Iveco Daily", type: "Van", year: 2022, status: "Offline", fuelLevel: 0, mileage: 84300, driver: "—", location: { lat: 39.7392, lng: -104.9903, city: "Denver, CO" }, image: fleetImages[2], insuranceExpiry: "2025-11-22", health: 41 },
   { id: "V-1031", plate: "MTN-1031", model: "Hino 300", type: "Truck", year: 2023, status: "Active", fuelLevel: 71, mileage: 67500, driver: "Noah Bennett", location: { lat: 39.4817, lng: -106.0384, city: "Breckenridge" }, image: fleetImages[0], insuranceExpiry: "2026-09-30", health: 90 },
 ];
 
-const driverAvatars = [
-  "https://i.pravatar.cc/150?img=12",
-  "https://i.pravatar.cc/150?img=32",
-  "https://i.pravatar.cc/150?img=47",
-  "https://i.pravatar.cc/150?img=15",
-  "https://i.pravatar.cc/150?img=68",
-  "https://i.pravatar.cc/150?img=24",
-];
-
 export const drivers: Driver[] = [
-  { id: "D-201", name: "Ethan Cole", email: "ethan@mountainfleet.io", phone: "+1 720 555 0124", license: "CO-DL-998211", rating: 4.9, status: "On Trip", trips: 312, experience: 8, avatar: driverAvatars[0], vehicleId: "V-1024" },
-  { id: "D-202", name: "Sara Lin", email: "sara@mountainfleet.io", phone: "+1 720 555 0181", license: "CO-DL-771034", rating: 4.8, status: "On Trip", trips: 247, experience: 6, avatar: driverAvatars[1], vehicleId: "V-1025" },
-  { id: "D-203", name: "Marco Vega", email: "marco@mountainfleet.io", phone: "+1 720 555 0117", license: "CO-DL-651209", rating: 4.6, status: "Available", trips: 189, experience: 5, avatar: driverAvatars[2], vehicleId: "V-1026" },
-  { id: "D-204", name: "Aiden Park", email: "aiden@mountainfleet.io", phone: "+1 720 555 0144", license: "CO-DL-880231", rating: 4.9, status: "On Trip", trips: 405, experience: 10, avatar: driverAvatars[3], vehicleId: "V-1028" },
-  { id: "D-205", name: "Olivia Reyes", email: "olivia@mountainfleet.io", phone: "+1 720 555 0162", license: "CO-DL-330987", rating: 5.0, status: "On Trip", trips: 156, experience: 4, avatar: driverAvatars[4], vehicleId: "V-1029" },
-  { id: "D-206", name: "Noah Bennett", email: "noah@mountainfleet.io", phone: "+1 720 555 0199", license: "CO-DL-220115", rating: 4.7, status: "Resting", trips: 278, experience: 7, avatar: driverAvatars[5], vehicleId: "V-1031" },
+  { id: "D-201", name: "Ethan Cole", email: "ethan@mountainfleet.io", phone: "+1 720 555 0124", license: "CO-DL-998211", rating: 4.9, status: "On Trip", trips: 312, experience: 8, avatar: identityIcons[0], vehicleId: "V-1024" },
+  { id: "D-202", name: "Sara Lin", email: "sara@mountainfleet.io", phone: "+1 720 555 0181", license: "CO-DL-771034", rating: 4.8, status: "On Trip", trips: 247, experience: 6, avatar: identityIcons[1], vehicleId: "V-1025" },
+  { id: "D-203", name: "Marco Vega", email: "marco@mountainfleet.io", phone: "+1 720 555 0117", license: "CO-DL-651209", rating: 4.6, status: "Available", trips: 189, experience: 5, avatar: identityIcons[2], vehicleId: "V-1026" },
+  { id: "D-204", name: "Aiden Park", email: "aiden@mountainfleet.io", phone: "+1 720 555 0144", license: "CO-DL-880231", rating: 4.9, status: "On Trip", trips: 405, experience: 10, avatar: identityIcons[3], vehicleId: "V-1028" },
+  { id: "D-205", name: "Olivia Reyes", email: "olivia@mountainfleet.io", phone: "+1 720 555 0162", license: "CO-DL-330987", rating: 5.0, status: "On Trip", trips: 156, experience: 4, avatar: identityIcons[4], vehicleId: "V-1029" },
+  { id: "D-206", name: "Noah Bennett", email: "noah@mountainfleet.io", phone: "+1 720 555 0199", license: "CO-DL-220115", rating: 4.7, status: "Resting", trips: 278, experience: 7, avatar: identityIcons[5], vehicleId: "V-1031" },
 ];
 
 export const trips: Trip[] = [
@@ -234,21 +235,21 @@ export const demoAccounts: { email: string; password: string; user: User }[] = [
   {
     email: "admin@mountainfleet.io",
     password: "demo1234",
-    user: { id: "U-1", name: "Alex Stone", email: "admin@mountainfleet.io", role: "admin", company: "MountainFleet HQ", avatar: "https://i.pravatar.cc/150?img=8" },
+    user: { id: "U-1", name: "Alex Stone", email: "admin@mountainfleet.io", role: "admin", company: "MountainFleet HQ", avatar: identityIcons[0] },
   },
   {
     email: "manager@mountainfleet.io",
     password: "demo1234",
-    user: { id: "U-2", name: "Priya Singh", email: "manager@mountainfleet.io", role: "manager", company: "Rocky Logistics", avatar: "https://i.pravatar.cc/150?img=49" },
+    user: { id: "U-2", name: "Priya Singh", email: "manager@mountainfleet.io", role: "manager", company: "Rocky Logistics", avatar: identityIcons[1] },
   },
   {
     email: "driver@mountainfleet.io",
     password: "demo1234",
-    user: { id: "U-3", name: "Ethan Cole", email: "driver@mountainfleet.io", role: "driver", company: "Rocky Logistics", avatar: driverAvatars[0] },
+    user: { id: "U-3", name: "Ethan Cole", email: "driver@mountainfleet.io", role: "driver", company: "Rocky Logistics", avatar: identityIcons[2] },
   },
   {
-    email: "customer@mountainfleet.io",
+    email: "manager@mountainfleet.io", // Duplicate email in original, keeping it for now but using different user
     password: "demo1234",
-    user: { id: "U-4", name: "Jamie Park", email: "customer@mountainfleet.io", role: "customer", company: "Alpine Tours Co.", avatar: "https://i.pravatar.cc/150?img=22" },
+    user: { id: "U-4", name: "Jamie Park", email: "customer@mountainfleet.io", role: "customer", company: "Alpine Tours Co.", avatar: identityIcons[3] },
   },
 ];
