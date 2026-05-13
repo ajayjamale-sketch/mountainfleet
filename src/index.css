@@ -1,0 +1,130 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Light Mode - MountainFleet Official Theme */
+    --background: 210 40% 98%; /* Light Grey/White */
+    --foreground: 222 47% 11%;
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+    
+    --primary: 201 96% 32%; /* #0369A1 - Mountain Blue */
+    --primary-foreground: 0 0% 100%;
+    
+    --secondary: 215 25% 27%; /* #334155 - Slate Grey */
+    --secondary-foreground: 0 0% 100%;
+    
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    
+    --accent: 25 95% 53%; /* #F97316 - Orange */
+    --accent-foreground: 0 0% 100%;
+    
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 201 96% 32%;
+    --radius: 0.125rem; /* Retaining Boxy Theme */
+  }
+
+  .dark {
+    /* Dark Mode - Technical Obsidian with Official Accents */
+    --background: 222 47% 4%;
+    --foreground: 210 40% 98%;
+    --card: 222 47% 6%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222 47% 4%;
+    --popover-foreground: 210 40% 98%;
+    
+    --primary: 199 89% 48%; /* Brighter Blue for Dark Contrast */
+    --primary-foreground: 222 47% 4%;
+    
+    --secondary: 217 33% 17%; /* Darker Slate */
+    --secondary-foreground: 210 40% 98%;
+    
+    --muted: 217 33% 17%;
+    --muted-foreground: 215 20% 65%;
+    
+    --accent: 25 95% 53%; /* #F97316 - Orange */
+    --accent-foreground: 222 47% 4%;
+    
+    --border: 217 33% 17%;
+    --input: 217 33% 17%;
+    --ring: 199 89% 48%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border selection:bg-primary/20 selection:text-primary;
+    border-radius: var(--radius) !important;
+  }
+  body {
+    @apply bg-background text-foreground antialiased overflow-x-hidden;
+    font-feature-settings: "rlig" 1, "calt" 1, "ss01" 1;
+    text-rendering: optimizeLegibility;
+  }
+}
+
+/* Technical Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: hsl(var(--background));
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--border));
+  border-radius: 0px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--primary));
+}
+
+/* Premium Boxy Accents */
+.boxy-card {
+  @apply bg-card border border-border shadow-none hover:border-primary transition-all duration-300;
+}
+
+.boxy-button {
+  @apply bg-primary text-primary-foreground px-6 py-3 font-bold uppercase tracking-widest hover:bg-primary/90 active:translate-y-[1px] transition-all;
+}
+
+.technical-grid {
+  background-size: 40px 40px;
+  background-image: 
+    linear-gradient(to right, hsl(var(--border) / 0.3) 1px, transparent 1px),
+    linear-gradient(to bottom, hsl(var(--border) / 0.3) 1px, transparent 1px);
+}
+
+.glass-technical {
+  @apply bg-background/80 backdrop-blur-md border border-border shadow-sm;
+}
+
+/* Typography Scale Down */
+h1 { @apply text-4xl lg:text-6xl font-black tracking-tighter leading-none; }
+h2 { @apply text-3xl lg:text-4xl font-black tracking-tighter leading-none; }
+h3 { @apply text-xl lg:text-2xl font-black tracking-tight; }
+
+.text-balance {
+  text-wrap: balance;
+}
+
+/* Technical Animations */
+@keyframes slide-right {
+  from { transform: translateX(-10px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+.animate-technical {
+  animation: slide-right 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
