@@ -2,6 +2,8 @@ import { Check } from "lucide-react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/Button";
+import { useAuth } from "@/context/AuthContext";
+
 
 const plans = [
   {
@@ -31,6 +33,8 @@ const plans = [
 ];
 
 export function PricingSection() {
+  const { user } = useAuth();
+
   return (
     <section className="py-24">
       <div className="container mx-auto px-4">
@@ -75,9 +79,12 @@ export function PricingSection() {
                   </li>
                 ))}
               </ul>
-              <Link to="/signup" className="block mt-7">
-                <Button variant={p.highlight ? "accent" : "primary"} className="w-full">{p.cta}</Button>
+              <Link to={user ? "/dashboard" : (p.cta.toLowerCase().includes("sales") ? "/contact" : "/trial")} className="block mt-7">
+                <Button variant={p.highlight ? "accent" : "primary"} className="w-full">
+                  {user ? (p.cta.toLowerCase().includes("sales") ? "Contact HQ" : "Go to Dashboard") : p.cta}
+                </Button>
               </Link>
+
             </motion.div>
           ))}
         </div>

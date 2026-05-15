@@ -5,18 +5,16 @@ import { useAuth } from "@/contexts/AuthContext";
 import { cn } from "@/lib/utils";
 
 const nav = [
-  { to: "/app", label: "Dashboard", icon: LayoutDashboard, end: true },
-  { to: "/app/vehicles", label: "Vehicles", icon: Truck },
-  { to: "/app/drivers", label: "Drivers", icon: Users },
-  { to: "/app/trips", label: "Trips", icon: Route },
-  { to: "/app/tracking", label: "Live Tracking", icon: MapPin },
-  { to: "/app/bookings", label: "Bookings", icon: CalendarRange },
-  { to: "/app/expenses", label: "Fuel & Expenses", icon: Fuel },
-  { to: "/app/maintenance", label: "Maintenance", icon: Wrench },
-  { to: "/app/payments", label: "Payments", icon: CreditCard },
-  { to: "/app/reports", label: "Analytics", icon: BarChart3 },
-  { to: "/app/notifications", label: "Notifications", icon: Bell },
-  { to: "/app/settings", label: "Settings", icon: SettingsIcon },
+  { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard, end: true },
+  { to: "/dashboard/fleet", label: "Vehicles", icon: Truck },
+  { to: "/dashboard/drivers", label: "Drivers", icon: Users },
+  { to: "/dashboard/trips", label: "Trips", icon: Route },
+  { to: "/dashboard/track", label: "Live Tracking", icon: MapPin },
+  { to: "/dashboard/book", label: "New Booking", icon: CalendarRange },
+  { to: "/dashboard/maintenance", label: "Maintenance", icon: Wrench },
+  { to: "/dashboard/reports", label: "Analytics", icon: BarChart3 },
+  { to: "/dashboard/notifications", label: "Notifications", icon: Bell },
+  { to: "/dashboard/settings", label: "Settings", icon: SettingsIcon },
 ];
 
 export function Sidebar({ open, onClose }: { open: boolean; onClose: () => void }) {

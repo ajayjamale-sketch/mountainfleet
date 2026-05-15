@@ -1,13 +1,33 @@
 import { Menu, Search, Sun, Moon, Bell } from "lucide-react";
 import { useTheme } from "@/contexts/ThemeContext";
 import { Link } from "react-router-dom";
-import { notifications } from "@/lib/mockData";
+import { notifications as initial } from "@/lib/mockData";
 import { useAuth } from "@/contexts/AuthContext";
+import { storageService, STORAGE_KEYS } from "@/services/storageService";
+import { useState, useEffect } from "react";
 
 export function Topbar({ onMenu }: { onMenu: () => void }) {
   const { theme, toggle } = useTheme();
   const { user } = useAuth();
-  const unread = notifications.filter((n) => !n.read).length;
+  const [unread, setUnread] = useState(0);
+
+  useEffect(() => {
+    const checkNotifications = () => {
+      const items = storageService.get(STORAGE_KEYS.NOTIFICATIONS, initial);
+      setUnread(items.filter((n: any) => !n.read).length);
+    };
+
+    checkNotifications();
+    // Listen for storage changes to sync across tabs if needed
+    window.addEventListener('storage', checkNotifications);
+    // Poll for changes in the same tab (since state changes don't trigger 'storage' event in the same window)
+    const interval = setInterval(checkNotifications, 1000);
+
+    return () => {
+      window.removeEventListener('storage', checkNotifications);
+      clearInterval(interval);
+    };
+  }, []);
   return (
     <header className="sticky top-0 z-30 backdrop-blur-xl bg-background/80 border-b border-border">
       <div className="flex items-center gap-3 px-4 lg:px-6 h-16">
@@ -26,7 +46,7 @@ export function Topbar({ onMenu }: { onMenu: () => void }) {
           <button onClick={toggle} className="p-2 rounded-xl hover:bg-muted transition" title="Toggle theme">
             {theme === "light" ? <Moon className="w-5 h-5" /> : <Sun className="w-5 h-5" />}
           </button>
-          <Link to="/app/notifications" className="relative p-2 rounded-xl hover:bg-muted transition">
+          <Link to="/dashboard/notifications" className="relative p-2 rounded-xl hover:bg-muted transition">
             <Bell className="w-5 h-5" />
             {unread > 0 && <span className="absolute -top-0.5 -right-0.5 w-4 h-4 rounded-full gradient-accent text-white text-[9px] font-bold flex items-center justify-center">{unread}</span>}
           </Link>

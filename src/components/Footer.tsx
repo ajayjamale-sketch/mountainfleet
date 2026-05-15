@@ -1,9 +1,41 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Ship, Twitter, Linkedin, Github, Instagram, ArrowRight, Globe, Mail, ChevronRight } from 'lucide-react';
+import { Ship, Twitter, Linkedin, Github, Instagram, ArrowRight, Globe, Mail, ChevronRight, Loader2, CheckCircle } from 'lucide-react';
+import { storageService, STORAGE_KEYS } from '../services/storageService';
 
 const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
+  const [email, setEmail] = useState('');
+  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [message, setMessage] = useState('');
+
+  const handleSubscribe = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email || !email.includes('@')) {
+      setStatus('error');
+      setMessage('Please enter a valid work email.');
+      return;
+    }
+
+    setStatus('loading');
+    
+    // Simulate API call
+    setTimeout(() => {
+      try {
+        storageService.addItem(STORAGE_KEYS.NEWSLETTER, { 
+          email, 
+          subscribedAt: new Date().toISOString(),
+          source: 'footer'
+        });
+        setStatus('success');
+        setMessage('Successfully subscribed to MountainFleet Intel.');
+        setEmail('');
+      } catch (err) {
+        setStatus('error');
+        setMessage('Something went wrong. Please try again.');
+      }
+    }, 1200);
+  };
 
   const footerSections = [
     {
@@ -58,15 +90,46 @@ const Footer: React.FC = () => {
             <div className="space-y-4">
               <p className="text-sm font-black uppercase tracking-widest text-slate-500">Subscribe to Intel</p>
               <div className="relative max-w-md">
-                <input 
-                  type="email" 
-                  placeholder="Enter your work email" 
-                  className="w-full bg-white/5 border border-white/10 rounded-2xl py-5 pl-6 pr-32 outline-none focus:border-primary/50 focus:ring-4 focus:ring-primary/10 transition-all font-medium"
-                />
-                <button className="absolute right-2 top-2 bottom-2 bg-primary hover:bg-primary/90 text-white px-6 rounded-xl font-bold text-sm transition-all flex items-center space-x-2">
-                  <span>Join</span>
-                  <ArrowRight size={16} />
-                </button>
+                <form onSubmit={handleSubscribe} className="relative">
+                  <input 
+                    type="email" 
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    disabled={status === 'loading' || status === 'success'}
+                    placeholder="Enter your work email" 
+                    className="w-full bg-white/5 border border-white/10 rounded-2xl py-5 pl-6 pr-32 outline-none focus:border-primary/50 focus:ring-4 focus:ring-primary/10 transition-all font-medium disabled:opacity-50"
+                  />
+                  <button 
+                    type="submit"
+                    disabled={status === 'loading' || status === 'success'}
+                    className="absolute right-2 top-2 bottom-2 bg-primary hover:bg-primary/90 text-white px-6 rounded-xl font-bold text-sm transition-all flex items-center space-x-2 disabled:opacity-50 disabled:hover:bg-primary"
+                  >
+                    {status === 'loading' ? (
+                      <Loader2 className="animate-spin w-4 h-4" />
+                    ) : status === 'success' ? (
+                      <CheckCircle className="w-4 h-4" />
+                    ) : (
+                      <>
+                        <span>Join</span>
+                        <ArrowRight size={16} />
+                      </>
+                    )}
+                  </button>
+                </form>
+                
+                {status === 'success' && (
+                  <p className="mt-3 text-emerald-400 text-sm font-bold flex items-center space-x-2 animate-in fade-in slide-in-from-top-1">
+                    <CheckCircle size={14} />
+                    <span>{message}</span>
+                  </p>
+                )}
+                
+                {status === 'error' && (
+                  <p className="mt-3 text-rose-400 text-sm font-bold flex items-center space-x-2 animate-in fade-in slide-in-from-top-1">
+                    <span className="w-1.5 h-1.5 rounded-full bg-rose-400" />
+                    <span>{message}</span>
+                  </p>
+                )}
               </div>
             </div>
           </div>

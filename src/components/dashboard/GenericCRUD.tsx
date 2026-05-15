@@ -222,11 +222,13 @@ const GenericCRUD: React.FC<GenericCRUDProps> = ({ title, description, storageKe
                         <select 
                           value={formData[col.key] || ''}
                           onChange={(e) => setFormData({ ...formData, [col.key]: e.target.value })}
-                          className="w-full bg-slate-50 dark:bg-white/5 border border-border p-3.5 text-[11px] font-bold text-secondary dark:text-white focus:border-primary outline-none uppercase tracking-widest appearance-none cursor-pointer"
+                          className="w-full bg-slate-100 dark:bg-slate-800 border border-border p-3.5 text-[11px] font-bold text-secondary dark:text-white focus:border-primary outline-none uppercase tracking-widest cursor-pointer"
                         >
-                          <option value="">SELECT {col.label.toUpperCase()}</option>
+                          <option value="" className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white">SELECT {col.label.toUpperCase()}</option>
                           {(col.options || (col.type === 'status' ? ['Active', 'Inactive', 'Completed', 'In Progress', 'Approved', 'Pending'] : [])).map(opt => (
-                            <option key={opt} value={opt}>{opt.toUpperCase()}</option>
+                            <option key={opt} value={opt} className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white">
+                              {opt.toUpperCase()}
+                            </option>
                           ))}
                         </select>
                       ) : (
@@ -235,7 +237,7 @@ const GenericCRUD: React.FC<GenericCRUDProps> = ({ title, description, storageKe
                           type={col.type === 'number' ? 'number' : 'text'}
                           value={formData[col.key] || ''}
                           onChange={(e) => setFormData({ ...formData, [col.key]: col.type === 'number' ? Number(e.target.value) : e.target.value })}
-                          className="w-full bg-slate-50 dark:bg-white/5 border border-border p-3.5 text-[11px] font-bold text-secondary dark:text-white focus:border-primary outline-none uppercase tracking-widest"
+                          className="w-full bg-slate-100 dark:bg-slate-800 border border-border p-3.5 text-[11px] font-bold text-secondary dark:text-white focus:border-primary outline-none uppercase tracking-widest"
                           placeholder={`Enter ${col.label.toUpperCase()}`}
                         />
                       )}

@@ -2,6 +2,7 @@ import React from 'react';
 import PageSectionLayout from '../components/PageSectionLayout';
 import { Truck, Shield, Zap, Activity, Leaf, Award, ChevronRight, Wrench } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import { FleetShowcaseSection } from '../components/landing/FleetShowcaseSection';
 
 const FleetPage: React.FC = () => {
@@ -13,13 +14,46 @@ const FleetPage: React.FC = () => {
       }}
       main={{
         title: "Standard of Excellence",
+        // Keeping this prop for layout logic
+        image: "/assets/fleet/fleet-hero-standard.png", 
         content: (
-          <>
-            <p>Every vehicle in the MountainFleet network undergoes rigorous weekly safety inspections and performance tuning. We utilize the latest telematics to ensure optimal efficiency and safety.</p>
-            <p>From zero-emission electric delivery vans to heavy-duty transcontinental haulers, our fleet is designed to meet the demands of modern commerce without compromising on reliability.</p>
-          </>
+          <div className="space-y-6">
+            <p>
+              Every vehicle in the MountainFleet network undergoes rigorous weekly safety inspections 
+              and performance tuning. We utilize the latest telematics to ensure optimal efficiency and safety.
+            </p>
+            <p>
+              From zero-emission electric delivery vans to heavy-duty transcontinental haulers, 
+              our fleet is designed to meet the demands of modern commerce without compromising on reliability.
+            </p>
+            
+            <div className="pt-4">
+              <a 
+                href="/fleet-showcase" 
+                className="inline-flex items-center gap-2 bg-primary text-white px-6 py-3 text-xs font-black uppercase tracking-widest hover:bg-secondary dark:hover:bg-white dark:hover:text-secondary transition-all"
+              >
+                <span>Explore Full Fleet</span>
+                <ChevronRight size={14} />
+              </a>
+            </div>
+            
+            {/* Explicit Image Injection: This ensures the image renders even if the layout prop fails */}
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              className="mt-8 rounded-sm border border-border overflow-hidden bg-card"
+            >
+              <img 
+                src="/assets/fleet/fleet-hero-standard.png" 
+                alt="MountainFleet Standard of Excellence" 
+                className="w-full h-auto object-cover"
+                // Adding an onError handler to catch broken paths during dev
+                onError={(e) => (e.currentTarget.src = "https://via.placeholder.com/800x450?text=Fleet+Hero+Image+Missing")}
+              />
+            </motion.div>
+          </div>
         ),
-        image: "https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?auto=format&fit=crop&q=80&w=1000"
       }}
       features={{
         title: "Fleet Capabilities",
@@ -36,10 +70,9 @@ const FleetPage: React.FC = () => {
         link: "/contact"
       }}
     >
-      {/* 1. Fleet Showcase */}
       <FleetShowcaseSection />
 
-      {/* 2. Maintenance Excellence */}
+      {/* 2. Elite Operations & Maintenance */}
       <section className="py-16 sm:py-24 border-b border-border bg-background">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
@@ -48,8 +81,15 @@ const FleetPage: React.FC = () => {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
             >
-              <h2 className="text-3xl sm:text-5xl font-black uppercase tracking-tighter mb-8 leading-none">Predictive<br /><span className="text-primary">Maintenance.</span></h2>
-              <div className="space-y-8">
+              <div className="inline-flex items-center gap-2 px-3 py-1 bg-primary/10 text-primary border border-primary/20 text-[10px] font-black uppercase tracking-widest mb-6">
+                <Activity size={12} /> Operational Intelligence
+              </div>
+              <h2 className="text-3xl sm:text-5xl font-black uppercase tracking-tighter mb-8 leading-none">Elite<br /><span className="text-primary">Operations.</span></h2>
+              <p className="text-slate-500 dark:text-slate-400 font-medium leading-relaxed mb-10">
+                Our command center monitors every asset in real-time. We utilize predictive diagnostics to preemptive mechanical failures before they impact your delivery schedule.
+              </p>
+              
+              <div className="space-y-8 mb-10">
                 {[
                   { icon: Wrench, title: "Real-time Diagnostics", desc: "Sensors monitor engine health, tire pressure, and brake wear every second." },
                   { icon: Activity, title: "Performance Tuning", desc: "Automatic ECU updates via satellite to optimize fuel consumption based on terrain." }
@@ -65,11 +105,25 @@ const FleetPage: React.FC = () => {
                   </div>
                 ))}
               </div>
+
+              <Link 
+                to="/fleet-metrics" 
+                className="inline-flex items-center gap-3 bg-secondary dark:bg-white dark:text-secondary text-white px-8 py-4 text-xs font-black uppercase tracking-widest hover:bg-primary transition-all group"
+              >
+                <span>View Global Metrics</span>
+                <ChevronRight size={16} className="group-hover:translate-x-1 transition-transform" />
+              </Link>
             </motion.div>
+            
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-4">
                 <div className="h-48 bg-card border border-border overflow-hidden">
-                  <img src="https://images.unsplash.com/photo-1486006396193-471a2abc881a?auto=format&fit=crop&q=80&w=600" className="w-full h-full object-cover grayscale opacity-50" alt="Maintenance" />
+                  <img 
+                    src="/assets/fleet/maintenance-diagnostics.png" 
+                    className="w-full h-full object-cover" 
+                    alt="Maintenance" 
+                    onError={(e) => (e.currentTarget.src = "https://images.unsplash.com/photo-1581092580497-e0d23cbdf1dc?auto=format&fit=crop&q=80&w=800")}
+                  />
                 </div>
                 <div className="p-6 bg-secondary text-white border border-border">
                   <div className="text-3xl font-black mb-1">99.8%</div>
@@ -82,37 +136,15 @@ const FleetPage: React.FC = () => {
                   <div className="text-[10px] uppercase tracking-widest text-white/50">Weekly Inspections</div>
                 </div>
                 <div className="h-48 bg-card border border-border overflow-hidden">
-                  <img src="https://images.unsplash.com/photo-1530124560677-bdaeaefd2fc1?auto=format&fit=crop&q=80&w=600" className="w-full h-full object-cover grayscale opacity-50" alt="Inspection" />
+                  <img 
+                    src="/assets/fleet/vehicle-inspection.png" 
+                    className="w-full h-full object-cover" 
+                    alt="Inspection" 
+                    onError={(e) => (e.currentTarget.src = "https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?auto=format&fit=crop&q=80&w=800")}
+                  />
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 3. Safety First */}
-      <section className="py-16 sm:py-24 bg-secondary text-white border-b border-border overflow-hidden">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8 text-center">
-          <h2 className="text-3xl sm:text-6xl font-black uppercase tracking-tighter mb-16">Safety is our<br />Operating System.</h2>
-          <div className="grid md:grid-cols-3 gap-12">
-            {[
-              { label: "Driver Score", val: "4.95/5", desc: "Continuous monitoring for safe driving habits." },
-              { label: "Accident Rate", val: "<0.01%", desc: "Industry-leading safety records across all hubs." },
-              { label: "AI Intervention", val: "Instant", desc: "Automated braking and lane keeping on all trucks." }
-            ].map((stat, i) => (
-              <motion.div 
-                key={i}
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-                className="p-8 border border-white/10 bg-white/5 backdrop-blur-sm"
-              >
-                <div className="text-[10px] uppercase tracking-[0.3em] text-primary mb-4">{stat.label}</div>
-                <div className="text-4xl font-black mb-4">{stat.val}</div>
-                <p className="text-xs text-white/40 font-medium">{stat.desc}</p>
-              </motion.div>
-            ))}
           </div>
         </div>
       </section>
@@ -125,7 +157,7 @@ const FleetPage: React.FC = () => {
               <div className="inline-flex items-center gap-2 px-3 py-1 bg-emerald-500/10 text-emerald-500 border border-emerald-500/20 text-[10px] font-black uppercase tracking-widest mb-6">
                 <Leaf size={12} /> Green Logistics
               </div>
-              <h2 className="text-3xl sm:text-5xl font-black uppercase tracking-tighter mb-8 leading-none">Driving towards<br />Zero Emissions.</h2>
+              <h2 className="text-3xl sm:text-5xl font-black uppercase tracking-tighter mb-8 leading-none text-emerald-500">Driving towards<br /><span className="text-foreground">Zero Emissions.</span></h2>
               <p className="text-slate-500 dark:text-slate-400 font-medium leading-relaxed mb-12">Our "MountainGreen" initiative is committed to converting 60% of our last-mile fleet to electric by 2028.</p>
               
               <div className="space-y-6">
@@ -149,45 +181,22 @@ const FleetPage: React.FC = () => {
                 </div>
               </div>
             </div>
+            
+            {/* Sustainability Images Grid */}
             <div className="lg:w-1/2 grid grid-cols-2 gap-4">
-              <img src="https://images.unsplash.com/photo-1593941707882-a5bba1491017?auto=format&fit=crop&q=80&w=800" className="border border-border grayscale" alt="EV Truck" />
-              <img src="https://images.unsplash.com/photo-1516937941344-00b4e0337589?auto=format&fit=crop&q=80&w=800" className="border border-border grayscale pt-12" alt="Eco Plant" />
+              <img 
+                src="/assets/fleet/ev-truck.png" 
+                className="border border-border hover:scale-105 transition-all duration-500 bg-card aspect-[4/5] object-cover" 
+                alt="EV Truck" 
+                onError={(e) => (e.currentTarget.src = "https://images.unsplash.com/photo-1606185540410-d6ca68b0fde3?auto=format&fit=crop&q=80&w=800")}
+              />
+              <img 
+                src="/assets/fleet/eco-hub.png" 
+                className="border border-border pt-12 hover:scale-105 transition-all duration-500 bg-card aspect-[4/5] object-cover" 
+                alt="Eco Plant" 
+                onError={(e) => (e.currentTarget.src = "https://images.unsplash.com/photo-1581091226835-a5a24e1d821a?auto=format&fit=crop&q=80&w=800")}
+              />
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 5. Driver Elite Section */}
-      <section className="py-16 sm:py-24 bg-card border-b border-border overflow-hidden relative">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl sm:text-5xl font-black uppercase tracking-tighter mb-4">Elite Operators</h2>
-            <p className="text-slate-500 dark:text-slate-400 font-medium max-w-2xl mx-auto">Our systems are powered by the world's most advanced logistics intelligence and telemetry.</p>
-          </div>
-          
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            {[1, 2, 3, 4].map((i) => (
-              <motion.div 
-                key={i}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-                className="group"
-              >
-                <div className="aspect-square bg-background border border-border mb-6 overflow-hidden relative grayscale group-hover:grayscale-0 transition-all duration-500">
-                  <img src={`https://images.unsplash.com/photo-${["1519003722824-192d99a24bb7", "1580674285054-bed31e145f59", "1494412519320-aa613dfb7738", "1512413316925-fd30921a2832"][i-1]}?auto=format&fit=crop&q=80&w=400`} alt="Operations" className="w-full h-full object-cover" />
-                  <div className="absolute top-4 right-4 bg-primary text-white p-2">
-                    <Award size={16} />
-                  </div>
-                </div>
-                <h3 className="text-lg font-black uppercase tracking-tight mb-1">{["Fleet Analytics", "Safety Metrics", "Global Dispatch", "Telemetry Core"][i-1]}</h3>
-                <div className="text-[10px] uppercase tracking-widest text-slate-400 mb-4">Operational Excellence</div>
-                <div className="flex items-center gap-1 text-primary text-xs font-bold">
-                  View Metrics <ChevronRight size={14} />
-                </div>
-              </motion.div>
-            ))}
           </div>
         </div>
       </section>

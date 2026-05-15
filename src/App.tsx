@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { AuthProvider } from './context/AuthContext';
 import { ThemeProvider } from './context/ThemeContext';
 import ProtectedRoute from './routes/ProtectedRoute';
+import ScrollToTop from './components/ScrollToTop';
 
 // Layouts
 import MainLayout from './layouts/MainLayout';
@@ -26,6 +27,7 @@ const BookVehicle = lazy(() => import('./pages/dashboard/BookVehicle'));
 const MyBookings = lazy(() => import('./pages/dashboard/MyBookings'));
 const TrackTrip = lazy(() => import('./pages/dashboard/TrackTrip'));
 const SettingsPage = lazy(() => import('./pages/dashboard/SettingsPage'));
+const Notifications = lazy(() => import('./pages/Notifications'));
 
 const AboutPage = lazy(() => import('./pages/AboutPage'));
 const PricingPage = lazy(() => import('./pages/PricingPage'));
@@ -39,6 +41,12 @@ const TermsPage = lazy(() => import('./pages/TermsPage'));
 const CookiePolicyPage = lazy(() => import('./pages/CookiePolicyPage'));
 const SLAPage = lazy(() => import('./pages/SLAPage'));
 const SustainabilityPage = lazy(() => import('./pages/SustainabilityPage'));
+const FleetShowcase = lazy(() => import('./pages/FleetShowcase'));
+const FleetMetrics = lazy(() => import('./pages/FleetMetrics'));
+const TrialRequest = lazy(() => import('./pages/TrialRequest'));
+const AddonDetails = lazy(() => import('./pages/AddonDetails'));
+const NewsDetail = lazy(() => import('./pages/NewsDetail'));
+
 
 const LoadingFallback = () => (
   <div className="h-screen w-full flex items-center justify-center bg-background text-foreground">
@@ -55,6 +63,7 @@ const App: React.FC = () => {
       <ThemeProvider>
         <AuthProvider>
           <Suspense fallback={<LoadingFallback />}>
+            <ScrollToTop />
             <Routes>
               {/* Public Routes */}
               <Route path="/" element={<MainLayout />}>
@@ -65,6 +74,12 @@ const App: React.FC = () => {
                 <Route path="contact" element={<ContactPage />} />
                 <Route path="careers" element={<CareersPage />} />
                 <Route path="fleet" element={<FleetPage />} />
+                <Route path="fleet-showcase" element={<FleetShowcase />} />
+                <Route path="fleet-metrics" element={<FleetMetrics />} />
+                <Route path="trial" element={<TrialRequest />} />
+                <Route path="addon/:id" element={<AddonDetails />} />
+                <Route path="news/:id" element={<NewsDetail />} />
+
                 <Route path="news" element={<NewsPage />} />
                 <Route path="privacy" element={<PrivacyPage />} />
                 <Route path="terms" element={<TermsPage />} />
@@ -102,6 +117,7 @@ const App: React.FC = () => {
                   <Route path="my-bookings" element={<MyBookings />} />
                   <Route path="track" element={<TrackTrip />} />
                   
+                  <Route path="notifications" element={<Notifications />} />
                   <Route path="settings" element={<SettingsPage />} />
                   <Route path="help" element={<div className="text-foreground">Support Center Coming Soon</div>} />
                 </Route>

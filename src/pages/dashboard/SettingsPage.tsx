@@ -12,7 +12,7 @@ const SettingsPage: React.FC = () => {
   const { user, logout } = useAuth();
   const { theme, toggleTheme } = useTheme();
   const [activeTab, setActiveTab] = useState('profile');
-
+  
   const tabs = [
     { id: 'profile', label: 'Identity Profile', icon: User },
     { id: 'notifications', label: 'Alert Protocols', icon: Bell },
@@ -20,8 +20,35 @@ const SettingsPage: React.FC = () => {
     { id: 'appearance', label: 'Interface Sync', icon: Palette },
   ];
 
+  // States for functional interactivity
+  const [name, setName] = useState(user?.name || '');
+  const [email, setEmail] = useState(user?.email || '');
+  const [mission, setMission] = useState('');
+  const [notifs, setNotifs] = useState([
+    { id: 1, title: 'Payload Updates', desc: 'Real-time synchronization for active shipments.', active: true },
+    { id: 2, title: 'Integrity Alerts', desc: 'Security notifications regarding account access.', active: true },
+    { id: 3, title: 'Network Intelligence', desc: 'Strategic updates and fleet enhancements.', active: false },
+  ]);
+
   const handleSave = () => {
     toast.success('SYSTEM PARAMETERS SYNCHRONIZED');
+  };
+
+  const toggleNotif = (id: number) => {
+    setNotifs(prev => prev.map(n => n.id === id ? { ...n, active: !n.active } : n));
+    toast.success('ALERT PROTOCOL UPDATED');
+  };
+
+  const handlePurge = () => {
+    const confirm = window.confirm('DANGER: INITIALIZE IDENTITY PURGE? THIS ACTION IS IRREVERSIBLE.');
+    if (confirm) {
+      toast.loading('PURGING DATASETS...');
+      setTimeout(() => {
+        toast.dismiss();
+        logout();
+        toast.error('IDENTITY DISSOLVED');
+      }, 2000);
+    }
   };
 
   return (
@@ -88,7 +115,10 @@ const SettingsPage: React.FC = () => {
                         <div className="w-24 h-24 bg-primary/10 border border-primary/20 flex items-center justify-center text-primary group-hover/avatar:bg-primary group-hover/avatar:text-white transition-all">
                           <User size={40} />
                         </div>
-                        <button className="absolute -bottom-2 -right-2 p-2 bg-accent text-white border border-accent/20 shadow-xl shadow-accent/20">
+                        <button 
+                          onClick={() => toast.info('BIOMETRIC SCAN INITIATED...')}
+                          className="absolute -bottom-2 -right-2 p-2 bg-accent text-white border border-accent/20 shadow-xl shadow-accent/20 hover:scale-110 transition-transform"
+                        >
                           <Camera size={14} />
                         </button>
                       </div>
@@ -98,7 +128,12 @@ const SettingsPage: React.FC = () => {
                            <span className="bg-primary/5 text-primary border border-primary/10 px-3 py-1 text-[8px] font-black uppercase tracking-widest">{user?.role}</span>
                            <span className="text-slate-400 text-[8px] font-black uppercase tracking-widest">Node: {user?.id.slice(0, 8)}</span>
                         </div>
-                        <button className="text-[9px] font-black text-accent uppercase tracking-widest hover:underline">Update Security Matrix</button>
+                        <button 
+                          onClick={() => toast.info('UPDATING SECURITY ENCRYPTION...')}
+                          className="text-[9px] font-black text-accent uppercase tracking-widest hover:underline"
+                        >
+                          Update Security Matrix
+                        </button>
                       </div>
                     </div>
 
@@ -107,19 +142,35 @@ const SettingsPage: React.FC = () => {
                         <label className="text-[9px] font-black text-slate-500 uppercase tracking-widest ml-1 mb-1.5 block">Identity Identifier</label>
                         <div className="relative">
                           <User className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
-                          <input type="text" defaultValue={user?.name} className="w-full bg-slate-50 dark:bg-white/5 border border-border p-4 pl-10 text-xs font-black uppercase tracking-widest text-secondary dark:text-white outline-none focus:border-primary transition-all" />
+                          <input 
+                            type="text" 
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                            className="w-full bg-slate-50 dark:bg-white/5 border border-border p-4 pl-10 text-xs font-black uppercase tracking-widest text-secondary dark:text-white outline-none focus:border-primary transition-all" 
+                          />
                         </div>
                       </div>
                       <div>
                         <label className="text-[9px] font-black text-slate-500 uppercase tracking-widest ml-1 mb-1.5 block">Comm. Protocol</label>
                         <div className="relative">
                           <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
-                          <input type="email" defaultValue={user?.email} className="w-full bg-slate-50 dark:bg-white/5 border border-border p-4 pl-10 text-[11px] font-bold text-secondary dark:text-white outline-none focus:border-primary transition-all" />
+                          <input 
+                            type="email" 
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            className="w-full bg-slate-50 dark:bg-white/5 border border-border p-4 pl-10 text-[11px] font-bold text-secondary dark:text-white outline-none focus:border-primary transition-all" 
+                          />
                         </div>
                       </div>
                       <div className="md:col-span-2">
                         <label className="text-[9px] font-black text-slate-500 uppercase tracking-widest ml-1 mb-1.5 block">Operational Mission</label>
-                        <textarea rows={4} className="w-full bg-slate-50 dark:bg-white/5 border border-border p-4 text-xs font-bold text-secondary dark:text-white outline-none focus:border-primary transition-all resize-none" placeholder="ENTER MISSION PARAMETERS..." />
+                        <textarea 
+                          rows={4} 
+                          value={mission}
+                          onChange={(e) => setMission(e.target.value)}
+                          className="w-full bg-slate-50 dark:bg-white/5 border border-border p-4 text-xs font-bold text-secondary dark:text-white outline-none focus:border-primary transition-all resize-none" 
+                          placeholder="ENTER MISSION PARAMETERS..." 
+                        />
                       </div>
                     </div>
                   </motion.div>
@@ -130,18 +181,17 @@ const SettingsPage: React.FC = () => {
                     <div className="mb-8">
                        <h3 className="text-xl font-black text-secondary dark:text-white tracking-tighter uppercase border-b border-border pb-4">Alert Protocols</h3>
                     </div>
-                    {[
-                      { title: 'Payload Updates', desc: 'Real-time synchronization for active shipments.', active: true },
-                      { title: 'Integrity Alerts', desc: 'Security notifications regarding account access.', active: true },
-                      { title: 'Network Intelligence', desc: 'Strategic updates and fleet enhancements.', active: false },
-                    ].map((item, i) => (
+                    {notifs.map((item, i) => (
                       <div key={i} className="flex items-center justify-between p-6 bg-slate-50 dark:bg-white/5 border border-border group hover:border-primary transition-all">
                         <div className="max-w-[70%]">
                           <p className="text-sm font-black text-secondary dark:text-white uppercase tracking-tight mb-1">{item.title}</p>
                           <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest">{item.desc}</p>
                         </div>
-                        <div className={`w-12 h-6 relative cursor-pointer transition-all duration-300 ${item.active ? 'bg-primary' : 'bg-slate-200 dark:bg-slate-800'}`}>
-                          <div className={`absolute top-1 w-4 h-4 bg-white transition-all duration-300 ${item.active ? 'left-7' : 'left-1'}`} />
+                        <div 
+                          onClick={() => toggleNotif(item.id)}
+                          className={`w-12 h-6 relative cursor-pointer transition-all duration-300 ${item.active ? 'bg-primary' : 'bg-slate-200 dark:bg-slate-800'}`}
+                        >
+                          <div className={`absolute top-1 w-4 h-4 bg-white shadow-sm transition-all duration-300 ${item.active ? 'left-7' : 'left-1'}`} />
                         </div>
                       </div>
                     ))}
@@ -213,7 +263,10 @@ const SettingsPage: React.FC = () => {
                       <div className="bg-red-500/5 border border-red-500/10 p-8 relative overflow-hidden group">
                          <h4 className="text-lg font-black text-red-500 tracking-tighter uppercase mb-2 relative z-10">Termination Node</h4>
                          <p className="text-slate-500 text-[10px] mb-8 font-bold uppercase tracking-widest leading-relaxed relative z-10 max-w-sm">Permanently dissolve identity and purge associated datasets. Irreversible protocol.</p>
-                         <button className="relative z-10 bg-red-500 hover:bg-red-600 text-white px-8 py-3.5 font-black text-[9px] uppercase tracking-widest transition-all shadow-xl shadow-red-500/20 active:translate-y-[1px]">
+                         <button 
+                          onClick={handlePurge}
+                          className="relative z-10 bg-red-500 hover:bg-red-600 text-white px-8 py-3.5 font-black text-[9px] uppercase tracking-widest transition-all shadow-xl shadow-red-500/20 active:translate-y-[1px]"
+                         >
                            Initialize Purge
                          </button>
                       </div>

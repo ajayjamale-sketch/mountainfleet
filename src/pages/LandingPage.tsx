@@ -6,8 +6,16 @@ import {
   Users, Star, MapPin, Activity
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { Stats } from '../components/landing/Stats';
+import { FleetShowcaseSection } from '../components/landing/FleetShowcaseSection';
+import { Testimonials } from '../components/landing/Testimonials';
+import { FAQSection } from '../components/landing/FAQSection';
+import { useAuth } from '../context/AuthContext';
+
 
 const LandingPage: React.FC = () => {
+  const { user } = useAuth();
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -61,10 +69,14 @@ const LandingPage: React.FC = () => {
             </motion.p>
             
             <motion.div variants={itemVariants} className="flex flex-col sm:flex-row items-start justify-start gap-4 mb-20 lg:mb-24">
-              <Link to="/register" className="w-full sm:w-auto bg-primary text-white px-10 py-5 font-bold text-sm uppercase tracking-widest transition-all flex items-center justify-center space-x-3 hover:bg-primary/90 shadow-xl shadow-primary/20">
-                <span>Establish Network</span>
+              <Link 
+                to={user ? "/dashboard" : "/register"} 
+                className="w-full sm:w-auto bg-primary text-white px-10 py-5 font-bold text-sm uppercase tracking-widest transition-all flex items-center justify-center space-x-3 hover:bg-primary/90 shadow-xl shadow-primary/20"
+              >
+                <span>{user ? "Enter Command Center" : "Establish Network"}</span>
                 <ArrowRight size={18} />
               </Link>
+
               <Link to="/services" className="w-full sm:w-auto flex items-center justify-center space-x-3 text-secondary dark:text-white font-bold text-sm uppercase tracking-widest px-10 py-5 border border-border hover:bg-slate-50 dark:hover:bg-white/5 transition-all">
                 <span>View Protocols</span>
               </Link>
@@ -148,6 +160,104 @@ const LandingPage: React.FC = () => {
         </div>
       </section>
 
+      {/* OPERATIONAL EXCELLENCE */}
+      <section className="py-20 sm:py-32 border-b border-border bg-card overflow-hidden">
+        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+          <div className="grid lg:grid-cols-2 gap-20 items-center">
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="relative"
+            >
+              <div className="aspect-square bg-background border border-border overflow-hidden p-1">
+                 <img src="https://images.unsplash.com/photo-1580674285054-bed31e145f59?auto=format&fit=crop&q=80&w=1000" alt="Control Center" className="w-full h-full object-cover grayscale opacity-50" />
+                 <div className="absolute inset-0 technical-grid opacity-20" />
+              </div>
+              <div className="absolute -bottom-10 -right-10 p-10 bg-primary text-white border border-border hidden xl:block shadow-2xl">
+                 <BarChart3 size={64} />
+              </div>
+            </motion.div>
+            <div>
+              <div className="inline-flex items-center space-x-2 text-primary mb-6">
+                <Zap size={14} className="animate-pulse" />
+                <span className="text-[10px] font-black uppercase tracking-widest">AI-Driven Logistics</span>
+              </div>
+              <h2 className="text-4xl sm:text-6xl font-black text-secondary dark:text-white mb-8 tracking-tighter uppercase leading-[0.9]">Autonomous <br /><span className="text-primary">Intelligence.</span></h2>
+              <p className="text-slate-500 dark:text-slate-400 text-base sm:text-lg mb-10 font-medium leading-relaxed">Our proprietary AI engine optimizes routes in real-time, accounting for terrain, fuel efficiency, and terminal wait times across the global network.</p>
+              <ul className="space-y-6">
+                 {[
+                   { title: 'Predictive Dispatch', desc: 'Anticipate demand surges before they occur with historical telemetry.' },
+                   { icon: CheckCircle2, title: 'Dynamic Rerouting', desc: 'Automatic path optimization to bypass network bottlenecks.' }
+                 ].map((item, i) => (
+                   <li key={i} className="flex gap-4">
+                     <div className="w-6 h-6 rounded-full bg-primary/10 text-primary flex items-center justify-center flex-shrink-0 mt-1">
+                       <CheckCircle2 size={14} />
+                     </div>
+                     <div>
+                       <h4 className="text-sm font-black uppercase tracking-tight text-secondary dark:text-white mb-1">{item.title}</h4>
+                       <p className="text-xs text-slate-500 font-medium">{item.desc}</p>
+                     </div>
+                   </li>
+                 ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* PERFORMANCE STATS */}
+      <Stats />
+
+      {/* FLEET SHOWCASE */}
+      <FleetShowcaseSection />
+
+      {/* SECURITY & RESILIENCE */}
+      <section className="py-20 sm:py-32 border-b border-border bg-secondary dark:bg-slate-950 text-white relative overflow-hidden">
+        <div className="absolute inset-0 technical-grid opacity-10" />
+        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+          <div className="grid lg:grid-cols-2 gap-20 items-center">
+            <div className="order-2 lg:order-1">
+              <h2 className="text-4xl sm:text-6xl font-black mb-8 tracking-tighter uppercase leading-[0.9]">Network <br /><span className="text-primary">Resilience.</span></h2>
+              <p className="text-white/40 text-base sm:text-lg mb-12 font-medium leading-relaxed">Built for mission-critical operations, MountainFleet operates with redundant command nodes and satellite-linked telemetry for zero-fail communication.</p>
+              <div className="grid sm:grid-cols-2 gap-8">
+                {[
+                   { label: 'Uptime Protocol', value: '99.999%', desc: 'Carrier-grade availability across all hubs.' },
+                   { label: 'Security Sync', value: 'AES-256', desc: 'Military-standard logistical encryption.' },
+                   { label: 'Sync Latency', value: '<24ms', desc: 'Near-instant global telemetry updates.' },
+                   { label: 'Node Backup', value: 'Triple', desc: 'Distributed cloud and satellite redundancy.' }
+                ].map((stat, i) => (
+                  <div key={i} className="p-6 border border-white/10 bg-white/5 group hover:border-primary transition-all">
+                    <p className="text-[10px] font-black uppercase tracking-widest text-primary mb-2">{stat.label}</p>
+                    <p className="text-3xl font-black tracking-tight mb-2">{stat.value}</p>
+                    <p className="text-[10px] text-white/30 uppercase tracking-widest font-bold">{stat.desc}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="order-1 lg:order-2">
+               <motion.div 
+                 initial={{ opacity: 0, scale: 0.9 }}
+                 whileInView={{ opacity: 1, scale: 1 }}
+                 viewport={{ once: true }}
+                 className="aspect-[4/3] border border-white/10 bg-background/20 relative"
+               >
+                 <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=1000" alt="Security Grid" className="w-full h-full object-cover grayscale opacity-30" />
+                 <div className="absolute inset-0 flex items-center justify-center">
+                    <Shield size={120} className="text-primary animate-pulse" />
+                 </div>
+               </motion.div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* TESTIMONIALS */}
+      <Testimonials />
+
+      {/* FAQ SECTION */}
+      <FAQSection />
+
       {/* CTA */}
       <section className="py-20 sm:py-24 bg-secondary dark:bg-slate-950 relative overflow-hidden">
         {/* CTA Background Image - Relative Path */}
@@ -166,9 +276,13 @@ const LandingPage: React.FC = () => {
               <h2 className="text-4xl sm:text-6xl font-black text-white mb-10 uppercase tracking-tighter leading-none">Scale Your Operations.</h2>
               <p className="text-white/40 text-sm sm:text-lg max-w-2xl mx-auto mb-12 font-medium">Join 500+ enterprises that trust MountainFleet for global logistics.</p>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
-                <Link to="/register" className="w-full sm:w-auto bg-primary text-white px-12 py-6 font-bold text-sm uppercase tracking-widest hover:bg-white hover:text-primary transition-all shadow-2xl shadow-primary/20">
-                  Start Free Trial
+                <Link 
+                  to={user ? "/dashboard" : "/register"} 
+                  className="w-full sm:w-auto bg-primary text-white px-12 py-6 font-bold text-sm uppercase tracking-widest hover:bg-white hover:text-primary transition-all shadow-2xl shadow-primary/20"
+                >
+                  {user ? "Access Dashboard" : "Start Free Trial"}
                 </Link>
+
                 <Link to="/contact" className="w-full sm:w-auto text-white border border-white/20 px-12 py-6 font-bold text-sm uppercase tracking-widest hover:bg-white/10 transition-all">
                   Contact Sales
                 </Link>

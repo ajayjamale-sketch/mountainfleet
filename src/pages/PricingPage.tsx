@@ -2,6 +2,7 @@ import React from 'react';
 import PageSectionLayout from '../components/PageSectionLayout';
 import { CheckCircle, Zap, Star, ShieldCheck, HelpCircle, Calculator, ArrowRight, Check } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import { PricingSection } from '../components/landing/PricingSection';
 import { FAQSection } from '../components/landing/FAQSection';
 
@@ -34,8 +35,9 @@ const PricingPage: React.FC = () => {
         title: "Start your free trial",
         subtitle: "Experience the full power of MountainFleet for 14 days, no credit card required.",
         buttonText: "Register Now",
-        link: "/register"
+        link: "/trial"
       }}
+
     >
       {/* 1. Core Pricing Grid */}
       <PricingSection />
@@ -111,19 +113,20 @@ const PricingPage: React.FC = () => {
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {[
-              { title: "White Label", desc: "Your branding on every dashboard and mobile app interface." },
-              { title: "SAP/ERP Integration", desc: "Seamless data sync with your existing enterprise systems." },
-              { title: "Custom IoT Hub", desc: "Connect non-standard sensors and hardware to the grid." },
-              { title: "Global SLA", desc: "Guaranteed uptime and response times for mission-critical ops." }
+              { id: "white-label", title: "White Label", desc: "Your branding on every dashboard and mobile app interface." },
+              { id: "sap-erp", title: "SAP/ERP Integration", desc: "Seamless data sync with your existing enterprise systems." },
+              { id: "iot-hub", title: "Custom IoT Hub", desc: "Connect non-standard sensors and hardware to the grid." },
+              { id: "global-sla", title: "Global SLA", desc: "Guaranteed uptime and response times for mission-critical ops." }
             ].map((item, i) => (
               <div key={i} className="p-8 border border-border hover:border-primary bg-background transition-all">
                 <h3 className="text-lg font-black uppercase tracking-tight mb-3">{item.title}</h3>
                 <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed font-medium mb-6">{item.desc}</p>
-                <div className="text-xs font-bold text-primary flex items-center gap-1 group cursor-pointer">
+                <Link to={`/addon/${item.id}`} className="text-xs font-bold text-primary flex items-center gap-1 group cursor-pointer hover:underline">
                   Learn More <ArrowRight size={14} />
-                </div>
+                </Link>
               </div>
             ))}
+
           </div>
         </div>
       </section>

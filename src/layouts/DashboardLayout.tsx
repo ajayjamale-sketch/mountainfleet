@@ -1,15 +1,28 @@
-import React, { useState } from 'react';
-import { Outlet } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Outlet, Link } from 'react-router-dom';
 import Sidebar from '../components/Sidebar';
 import { Toaster } from 'react-hot-toast';
 import { Search, Bell, Menu, User, X } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import ThemeToggle from '../components/ThemeToggle';
 import ScrollToTop from '../components/ScrollToTop';
+import { storageService, STORAGE_KEYS } from '../services/storageService';
+import { notifications as initialNotifications } from '../lib/mockData';
 
 const DashboardLayout: React.FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { user } = useAuth();
+  const [unreadCount, setUnreadCount] = useState(0);
+
+  useEffect(() => {
+    const updateUnread = () => {
+      const items = storageService.get(STORAGE_KEYS.NOTIFICATIONS, initialNotifications);
+      setUnreadCount(items.filter((n: any) => !n.read).length);
+    };
+    updateUnread();
+    const interval = setInterval(updateUnread, 1000);
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <div className="flex h-screen bg-background text-foreground transition-colors duration-300 overflow-hidden">
@@ -60,10 +73,15 @@ const DashboardLayout: React.FC = () => {
 
           <div className="flex items-center space-x-3 lg:space-x-6">
             <ThemeToggle />
-            <button className="p-3 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-white/5 rounded-2xl border border-border relative transition-all shadow-sm group">
+            <Link 
+              to="/dashboard/notifications" 
+              className="p-3 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-white/5 rounded-2xl border border-border relative transition-all shadow-sm group active:scale-95"
+            >
               <Bell size={20} className="group-hover:rotate-12 transition-transform" />
-              <span className="absolute top-3 right-3 w-2.5 h-2.5 bg-primary rounded-full border-2 border-background animate-pulse shadow-lg shadow-primary/40"></span>
-            </button>
+              {unreadCount > 0 && (
+                <span className="absolute top-3 right-3 w-2.5 h-2.5 bg-primary rounded-full border-2 border-background animate-pulse shadow-lg shadow-primary/40"></span>
+              )}
+            </Link>
             <div className="h-10 w-[1px] bg-border mx-2 hidden sm:block"></div>
             <div className="flex items-center space-x-4">
               <div className="text-right hidden xl:block">

@@ -18,7 +18,8 @@ import {
   Wrench,
   Receipt,
   History,
-  ChevronRight
+  ChevronRight,
+  Bell
 } from 'lucide-react';
 import { useAuth, UserRole } from '../context/AuthContext';
 import { cn } from '../utils/cn';
@@ -48,6 +49,7 @@ const Sidebar: React.FC = () => {
     { name: 'Initialize Ship', icon: Search, path: '/dashboard/book', roles: ['Customer'] },
     { name: 'Logistics Hist.', icon: History, path: '/dashboard/my-bookings', roles: ['Customer'] },
     { name: 'Live Tracking', icon: Map, path: '/dashboard/track', roles: ['Customer'] },
+    { name: 'Alerts', icon: Bell, path: '/dashboard/notifications', roles: ['Admin', 'Fleet Manager', 'Driver', 'Customer'] },
     { name: 'Preferences', icon: Settings, path: '/dashboard/settings', roles: ['Admin', 'Fleet Manager', 'Driver', 'Customer'] },
   ];
 

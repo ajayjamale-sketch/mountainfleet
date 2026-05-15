@@ -18,7 +18,7 @@ export function FleetShowcaseSection() {
             <h2 className="mt-3 text-3xl md:text-5xl font-bold tracking-tight">Built for every terrain</h2>
             <p className="mt-3 text-slate-400 max-w-xl">From snow-covered passes to busy city streets — MountainFleet powers diverse fleets with one unified platform.</p>
           </div>
-          <a href="/fleet" className="text-sm font-semibold text-orange-400 hover:text-orange-300">View full fleet →</a>
+          <a href="/fleet-showcase" className="text-sm font-semibold text-orange-400 hover:text-orange-300">View full fleet →</a>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -32,7 +32,12 @@ export function FleetShowcaseSection() {
               className="group relative rounded-2xl overflow-hidden border border-white/5 bg-white/[0.02] hover:bg-white/[0.05] transition"
             >
               <div className="aspect-[16/10] overflow-hidden relative">
-                <img src={v.image} alt={v.model} className="w-full h-full object-cover group-hover:scale-105 transition duration-700" />
+                <img 
+                  src={v.image} 
+                  alt={v.model} 
+                  className="w-full h-full object-cover group-hover:scale-105 transition duration-700" 
+                  onError={(e) => (e.currentTarget.src = `https://images.unsplash.com/photo-1586191712102-141e6e479ac2?auto=format&fit=crop&q=80&w=800`)}
+                />
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/30 to-transparent" />
                 <div className={`absolute top-3 left-3 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${
                   v.status === "Active" ? "bg-emerald-500/20 text-emerald-300" :

@@ -14,19 +14,30 @@ import { initialUsers, initialVehicles, initialTrips, initialBookings, initialEx
 import { useTheme } from '../../context/ThemeContext';
 import { Link } from 'react-router-dom';
 
-const chartData = [
-  { name: '01', value: 4000 }, 
-  { name: '02', value: 3000 }, 
-  { name: '03', value: 2000 },
-  { name: '04', value: 2780 }, 
-  { name: '05', value: 1890 }, 
-  { name: '06', value: 2390 },
-  { name: '07', value: 3490 },
+const weeklyData = [
+  { name: 'Mon', value: 4000 }, 
+  { name: 'Tue', value: 3000 }, 
+  { name: 'Wed', value: 2000 },
+  { name: 'Thu', value: 2780 }, 
+  { name: 'Fri', value: 1890 }, 
+  { name: 'Sat', value: 2390 },
+  { name: 'Sun', value: 3490 },
+];
+
+const monthlyData = [
+  { name: 'Jan', value: 14000 }, 
+  { name: 'Feb', value: 13000 }, 
+  { name: 'Mar', value: 12000 },
+  { name: 'Apr', value: 12780 }, 
+  { name: 'May', value: 11890 }, 
+  { name: 'Jun', value: 12390 },
+  { name: 'Jul', value: 13490 },
 ];
 
 const DashboardHome: React.FC = () => {
   const { user } = useAuth();
   const { theme } = useTheme();
+  const [chartView, setChartView] = React.useState<'Wkly' | 'Mnth'>('Wkly');
 
   const data = useMemo(() => {
     const usersCount = storageService.get(STORAGE_KEYS.USERS, initialUsers).length;
@@ -39,6 +50,42 @@ const DashboardHome: React.FC = () => {
 
     return { usersCount, fleetCount, tripsCount, bookings, totalRevenue, totalExpenses };
   }, []);
+
+  const handleExportAudit = () => {
+    const auditData = [
+      ['ID', 'Description', 'Timestamp'],
+      ['MF-092', 'Fleet Expansion: Volvo FH16 added to Pacific Hub.', '2h ago'],
+      ['SEC-88', 'Protocol Sync: MFA enforced across Admin nodes.', '5h ago'],
+      ['PRT-11', 'Partner Sync: Terra Logistics onboarded.', '24h ago'],
+    ];
+    const csvContent = auditData.map(e => e.join(",")).join("\n");
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.setAttribute("href", url);
+    link.setAttribute("download", "mountainfleet_audit_log.csv");
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  const handleFullManifest = () => {
+    const manifestData = [
+      ['Vehicle ID', 'Name', 'Status', 'Type', 'Plate'],
+      ...initialVehicles.map(v => [v.id, v.name, v.status, v.type, v.plate])
+    ];
+    const csvContent = manifestData.map(e => e.join(",")).join("\n");
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.setAttribute("href", url);
+    link.setAttribute("download", "mountainfleet_manifest.csv");
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
 
   const getRoleStats = () => {
     switch (user?.role) {
@@ -81,7 +128,10 @@ const DashboardHome: React.FC = () => {
           </p>
         </div>
         <div className="flex items-center space-x-3">
-          <button className="bg-white dark:bg-white/5 border border-border text-secondary dark:text-white px-5 py-3 font-bold text-[10px] uppercase tracking-widest hover:bg-slate-50 transition-all shadow-sm">
+          <button 
+            onClick={handleExportAudit}
+            className="bg-white dark:bg-white/5 border border-border text-secondary dark:text-white px-5 py-3 font-bold text-[10px] uppercase tracking-widest hover:bg-slate-50 transition-all shadow-sm active:scale-95"
+          >
             Export Audit
           </button>
           {user?.role === 'Customer' && (
@@ -124,13 +174,23 @@ const DashboardHome: React.FC = () => {
               <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Real-time system telemetry</p>
             </div>
             <div className="flex bg-slate-50 dark:bg-white/5 border border-border p-1">
-              <button className="px-4 py-1.5 text-[9px] font-black uppercase tracking-widest bg-white dark:bg-slate-800 border border-border shadow-sm">Wkly</button>
-              <button className="px-4 py-1.5 text-[9px] font-black uppercase tracking-widest text-slate-500 hover:text-secondary">Mnth</button>
+              <button 
+                onClick={() => setChartView('Wkly')}
+                className={`px-4 py-1.5 text-[9px] font-black uppercase tracking-widest transition-all ${chartView === 'Wkly' ? 'bg-white dark:bg-slate-800 border border-border shadow-sm' : 'text-slate-500 hover:text-secondary'}`}
+              >
+                Wkly
+              </button>
+              <button 
+                onClick={() => setChartView('Mnth')}
+                className={`px-4 py-1.5 text-[9px] font-black uppercase tracking-widest transition-all ${chartView === 'Mnth' ? 'bg-white dark:bg-slate-800 border border-border shadow-sm' : 'text-slate-500 hover:text-secondary'}`}
+              >
+                Mnth
+              </button>
             </div>
           </div>
           <div className="h-[300px] w-full">
             <ResponsiveContainer width="100%" height="100%">
-              <AreaChart data={chartData}>
+              <AreaChart data={chartView === 'Wkly' ? weeklyData : monthlyData}>
                 <defs>
                    <linearGradient id="colorVal" x1="0" y1="0" x2="0" y2="1">
                       <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.1}/>
@@ -190,7 +250,12 @@ const DashboardHome: React.FC = () => {
       <div className="bg-card border border-border p-8">
          <div className="flex items-center justify-between mb-8 border-b border-border pb-4">
             <h3 className="text-sm font-black text-secondary dark:text-white uppercase tracking-widest">Recent System Entries</h3>
-            <button className="text-[10px] font-black text-primary uppercase tracking-widest hover:underline">Full Manifest</button>
+            <button 
+              onClick={handleFullManifest}
+              className="text-[10px] font-black text-primary uppercase tracking-widest hover:underline active:scale-95 transition-all"
+            >
+              Full Manifest
+            </button>
          </div>
          <div className="space-y-1">
             {[
@@ -198,12 +263,12 @@ const DashboardHome: React.FC = () => {
               { id: 'SEC-88', desc: 'Protocol Sync: MFA enforced across Admin nodes.', time: '05h' },
               { id: 'PRT-11', desc: 'Partner Sync: Terra Logistics onboarded.', time: '24h' },
             ].map((item, i) => (
-              <div key={i} className="flex items-center justify-between p-4 hover:bg-slate-50 dark:hover:bg-white/5 transition-all border border-transparent hover:border-border cursor-default group">
+              <div key={i} className="flex items-center justify-between p-4 hover:bg-slate-100 dark:hover:bg-white/[0.05] transition-all border border-transparent hover:border-border cursor-default group">
                 <div className="flex items-center space-x-6">
-                  <span className="text-[10px] font-black text-primary bg-primary/5 px-2 py-0.5 border border-primary/10">{item.id}</span>
-                  <p className="text-[11px] font-medium text-slate-500 dark:text-slate-400 group-hover:text-secondary dark:group-hover:text-white transition-colors uppercase tracking-tight">{item.desc}</p>
+                  <span className="text-[10px] font-black text-primary bg-primary/10 dark:bg-primary/20 px-2 py-0.5 border border-primary/20">{item.id}</span>
+                  <p className="text-[11px] font-bold text-slate-600 dark:text-slate-300 group-hover:text-secondary dark:group-hover:text-white transition-colors uppercase tracking-tight">{item.desc}</p>
                 </div>
-                <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest">{item.time}</span>
+                <span className="text-[9px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest">{item.time}</span>
               </div>
             ))}
          </div>

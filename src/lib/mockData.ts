@@ -103,12 +103,12 @@ export interface NotificationItem {
 }
 
 const fleetImages = [
-  "https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?w=600&h=400&fit=crop", // Heavy Truck
-  "https://images.unsplash.com/photo-1591768793355-74d04bb6608f?w=600&h=400&fit=crop", // Delivery Truck
-  "https://images.unsplash.com/photo-1549194388-f61be84a6e9e?w=600&h=400&fit=crop", // Delivery Van
-  "https://images.unsplash.com/photo-1519003722824-194d4455a60c?w=600&h=400&fit=crop", // Refrigerated Van
-  "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=600&h=400&fit=crop", // Tour Bus
-  "https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=600&h=400&fit=crop", // Electric SUV
+  "/assets/fleet/heavy-truck.png", // Heavy Truck
+  "/assets/fleet/delivery-truck.png", // Delivery Truck
+  "/assets/fleet/delivery-van.png", // Delivery Van
+  "/assets/fleet/refrigerated-van.png", // Refrigerated Van
+  "/assets/fleet/tour-bus.png", // Tour Bus
+  "/assets/fleet/electric-suv.png", // Electric SUV
 ];
 
 // Industrial/Technical assets for "Identity Nodes" (replacing human avatars)

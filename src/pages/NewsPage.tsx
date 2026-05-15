@@ -2,6 +2,9 @@ import React from 'react';
 import PageSectionLayout from '../components/PageSectionLayout';
 import { Newspaper, Globe, TrendingUp, Zap, Calendar, ArrowRight, Mail, Download, Share2, Phone } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
+import { toast } from 'react-hot-toast';
+
 
 const NewsPage: React.FC = () => {
   const articles = [
@@ -38,7 +41,7 @@ const NewsPage: React.FC = () => {
         title: "Never miss an update",
         subtitle: "Subscribe to our weekly digest and stay informed on the future of logistics.",
         buttonText: "Subscribe Now",
-        link: "#"
+        link: "/trial"
       }}
     >
       {/* 1. Latest Articles Grid */}
@@ -46,7 +49,8 @@ const NewsPage: React.FC = () => {
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-4">
             <h2 className="text-3xl sm:text-5xl font-black uppercase tracking-tighter">Latest Dispatch</h2>
-            <div className="text-xs font-black uppercase tracking-widest text-primary border-b border-primary pb-1 cursor-pointer hover:text-secondary hover:border-secondary transition-colors">View All News</div>
+            <Link to="/news" className="text-xs font-black uppercase tracking-widest text-primary border-b border-primary pb-1 cursor-pointer hover:text-secondary hover:border-secondary transition-colors">View All News</Link>
+
           </div>
           
           <div className="grid md:grid-cols-3 gap-8">
@@ -70,9 +74,10 @@ const NewsPage: React.FC = () => {
                     <Calendar size={12} /> {art.date}
                   </div>
                   <h3 className="text-xl font-black uppercase tracking-tight mb-6 group-hover:text-primary transition-colors">{art.title}</h3>
-                  <div className="flex items-center gap-2 text-xs font-black uppercase tracking-widest text-secondary dark:text-white cursor-pointer">
+                  <Link to={`/news/${i}`} className="flex items-center gap-2 text-xs font-black uppercase tracking-widest text-secondary dark:text-white cursor-pointer hover:text-primary transition-colors">
                     Read Article <ArrowRight size={14} />
-                  </div>
+                  </Link>
+
                 </div>
               </motion.div>
             ))}
@@ -96,9 +101,13 @@ const NewsPage: React.FC = () => {
               placeholder="ENTER YOUR CORPORATE EMAIL" 
               className="flex-grow bg-white/5 border border-white/10 px-6 py-4 text-sm font-bold uppercase tracking-widest focus:outline-none focus:border-primary transition-colors"
             />
-            <button className="bg-primary text-white px-10 py-4 font-black uppercase tracking-widest hover:bg-white hover:text-primary transition-all">
+            <button 
+              onClick={() => toast.success("Node successfully registered for Dispatch updates.")}
+              className="bg-primary text-white px-10 py-4 font-black uppercase tracking-widest hover:bg-white hover:text-primary transition-all"
+            >
               Join Dispatch
             </button>
+
           </div>
         </div>
       </section>
@@ -121,10 +130,15 @@ const NewsPage: React.FC = () => {
                   "AI in Route Optimization: Efficiency Benchmarks",
                   "Cybersecurity in Telematics Infrastructure"
                 ].map((report, i) => (
-                  <div key={i} className="flex items-center justify-between p-6 border border-border bg-card group hover:border-primary cursor-pointer transition-all">
+                  <div 
+                    key={i} 
+                    onClick={() => toast.success("Manifest download initiated.")}
+                    className="flex items-center justify-between p-6 border border-border bg-card group hover:border-primary cursor-pointer transition-all"
+                  >
                     <span className="text-sm font-black uppercase tracking-tight">{report}</span>
                     <Download size={18} className="text-slate-400 group-hover:text-primary transition-colors" />
                   </div>
+
                 ))}
               </div>
             </motion.div>
@@ -154,10 +168,16 @@ const NewsPage: React.FC = () => {
                 <div className="absolute inset-0 bg-secondary/80 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity z-10 p-4 text-center">
                   <p className="text-[10px] text-white font-bold uppercase tracking-wider">Follow @MountainFleet for daily updates.</p>
                 </div>
-                <img src={`https://images.unsplash.com/photo-${["1519003722824-192d99a24bb7", "1580674285054-bed31e145f59", "1494412519320-aa613dfb7738", "1512413316925-fd30921a2832"][i-1]}?auto=format&fit=crop&q=80&w=400`} alt="Social" className="w-full h-full object-cover grayscale" />
+                <img 
+                  src={`https://images.unsplash.com/photo-${["1586528116311-ad8dd3c8310d", "1506784983877-45594efa4cbe", "1519003722824-192d99a24bb7", "1521737604893-d14cc237f11d"][i-1]}?auto=format&fit=crop&q=80&w=400`} 
+                  alt="Social" 
+                  className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" 
+                  onError={(e) => (e.currentTarget.src = "https://images.unsplash.com/photo-1578575437130-527eed3abbec?auto=format&fit=crop&q=80&w=400")}
+                />
               </div>
             ))}
           </div>
+
         </div>
       </section>
 
@@ -170,10 +190,16 @@ const NewsPage: React.FC = () => {
               <p className="text-xs text-slate-500 font-medium max-w-md">Need assets or an interview with our leadership team? Access our press kit or contact our media office.</p>
             </div>
             <div className="flex gap-4">
-              <button className="flex items-center gap-3 border border-border px-6 py-3 text-xs font-black uppercase tracking-widest hover:bg-secondary hover:text-white transition-all">
+              <button 
+                onClick={() => toast.success("Media Assets Manifest downloading...")}
+                className="flex items-center gap-3 border border-border px-6 py-3 text-xs font-black uppercase tracking-widest hover:bg-secondary hover:text-white transition-all"
+              >
                 <Download size={16} /> Press Kit
               </button>
-              <button className="flex items-center gap-3 bg-primary text-white px-6 py-3 text-xs font-black uppercase tracking-widest hover:bg-secondary transition-all">
+              <button 
+                onClick={() => toast.success("Connecting to Media Relations Hub...")}
+                className="flex items-center gap-3 bg-primary text-white px-6 py-3 text-xs font-black uppercase tracking-widest hover:bg-secondary transition-all"
+              >
                 <Phone size={16} /> Media Contact
               </button>
             </div>

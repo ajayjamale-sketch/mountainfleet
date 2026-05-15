@@ -2,6 +2,7 @@ import React from 'react';
 import PageSectionLayout from '../components/PageSectionLayout';
 import { Briefcase, Heart, Globe, Zap, ArrowRight, UserPlus, Monitor, Coffee, Smile, ChevronRight } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { toast } from 'react-hot-toast';
 
 const CareersPage: React.FC = () => {
   return (
@@ -32,7 +33,7 @@ const CareersPage: React.FC = () => {
         title: "Ready to start your journey?",
         subtitle: "Check out our open positions and find your place at MountainFleet.",
         buttonText: "View Openings",
-        link: "#"
+        link: "/careers" // Point back to self or a specific careers hub
       }}
     >
       {/* 1. Open Roles Grid */}
@@ -40,7 +41,12 @@ const CareersPage: React.FC = () => {
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-8">
             <h2 className="text-3xl sm:text-5xl font-black uppercase tracking-tighter leading-none">Current<br />Openings</h2>
-            <div className="text-xs font-black uppercase tracking-widest text-primary border-b-2 border-primary pb-2 cursor-pointer">Filter by Department</div>
+            <div 
+              onClick={() => toast.info("Filter nodes synchronized.")}
+              className="text-xs font-black uppercase tracking-widest text-primary border-b-2 border-primary pb-2 cursor-pointer hover:text-secondary transition-colors"
+            >
+              Filter by Department
+            </div>
           </div>
           
           <div className="space-y-4">
@@ -56,6 +62,7 @@ const CareersPage: React.FC = () => {
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1 }}
+                onClick={() => toast.success("Application gateway initialized for " + job.role)}
                 className="group p-8 border border-border bg-card flex flex-col sm:flex-row justify-between items-center hover:border-primary transition-all cursor-pointer"
               >
                 <div className="text-center sm:text-left mb-6 sm:mb-0">
@@ -172,7 +179,10 @@ const CareersPage: React.FC = () => {
         <div className="max-w-4xl mx-auto px-6 text-center relative z-10">
           <h2 className="text-3xl sm:text-6xl font-black uppercase tracking-tighter mb-8">Built by<br />Everyone.</h2>
           <p className="text-white/40 text-lg font-medium leading-relaxed mb-12">We are committed to building a workforce that represents the global community we serve. Diversity isn't a metric at MountainFleet; it's our engine for innovation.</p>
-          <div className="inline-flex items-center gap-2 text-primary font-black uppercase tracking-widest cursor-pointer hover:text-white transition-colors">
+          <div 
+            onClick={() => toast.success("D&I Manifest downloading...")}
+            className="inline-flex items-center gap-2 text-primary font-black uppercase tracking-widest cursor-pointer hover:text-white transition-colors"
+          >
             Our D&I Report 2026 <ChevronRight size={20} />
           </div>
         </div>
@@ -182,3 +192,4 @@ const CareersPage: React.FC = () => {
 };
 
 export default CareersPage;
+

@@ -2,6 +2,8 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
+
 
 interface PageSectionLayoutProps {
   banner: { title: string; subtitle: string; bgImage?: string };
@@ -12,6 +14,15 @@ interface PageSectionLayoutProps {
 }
 
 const PageSectionLayout: React.FC<PageSectionLayoutProps> = ({ banner, main, features, cta, children }) => {
+  const { user } = useAuth();
+  
+  // If user is logged in and the CTA link is /register or /contact (for "Get Started" style CTAs), 
+  // redirect to dashboard instead.
+  const isAuthLink = cta.link === '/register' || (cta.link === '/contact' && cta.buttonText.toLowerCase().includes('start'));
+  const finalLink = (user && isAuthLink) ? '/dashboard' : cta.link;
+  const finalButtonText = (user && isAuthLink) ? 'Go to Dashboard' : cta.buttonText;
+
+
   return (
     <div className="bg-background text-foreground transition-colors duration-300 technical-grid">
       {/* 1. Banner Section */}
@@ -58,7 +69,12 @@ const PageSectionLayout: React.FC<PageSectionLayoutProps> = ({ banner, main, fea
               >
                 <div className="relative z-10 border border-border bg-background overflow-hidden shadow-xl">
                   {/* Removed grayscale filter to show original color */}
-                  <img src={main.image} alt={main.title} className="w-full h-auto transition-all duration-700 object-cover min-h-[300px]" />
+                  <img 
+                    src={main.image} 
+                    alt={main.title} 
+                    className="w-full h-auto transition-all duration-700 object-cover min-h-[300px]" 
+                    onError={(e) => (e.currentTarget.src = "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&q=80&w=1200")}
+                  />
                 </div>
                 <div className="absolute -bottom-4 -right-4 w-full h-full border border-border bg-slate-50 dark:bg-white/5 -z-10" />
               </motion.div>
@@ -103,12 +119,13 @@ const PageSectionLayout: React.FC<PageSectionLayoutProps> = ({ banner, main, fea
               <h2 className="text-3xl sm:text-4xl lg:text-6xl font-black text-white mb-8 tracking-tighter uppercase leading-none">{cta.title}</h2>
               <p className="text-base sm:text-lg text-white/40 mb-10 lg:mb-12 max-w-2xl mx-auto font-medium">{cta.subtitle}</p>
               <Link 
-                to={cta.link} 
+                to={finalLink} 
                 className="inline-flex items-center space-x-3 bg-primary text-white px-10 py-5 font-bold text-sm sm:text-base uppercase tracking-widest hover:bg-white hover:text-primary transition-all active:translate-y-[1px] shadow-xl shadow-primary/20"
               >
-                <span>{cta.buttonText}</span>
+                <span>{finalButtonText}</span>
                 <ArrowRight size={20} />
               </Link>
+
             </div>
           </div>
         </div>

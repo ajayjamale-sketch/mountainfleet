@@ -7,6 +7,8 @@ const STORAGE_KEYS = {
   TRIPS: 'mf_trips',
   BOOKINGS: 'mf_bookings',
   AUTH: 'mf_auth_session',
+  NEWSLETTER: 'mf_newsletter_subs',
+  NOTIFICATIONS: 'mf_notifications',
 };
 
 export const storageService = {

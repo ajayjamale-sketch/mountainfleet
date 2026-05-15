@@ -5,6 +5,7 @@ import {
   XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, Cell
 } from 'recharts';
 import { useTheme } from '../../context/ThemeContext';
+import { toast } from 'react-hot-toast';
 
 const ReportsPage: React.FC = () => {
   const { theme } = useTheme();
@@ -18,11 +19,25 @@ const ReportsPage: React.FC = () => {
   ];
 
   const reports = [
-    { title: 'Global Fleet Utilization', date: 'MAY 2024', type: 'OPERATIONAL', size: '2.4 MB', icon: Zap },
-    { title: 'Revenue Hub Sync', date: 'Q2 2024', type: 'FINANCIAL', size: '1.8 MB', icon: TrendingUp },
-    { title: 'Personnel Integrity Audit', date: 'MAY 2024', type: 'PERFORMANCE', size: '3.1 MB', icon: Shield },
-    { title: 'Efficiency Delta Report', date: 'APR 2024', type: 'SYSTEM', size: '0.9 MB', icon: FileCheck },
+    { id: 'R-01', title: 'Global Fleet Utilization', date: 'MAY 2024', type: 'OPERATIONAL', size: '2.4 MB', icon: Zap },
+    { id: 'R-02', title: 'Revenue Hub Sync', date: 'Q2 2024', type: 'FINANCIAL', size: '1.8 MB', icon: TrendingUp },
+    { id: 'R-03', title: 'Personnel Integrity Audit', date: 'MAY 2024', type: 'PERFORMANCE', size: '3.1 MB', icon: Shield },
+    { id: 'R-04', title: 'Efficiency Delta Report', date: 'APR 2024', type: 'SYSTEM', size: '0.9 MB', icon: FileCheck },
   ];
+
+  const handleDownload = (report: any) => {
+    const csvContent = `ID,Title,Type,Size,Date\n${report.id},${report.title},${report.type},${report.size},${report.date}`;
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.setAttribute("href", url);
+    link.setAttribute("download", `${report.title.toLowerCase().replace(/ /g, '_')}_manifest.csv`);
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    toast.success(`DOWNLOADING: ${report.title.toUpperCase()}`);
+  };
 
   return (
     <div className="space-y-8 animate-in fade-in duration-700 pb-20">
@@ -41,7 +56,10 @@ const ReportsPage: React.FC = () => {
               className="bg-card border border-border pl-12 pr-6 py-3.5 text-[10px] uppercase tracking-widest outline-none focus:border-primary transition-all font-black w-64" 
             />
           </div>
-          <button className="bg-primary hover:bg-primary/90 text-white px-8 py-3.5 font-bold text-[10px] uppercase tracking-widest transition-all active:translate-y-[1px] flex items-center justify-center space-x-3 shadow-lg shadow-primary/20">
+          <button 
+            onClick={() => toast.success('AUDIT PROTOCOL SCHEDULED // SYNCING WITH HQ')}
+            className="bg-primary hover:bg-primary/90 text-white px-8 py-3.5 font-bold text-[10px] uppercase tracking-widest transition-all active:translate-y-[1px] flex items-center justify-center space-x-3 shadow-lg shadow-primary/20"
+          >
             <Calendar size={16} />
             <span>Schedule Audit</span>
           </button>
@@ -141,10 +159,13 @@ const ReportsPage: React.FC = () => {
                     </div>
                     <div className="min-w-0">
                       <p className="text-[11px] font-black text-white group-hover:text-accent transition-colors truncate">{report.title}</p>
-                      <p className="text-[8px] text-white/30 font-black uppercase tracking-widest mt-1">{report.type} // {report.size}</p>
+                      <p className="text-[8px] text-white/60 font-black uppercase tracking-widest mt-1.5">{report.type} // {report.size}</p>
                     </div>
                   </div>
-                  <button className="p-2.5 text-white/20 hover:text-white hover:bg-primary transition-all">
+                  <button 
+                    onClick={() => handleDownload(report)}
+                    className="p-2.5 text-white/20 hover:text-white hover:bg-primary transition-all"
+                  >
                     <Download size={16} />
                   </button>
                 </motion.div>
@@ -152,7 +173,13 @@ const ReportsPage: React.FC = () => {
            </div>
            
            <div className="mt-8 relative z-10">
-              <button className="w-full py-4 bg-accent hover:bg-accent/90 text-white font-black text-[10px] uppercase tracking-widest transition-all shadow-xl shadow-accent/20 active:translate-y-[1px]">
+              <button 
+                onClick={() => {
+                  toast.success('PROTOCOL AUDIT INITIALIZED // CALCULATING DELTA');
+                  handleDownload({ id: 'FULL-AUDIT', title: 'Full Protocol Audit', date: 'LIVE', type: 'SYSTEM', size: '12.4 MB' });
+                }}
+                className="w-full py-4 bg-accent hover:bg-accent/90 text-white font-black text-[10px] uppercase tracking-widest transition-all shadow-xl shadow-accent/20 active:translate-y-[1px]"
+              >
                 Initialize Protocol Audit
               </button>
            </div>
