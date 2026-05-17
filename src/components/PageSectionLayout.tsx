@@ -16,11 +16,11 @@ interface PageSectionLayoutProps {
 const PageSectionLayout: React.FC<PageSectionLayoutProps> = ({ banner, main, features, cta, children }) => {
   const { user } = useAuth();
   
-  // If user is logged in and the CTA link is /register or /contact (for "Get Started" style CTAs), 
-  // redirect to dashboard instead.
-  const isAuthLink = cta.link === '/register' || (cta.link === '/contact' && cta.buttonText.toLowerCase().includes('start'));
-  const finalLink = (user && isAuthLink) ? '/dashboard' : cta.link;
-  const finalButtonText = (user && isAuthLink) ? 'Go to Dashboard' : cta.buttonText;
+  // If user is logged in and the CTA link is /register, /trial, or /contact (for "Get Started" style CTAs), 
+  // redirect to trial page instead.
+  const isAuthLink = cta.link === '/register' || cta.link === '/trial' || (cta.link === '/contact' && cta.buttonText.toLowerCase().includes('start'));
+  const finalLink = (user && isAuthLink) ? '/trial' : cta.link;
+  const finalButtonText = (user && isAuthLink) ? 'Initialize Trial' : cta.buttonText;
 
 
   return (

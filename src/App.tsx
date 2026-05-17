@@ -46,6 +46,7 @@ const FleetMetrics = lazy(() => import('./pages/FleetMetrics'));
 const TrialRequest = lazy(() => import('./pages/TrialRequest'));
 const AddonDetails = lazy(() => import('./pages/AddonDetails'));
 const NewsDetail = lazy(() => import('./pages/NewsDetail'));
+const SecurityDocsPage = lazy(() => import('./pages/SecurityDocsPage'));
 
 
 const LoadingFallback = () => (
@@ -86,6 +87,7 @@ const App: React.FC = () => {
                 <Route path="cookies" element={<CookiePolicyPage />} />
                 <Route path="sla" element={<SLAPage />} />
                 <Route path="sustainability" element={<SustainabilityPage />} />
+                <Route path="security-docs" element={<SecurityDocsPage />} />
               </Route>
 
               {/* Auth Routes */}

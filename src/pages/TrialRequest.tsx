@@ -6,10 +6,12 @@ import {
   Building2, Users, Globe, Phone, Mail
 } from 'lucide-react';
 import { toast } from 'react-hot-toast';
+import { useAuth } from '../context/AuthContext';
 
 export default function TrialRequest() {
   const [submitted, setSubmitted] = React.useState(false);
   const navigate = useNavigate();
+  const { user } = useAuth();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();

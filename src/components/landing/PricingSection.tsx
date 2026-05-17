@@ -79,9 +79,9 @@ export function PricingSection() {
                   </li>
                 ))}
               </ul>
-              <Link to={user ? "/dashboard" : (p.cta.toLowerCase().includes("sales") ? "/contact" : "/trial")} className="block mt-7">
+              <Link to={user ? "/trial" : (p.cta.toLowerCase().includes("sales") ? "/contact" : "/register")} className="block mt-7">
                 <Button variant={p.highlight ? "accent" : "primary"} className="w-full">
-                  {user ? (p.cta.toLowerCase().includes("sales") ? "Contact HQ" : "Go to Dashboard") : p.cta}
+                  {user ? (p.cta.toLowerCase().includes("sales") ? "Contact HQ" : "Initialize Trial") : (p.cta.toLowerCase().includes("sales") ? p.cta : "Join Now")}
                 </Button>
               </Link>
 

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, Ship, LogOut, LayoutDashboard, ChevronRight, User, Bell, Settings } from 'lucide-react';
+import { Menu, X, Ship, LogOut, LayoutDashboard, ChevronRight, User, Bell, Settings, Handshake, Truck, DollarSign, Newspaper } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { cn } from '../utils/cn';
 import ThemeToggle from './ThemeToggle';
@@ -19,10 +19,10 @@ const Navbar: React.FC = () => {
   }, []);
 
   const navLinks = [
-    { name: 'Services', href: '/services' },
-    { name: 'Fleet', href: '/fleet' },
-    { name: 'Pricing', href: '/pricing' },
-    { name: 'News', href: '/news' },
+    { name: 'Services', href: '/services', icon: Handshake },
+    { name: 'Fleet', href: '/fleet', icon: Truck },
+    { name: 'Pricing', href: '/pricing', icon: DollarSign },
+    { name: 'News', href: '/news', icon: Newspaper },
   ];
 
   return (
@@ -59,7 +59,10 @@ const Navbar: React.FC = () => {
                   location.pathname === link.href ? 'text-primary' : 'text-slate-500 dark:text-slate-400'
                 )}
               >
-                <span>{link.name}</span>
+                <div className="flex items-center space-x-2">
+                  {link.icon && <link.icon size={12} className="text-primary/70" />}
+                  <span>{link.name}</span>
+                </div>
                 {location.pathname === link.href && (
                    <span className="absolute -bottom-1 left-0 w-full h-0.5 bg-primary" />
                 )}
@@ -133,7 +136,10 @@ const Navbar: React.FC = () => {
                   onClick={() => setIsOpen(false)}
                   className="flex items-center justify-between text-base font-black text-secondary dark:text-white hover:text-primary transition-colors group uppercase tracking-tighter"
                 >
-                  <span>{link.name}</span>
+                  <div className="flex items-center space-x-3">
+                    {link.icon && <link.icon size={18} className="text-primary" />}
+                    <span>{link.name}</span>
+                  </div>
                   <ChevronRight size={16} className="opacity-40 group-hover:opacity-100 group-hover:translate-x-1 transition-all text-primary" />
                 </Link>
               ))}

@@ -1,9 +1,18 @@
 import React from 'react';
 import PageSectionLayout from '../components/PageSectionLayout';
-import { Leaf, Zap, Globe, BarChart3, Download, Users, ShieldCheck, ArrowRight } from 'lucide-react';
+import { Leaf, Zap, Globe, BarChart3, Download, Users, ShieldCheck, ArrowRight, Heart, Sun } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { toast } from 'react-hot-toast';
 
 const SustainabilityPage: React.FC = () => {
+  const handleReportDownload = (title: string) => {
+    toast.success(`${title} download protocol initiated.`);
+  };
+
+  const handlePartnerConnect = (name: string) => {
+    toast.success(`Connecting to ${name} sustainability node...`);
+  };
+
   return (
     <PageSectionLayout
       banner={{
@@ -118,7 +127,7 @@ const SustainabilityPage: React.FC = () => {
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <div className="order-2 lg:order-1">
-              <img src="https://images.unsplash.com/photo-1516937941344-00b4e0337589?auto=format&fit=crop&q=80&w=1000" alt="Community" className="border border-border grayscale" />
+              <img src="https://images.unsplash.com/photo-1516937941344-00b4e0337589?auto=format&fit=crop&q=80&w=1000" alt="Community" className="border border-border shadow-xl" />
             </div>
             <div className="order-1 lg:order-2">
               <div className="inline-flex items-center gap-2 px-3 py-1 bg-primary/10 text-primary border border-primary/20 text-[10px] font-black uppercase tracking-widest mb-6">
@@ -150,12 +159,16 @@ const SustainabilityPage: React.FC = () => {
               { title: "2025 Sustainability Report", type: "PDF · 12MB" },
               { title: "ESG Governance Framework", type: "PDF · 4MB" }
             ].map((report, i) => (
-              <div key={i} className="group p-10 border border-border bg-background flex flex-col items-center hover:border-primary transition-all cursor-pointer">
+              <div 
+                key={i} 
+                onClick={() => handleReportDownload(report.title)}
+                className="group p-10 border border-border bg-background flex flex-col items-center hover:border-primary transition-all cursor-pointer shadow-sm hover:shadow-md"
+              >
                 <Download size={40} className="text-slate-400 group-hover:text-primary transition-colors mb-6" />
-                <h3 className="text-lg font-black uppercase tracking-tight mb-2">{report.title}</h3>
+                <h3 className="text-lg font-black uppercase tracking-tight mb-2 group-hover:text-primary transition-colors">{report.title}</h3>
                 <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-8">{report.type}</p>
                 <div className="text-xs font-black uppercase tracking-widest text-primary flex items-center gap-2">
-                  Download Report <ArrowRight size={14} />
+                  Download Report <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
                 </div>
               </div>
             ))}
@@ -174,9 +187,23 @@ const SustainabilityPage: React.FC = () => {
                 <p className="text-xs text-slate-500 font-medium">Compliance with International ISO 14001 Standards.</p>
               </div>
             </div>
-            <div className="flex flex-wrap justify-center gap-8 opacity-50 grayscale">
-              {[1, 2, 3, 4].map((i) => (
-                <div key={i} className="h-8 w-24 bg-card border border-border flex items-center justify-center text-[8px] font-black uppercase tracking-widest text-slate-400">ECO_PARTNER_{i}</div>
+            <div className="flex flex-wrap justify-center gap-6">
+              {[
+                { name: "ECODRIVE", icon: Zap },
+                { name: "SOLARGRID", icon: Sun },
+                { name: "GREENPATH", icon: Leaf },
+                { name: "NATUREX", icon: Globe }
+              ].map((partner, i) => (
+                <motion.div 
+                  key={i} 
+                  onClick={() => handlePartnerConnect(partner.name)}
+                  initial={{ opacity: 0.5 }}
+                  whileHover={{ opacity: 1, scale: 1.05 }}
+                  className="h-12 flex items-center gap-3 px-5 bg-card border border-border cursor-pointer hover:border-primary transition-all group shadow-sm hover:shadow-md"
+                >
+                  <partner.icon size={14} className="text-slate-400 group-hover:text-primary transition-colors" />
+                  <div className="text-[9px] font-black uppercase tracking-widest text-slate-400 group-hover:text-secondary dark:group-hover:text-white transition-colors">{partner.name}</div>
+                </motion.div>
               ))}
             </div>
           </div>

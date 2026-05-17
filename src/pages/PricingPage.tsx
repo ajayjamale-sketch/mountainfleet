@@ -35,7 +35,7 @@ const PricingPage: React.FC = () => {
         title: "Start your free trial",
         subtitle: "Experience the full power of MountainFleet for 14 days, no credit card required.",
         buttonText: "Register Now",
-        link: "/trial"
+        link: "/register"
       }}
 
     >

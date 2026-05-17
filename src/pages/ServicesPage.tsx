@@ -1,6 +1,6 @@
 import React from 'react';
 import PageSectionLayout from '../components/PageSectionLayout';
-import { Zap, Shield, BarChart3, Search, Settings, Rocket, Globe, Users } from 'lucide-react';
+import { Zap, Shield, BarChart3, Search, Settings, Rocket, Globe, Users, Box, Anchor, Ship } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Stats } from '../components/landing/Stats';
 import { Testimonials } from '../components/landing/Testimonials';
@@ -113,7 +113,7 @@ const ServicesPage: React.FC = () => {
               viewport={{ once: true }}
               className="relative aspect-video bg-background border border-border overflow-hidden"
             >
-              <img src="https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?auto=format&fit=crop&q=80&w=1000" alt="Global Network" className="w-full h-full object-cover opacity-50 grayscale hover:grayscale-0 transition-all duration-700" />
+              <img src="https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?auto=format&fit=crop&q=80&w=1000" alt="Global Network" className="w-full h-full object-cover opacity-80 hover:scale-105 transition-all duration-700" />
               <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                 <Globe className="text-primary animate-pulse" size={64} />
               </div>
@@ -129,11 +129,27 @@ const ServicesPage: React.FC = () => {
       <section className="py-16 sm:py-20 bg-background border-b border-border">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <p className="text-center text-xs uppercase font-black tracking-[0.3em] text-slate-400 mb-12">Trusted by Global Leaders</p>
-          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-8 grayscale opacity-50">
-            {[1, 2, 3, 4, 5, 6].map((i) => (
-              <div key={i} className="h-12 flex items-center justify-center border border-border bg-card p-4 hover:border-primary transition-colors">
-                <div className="text-sm font-black tracking-tighter uppercase italic text-slate-500">PARTNER_{i}</div>
-              </div>
+          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-8">
+            {[
+              { name: "LOGICORP", icon: Box },
+              { name: "OCEANIC", icon: Anchor },
+              { name: "FASTPATH", icon: Zap },
+              { name: "FLUXPORT", icon: Ship },
+              { name: "TERRA", icon: Globe },
+              { name: "APEX", icon: Rocket }
+            ].map((partner, i) => (
+              <motion.div 
+                key={i} 
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 0.5 }}
+                whileHover={{ opacity: 1, scale: 1.05 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1 }}
+                className="h-16 flex flex-col items-center justify-center border border-border bg-card p-4 hover:border-primary transition-all cursor-pointer group"
+              >
+                <partner.icon size={18} className="text-slate-400 group-hover:text-primary mb-2 transition-colors" />
+                <div className="text-[10px] font-black tracking-tighter uppercase italic text-slate-500 group-hover:text-secondary dark:group-hover:text-white transition-colors">{partner.name}</div>
+              </motion.div>
             ))}
           </div>
         </div>

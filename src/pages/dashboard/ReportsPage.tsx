@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { FileText, Download, TrendingUp, BarChart3, PieChart as PieIcon, Calendar, ArrowUpRight, Search, Zap, Shield, FileCheck, Activity } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { 
@@ -9,14 +9,18 @@ import { toast } from 'react-hot-toast';
 
 const ReportsPage: React.FC = () => {
   const { theme } = useTheme();
+  const [timeRange, setTimeRange] = React.useState<'30D' | '90D'>('30D');
 
-  const data = [
-    { name: 'FUEL OPS', value: 4000 },
-    { name: 'PERSONNEL', value: 3000 },
-    { name: 'FLEET MAINT.', value: 2000 },
-    { name: 'ORCHESTRATION', value: 2780 },
-    { name: 'INTELLIGENCE', value: 1890 },
-  ];
+  const data = useMemo(() => {
+    const multiplier = timeRange === '90D' ? 2.5 : 1;
+    return [
+      { name: 'FUEL OPS', value: 4000 * multiplier },
+      { name: 'PERSONNEL', value: 3000 * multiplier },
+      { name: 'FLEET MAINT.', value: 2000 * multiplier },
+      { name: 'ORCHESTRATION', value: 2780 * multiplier },
+      { name: 'INTELLIGENCE', value: 1890 * multiplier },
+    ];
+  }, [timeRange]);
 
   const reports = [
     { id: 'R-01', title: 'Global Fleet Utilization', date: 'MAY 2024', type: 'OPERATIONAL', size: '2.4 MB', icon: Zap },
@@ -102,8 +106,18 @@ const ReportsPage: React.FC = () => {
               <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-1">Cross-node operational telemetry</p>
             </div>
             <div className="flex bg-slate-50 dark:bg-white/5 border border-border p-1">
-              <button className="px-5 py-2 text-[9px] font-black uppercase tracking-widest bg-white dark:bg-slate-800 border border-border shadow-sm">30D</button>
-              <button className="px-5 py-2 text-[9px] font-black uppercase tracking-widest text-slate-500 hover:text-secondary">90D</button>
+              <button 
+                onClick={() => setTimeRange('30D')}
+                className={`px-5 py-2 text-[9px] font-black uppercase tracking-widest transition-all ${timeRange === '30D' ? 'bg-white dark:bg-slate-800 border border-border shadow-sm text-primary' : 'text-slate-500 hover:text-secondary'}`}
+              >
+                30D
+              </button>
+              <button 
+                onClick={() => setTimeRange('90D')}
+                className={`px-5 py-2 text-[9px] font-black uppercase tracking-widest transition-all ${timeRange === '90D' ? 'bg-white dark:bg-slate-800 border border-border shadow-sm text-primary' : 'text-slate-500 hover:text-secondary'}`}
+              >
+                90D
+              </button>
             </div>
           </div>
           <div className="h-[350px] w-full">

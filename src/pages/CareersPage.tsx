@@ -1,10 +1,32 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PageSectionLayout from '../components/PageSectionLayout';
-import { Briefcase, Heart, Globe, Zap, ArrowRight, UserPlus, Monitor, Coffee, Smile, ChevronRight } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { Briefcase, Heart, Globe, Zap, ArrowRight, UserPlus, Monitor, Coffee, Smile, ChevronRight, Filter, Search } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { toast } from 'react-hot-toast';
 
 const CareersPage: React.FC = () => {
+  const [activeDept, setActiveDept] = useState("All");
+  const [activeType, setActiveType] = useState("All");
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
+
+  const departments = ["All", "Engineering", "Design", "Operations", "Sales", "Support"];
+  const jobTypes = ["All", "Full-time", "Contract", "Remote"];
+
+  const jobs = [
+    { id: 1, role: "Senior Frontend Engineer", dept: "Engineering", loc: "Remote / SF", type: "Full-time" },
+    { id: 2, role: "Product Designer (UI/UX)", dept: "Design", loc: "Berlin / Hub", type: "Full-time" },
+    { id: 3, role: "Logistics Ops Manager", dept: "Operations", loc: "Singapore", type: "Full-time" },
+    { id: 4, role: "Fullstack Developer", dept: "Engineering", loc: "Remote", type: "Contract" },
+    { id: 5, role: "Solutions Architect", dept: "Engineering", loc: "New York", type: "Full-time" },
+    { id: 6, role: "Head of Talent", dept: "Support", loc: "Remote", type: "Full-time" }
+  ];
+
+  const filteredJobs = jobs.filter(job => {
+    const matchesDept = activeDept === "All" || job.dept === activeDept;
+    const matchesType = activeType === "All" || job.type === activeType;
+    return matchesDept && matchesType;
+  });
+
   return (
     <PageSectionLayout
       banner={{
@@ -33,52 +55,108 @@ const CareersPage: React.FC = () => {
         title: "Ready to start your journey?",
         subtitle: "Check out our open positions and find your place at MountainFleet.",
         buttonText: "View Openings",
-        link: "/careers" // Point back to self or a specific careers hub
+        link: "/register"
       }}
     >
       {/* 1. Open Roles Grid */}
       <section className="py-16 sm:py-24 border-b border-border bg-background">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-8">
-            <h2 className="text-3xl sm:text-5xl font-black uppercase tracking-tighter leading-none">Current<br />Openings</h2>
-            <div 
-              onClick={() => toast.info("Filter nodes synchronized.")}
-              className="text-xs font-black uppercase tracking-widest text-primary border-b-2 border-primary pb-2 cursor-pointer hover:text-secondary transition-colors"
-            >
-              Filter by Department
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 gap-8">
+            <div>
+              <h2 className="text-3xl sm:text-5xl font-black uppercase tracking-tighter leading-none mb-4">Current<br />Openings</h2>
+              <p className="text-slate-500 font-medium">Join the orchestration layer of global logistics.</p>
+            </div>
+            
+            <div className="flex flex-col sm:flex-row gap-4 w-full md:w-auto">
+              <button 
+                onClick={() => setIsFilterOpen(!isFilterOpen)}
+                className={`flex items-center justify-center gap-3 px-6 py-4 text-[10px] font-black uppercase tracking-widest border transition-all ${isFilterOpen ? 'bg-primary border-primary text-white' : 'bg-card border-border text-slate-500 hover:border-primary'}`}
+              >
+                <Filter size={14} /> Filter Protocols
+              </button>
             </div>
           </div>
+
+          <AnimatePresence>
+            {isFilterOpen && (
+              <motion.div 
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: 'auto', opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                className="overflow-hidden mb-12 border-b border-border pb-12"
+              >
+                <div className="grid md:grid-cols-2 gap-12">
+                  <div>
+                    <h4 className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-6">Department Cluster</h4>
+                    <div className="flex flex-wrap gap-2">
+                      {departments.map(dept => (
+                        <button 
+                          key={dept}
+                          onClick={() => setActiveDept(dept)}
+                          className={`px-4 py-2 text-[10px] font-black uppercase tracking-widest border transition-all ${activeDept === dept ? 'bg-secondary text-white border-secondary' : 'bg-background border-border text-slate-500 hover:border-primary'}`}
+                        >
+                          {dept}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                  <div>
+                    <h4 className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-6">Mission Type</h4>
+                    <div className="flex flex-wrap gap-2">
+                      {jobTypes.map(type => (
+                        <button 
+                          key={type}
+                          onClick={() => setActiveType(type)}
+                          className={`px-4 py-2 text-[10px] font-black uppercase tracking-widest border transition-all ${activeType === type ? 'bg-secondary text-white border-secondary' : 'bg-background border-border text-slate-500 hover:border-primary'}`}
+                        >
+                          {type}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
           
           <div className="space-y-4">
-            {[
-              { role: "Senior Frontend Engineer", dept: "Engineering", loc: "Remote / SF", type: "Full-time" },
-              { role: "Product Designer (UI/UX)", dept: "Design", loc: "Berlin / Hub", type: "Full-time" },
-              { role: "Logistics Ops Manager", dept: "Operations", loc: "Singapore", type: "Full-time" },
-              { role: "Fullstack Developer", dept: "Engineering", loc: "Remote", type: "Contract" }
-            ].map((job, i) => (
+            {filteredJobs.map((job) => (
               <motion.div 
-                key={i}
+                key={job.id}
+                layout
                 initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-                onClick={() => toast.success("Application gateway initialized for " + job.role)}
-                className="group p-8 border border-border bg-card flex flex-col sm:flex-row justify-between items-center hover:border-primary transition-all cursor-pointer"
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                transition={{ duration: 0.3 }}
+                onClick={() => toast.success(`Deployment application initialized for ${job.role}`)}
+                className="group p-8 border border-border bg-card flex flex-col sm:flex-row justify-between items-center hover:border-primary transition-all cursor-pointer shadow-sm hover:shadow-md"
               >
                 <div className="text-center sm:text-left mb-6 sm:mb-0">
                   <h3 className="text-xl font-black uppercase tracking-tight mb-2 group-hover:text-primary transition-colors">{job.role}</h3>
                   <div className="flex flex-wrap justify-center sm:justify-start gap-4">
-                    <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400">{job.dept}</span>
+                    <span className="text-[10px] font-bold uppercase tracking-widest text-primary">{job.dept}</span>
                     <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400">•</span>
                     <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400">{job.loc}</span>
                   </div>
                 </div>
                 <div className="flex items-center gap-6">
-                  <span className="text-[10px] font-black uppercase tracking-[0.2em] px-4 py-2 bg-secondary text-white">{job.type}</span>
+                  <span className="text-[10px] font-black uppercase tracking-[0.2em] px-4 py-2 bg-secondary text-white transition-colors group-hover:bg-primary">{job.type}</span>
                   <ArrowRight size={20} className="text-primary group-hover:translate-x-2 transition-transform" />
                 </div>
               </motion.div>
             ))}
+
+            {filteredJobs.length === 0 && (
+              <div className="py-20 text-center border border-dashed border-border bg-card">
+                <p className="text-slate-500 font-black uppercase tracking-widest text-xs">No open nodes matching your filters.</p>
+                <button 
+                  onClick={() => { setActiveDept("All"); setActiveType("All"); }}
+                  className="mt-4 text-primary font-bold uppercase tracking-widest text-[10px] border-b border-primary"
+                >
+                  Clear All Filters
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </section>
@@ -94,9 +172,14 @@ const CareersPage: React.FC = () => {
               className="relative"
             >
               <div className="aspect-[4/3] bg-background border border-border overflow-hidden">
-                <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=1000" alt="Office Culture" className="w-full h-full object-cover grayscale opacity-50" />
+                <img 
+                  src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=1000" 
+                  alt="Office Culture" 
+                  className="w-full h-full object-cover opacity-80" 
+                  onError={(e) => { e.currentTarget.src = "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&q=80&w=1000"; }}
+                />
               </div>
-              <div className="absolute -bottom-8 -right-8 p-12 bg-primary text-white border border-border hidden sm:block">
+              <div className="absolute -bottom-8 -right-8 p-12 bg-primary text-white border border-border hidden sm:block shadow-2xl">
                 <Monitor size={64} />
               </div>
             </motion.div>
@@ -110,8 +193,8 @@ const CareersPage: React.FC = () => {
                   { icon: Heart, title: "Mental Health", desc: "Access to top-tier coaching and therapy sessions." },
                   { icon: UserPlus, title: "Family Leave", desc: "16 weeks fully paid parental leave for all new parents." }
                 ].map((item, i) => (
-                  <div key={i}>
-                    <div className="text-primary mb-4"><item.icon size={24} /></div>
+                  <div key={i} className="group">
+                    <div className="text-primary mb-4 group-hover:scale-110 transition-transform"><item.icon size={24} /></div>
                     <h3 className="text-lg font-black uppercase tracking-tight mb-2">{item.title}</h3>
                     <p className="text-xs text-slate-500 font-medium leading-relaxed">{item.desc}</p>
                   </div>
@@ -128,10 +211,10 @@ const CareersPage: React.FC = () => {
           <h2 className="text-3xl sm:text-5xl font-black uppercase tracking-tighter mb-16 text-center">Life inside the OS</h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {[
-              "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab",
-              "https://images.unsplash.com/photo-1554469384-e58fac16e23a",
-              "https://images.unsplash.com/photo-1504384308090-c89e12bf9a51",
-              "https://images.unsplash.com/photo-1497366811353-6870744d04b2"
+              "https://images.unsplash.com/photo-1497215728101-856f4ea42174",
+              "https://images.unsplash.com/photo-1542744173-8e7e53415bb0",
+              "https://images.unsplash.com/photo-1497366754035-f200968a6e72",
+              "https://images.unsplash.com/photo-1522071820081-009f0129c71c"
             ].map((img, i) => (
               <motion.div 
                 key={i}
@@ -139,9 +222,14 @@ const CareersPage: React.FC = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1 }}
-                className="aspect-square border border-border bg-card overflow-hidden grayscale hover:grayscale-0 transition-all duration-700 cursor-crosshair"
+                className="aspect-square border border-border bg-card overflow-hidden transition-all duration-700 cursor-crosshair group shadow-sm hover:shadow-xl"
               >
-                <img src={`${img}?auto=format&fit=crop&q=80&w=400`} alt="Architecture" className="w-full h-full object-cover" />
+                <img 
+                  src={`${img}?auto=format&fit=crop&q=80&w=600`} 
+                  alt="Architecture" 
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
+                  onError={(e) => { e.currentTarget.src = "https://images.unsplash.com/photo-1497366811353-6870744d04b2?auto=format&fit=crop&q=80&w=600"; }}
+                />
               </motion.div>
             ))}
           </div>
@@ -163,7 +251,7 @@ const CareersPage: React.FC = () => {
               { step: "03", title: "Technical", desc: "Collaborative problem-solving with the team." },
               { step: "04", title: "Decision", desc: "Quick feedback and offer within 48 hours." }
             ].map((step, i) => (
-              <div key={i} className="relative p-8 border border-border bg-background group hover:border-primary transition-colors">
+              <div key={i} className="relative p-8 border border-border bg-background group hover:border-primary transition-colors shadow-sm">
                 <div className="text-4xl font-black text-slate-100 dark:text-slate-800 absolute top-4 right-4 group-hover:text-primary/10 transition-colors">{step.step}</div>
                 <h3 className="text-lg font-black uppercase tracking-tight mb-4 relative z-10">{step.title}</h3>
                 <p className="text-xs text-slate-500 font-medium leading-relaxed relative z-10">{step.desc}</p>
@@ -192,4 +280,3 @@ const CareersPage: React.FC = () => {
 };
 
 export default CareersPage;
-

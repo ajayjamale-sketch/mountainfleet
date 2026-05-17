@@ -147,19 +147,33 @@ const UserManagement: React.FC = () => {
                     </span>
                   </td>
                   <td className="px-10 py-6 text-right">
-                    <div className="flex items-center justify-end space-x-3">
+                    <div className="flex items-center justify-end space-x-2">
+                      <button 
+                        onClick={() => toast.success(`INITIATING LIVE TRACKING FOR ${u.id.slice(0, 8)}...`)} 
+                        className="p-2 bg-slate-50 dark:bg-white/5 border border-border text-slate-500 hover:text-accent transition-all rounded-xl"
+                        title="Live Approach"
+                      >
+                        <MapPin size={16} />
+                      </button>
+                      <button 
+                        onClick={() => toast.success(`ENCRYPTED CHANNEL OPENED WITH ${u.id.slice(0, 8)}`)} 
+                        className="p-2 bg-slate-50 dark:bg-white/5 border border-border text-slate-500 hover:text-primary transition-all rounded-xl"
+                        title="Secure Message"
+                      >
+                        <MessageSquare size={16} />
+                      </button>
                       <button 
                         onClick={() => openModal(u)}
-                        className="flex items-center space-x-2 px-4 py-2.5 bg-primary text-white rounded-xl hover:scale-105 transition-all text-xs font-black shadow-lg shadow-primary/20"
+                        className="flex items-center space-x-2 px-4 py-2 bg-primary text-white rounded-xl hover:scale-105 transition-all text-[10px] font-black shadow-lg shadow-primary/20"
                       >
-                        <Edit2 size={14} />
+                        <Edit2 size={12} />
                         <span>Edit</span>
                       </button>
                       <button 
                         onClick={() => handleDelete(u.id)}
-                        className="flex items-center space-x-2 px-4 py-2.5 bg-red-500 text-white rounded-xl hover:scale-105 transition-all text-xs font-black shadow-lg shadow-red-500/20"
+                        className="flex items-center space-x-2 px-4 py-2 bg-red-500 text-white rounded-xl hover:scale-105 transition-all text-[10px] font-black shadow-lg shadow-red-500/20"
                       >
-                        <Trash2 size={14} />
+                        <Trash2 size={12} />
                         <span>Delete</span>
                       </button>
                     </div>

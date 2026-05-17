@@ -32,7 +32,7 @@ const PrivacyPage: React.FC = () => {
         title: "Questions about security?",
         subtitle: "Review our full technical security whitepaper or talk to our lead compliance architect.",
         buttonText: "Read Security Docs",
-        link: "/contact"
+        link: "/security-docs"
       }}
     >
       {/* 4. Data Lifecycle Section */}
@@ -58,7 +58,7 @@ const PrivacyPage: React.FC = () => {
               </div>
             </motion.div>
             <div>
-              <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=1000" alt="Data Network" className="border border-border grayscale" />
+              <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=1000" alt="Data Network" className="border border-border shadow-xl" />
             </div>
           </div>
         </div>
@@ -78,7 +78,7 @@ const PrivacyPage: React.FC = () => {
               { title: "ISO 27001", desc: "Global benchmark for information security management systems." }
             ].map((std, i) => (
               <div key={i} className="p-10 border border-border bg-background hover:border-primary transition-all group">
-                <h3 className="text-xl font-black uppercase tracking-tight mb-4">{std.title}</h3>
+                <h3 className="text-xl font-black uppercase tracking-tight mb-4 group-hover:text-primary transition-colors">{std.title}</h3>
                 <p className="text-xs text-slate-500 font-medium leading-relaxed">{std.desc}</p>
               </div>
             ))}

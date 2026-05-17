@@ -2,6 +2,7 @@ import React from 'react';
 import PageSectionLayout from '../components/PageSectionLayout';
 import { Fingerprint, Settings, BarChart, Shield, Info } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { toast } from 'react-hot-toast';
 
 const CookiePolicyPage: React.FC = () => {
   return (
@@ -54,7 +55,7 @@ const CookiePolicyPage: React.FC = () => {
                 </div>
               </div>
             </motion.div>
-            <div className="bg-secondary p-8 border border-border relative overflow-hidden">
+            <div className="bg-secondary p-8 border border-border relative overflow-hidden shadow-2xl">
                <div className="absolute inset-0 technical-grid opacity-20" />
                <div className="relative z-10 space-y-4">
                   {[1, 2, 3].map(i => (
@@ -76,8 +77,18 @@ const CookiePolicyPage: React.FC = () => {
           <h2 className="text-3xl sm:text-5xl font-black uppercase tracking-tighter mb-8">Protocol Governance</h2>
           <p className="text-slate-500 font-medium leading-relaxed mb-12">You have the right to purge all non-essential tracking nodes. Please note that desynchronizing certain cookies may degrade your orchestration experience and UI performance.</p>
           <div className="grid sm:grid-cols-2 gap-4">
-            <button className="bg-primary text-white py-4 font-black uppercase tracking-widest text-[10px] hover:bg-secondary transition-all">Accept All Protocols</button>
-            <button className="bg-background border border-border text-secondary dark:text-white py-4 font-black uppercase tracking-widest text-[10px] hover:bg-slate-50 transition-all">Custom Governance</button>
+            <button 
+              onClick={() => toast.success("All tracking protocols accepted.")}
+              className="bg-primary text-white py-4 font-black uppercase tracking-widest text-[10px] hover:bg-secondary transition-all shadow-xl shadow-primary/20"
+            >
+              Accept All Protocols
+            </button>
+            <button 
+              onClick={() => toast.info("Governance console synchronized.")}
+              className="bg-background border border-border text-secondary dark:text-white py-4 font-black uppercase tracking-widest text-[10px] hover:bg-slate-50 transition-all"
+            >
+              Custom Governance
+            </button>
           </div>
         </div>
       </section>

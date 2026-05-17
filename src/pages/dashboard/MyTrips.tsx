@@ -5,10 +5,12 @@ import { Navigation, Play, CheckCircle, Map as MapIcon, Clock, AlertTriangle, Ch
 import { motion, AnimatePresence } from 'framer-motion';
 import { toast } from 'react-hot-toast';
 import { useTheme } from '../../context/ThemeContext';
+import { useNavigate } from 'react-router-dom';
 
 const MyTrips: React.FC = () => {
   const [trips, setTrips] = useState<any[]>([]);
   const { theme } = useTheme();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const data = storageService.get(STORAGE_KEYS.TRIPS, initialTrips);
@@ -20,6 +22,13 @@ const MyTrips: React.FC = () => {
     setTrips(updated);
     storageService.set(STORAGE_KEYS.TRIPS, updated);
     toast.success(`System synchronized: Status updated to ${newStatus}`);
+  };
+
+  const handleLiveRoute = (tripId: string) => {
+    toast.success(`Redirecting to Live Orchestration for Node ${tripId}`);
+    setTimeout(() => {
+      navigate('/dashboard/track');
+    }, 1000);
   };
 
   return (
@@ -70,10 +79,18 @@ const MyTrips: React.FC = () => {
                 </div>
               </div>
               <div className="w-full xl:w-auto flex items-center space-x-3">
-                 <button className="flex-grow xl:flex-grow-0 p-5 bg-slate-50 dark:bg-white/5 text-secondary dark:text-white rounded-2xl hover:bg-primary hover:text-white transition-all group/btn active:scale-95 border border-border shadow-sm">
+                 <button 
+                  onClick={() => handleLiveRoute(trip.id)}
+                  className="flex-grow xl:flex-grow-0 p-5 bg-slate-50 dark:bg-white/5 text-secondary dark:text-white rounded-2xl hover:bg-primary hover:text-white transition-all group/btn active:scale-95 border border-border shadow-sm"
+                  title="View Route Map"
+                 >
                     <MapIcon size={24} className="group-hover/btn:scale-110 transition-transform" />
                  </button>
-                 <button className="flex-grow xl:flex-grow-0 p-5 bg-slate-50 dark:bg-white/5 text-secondary dark:text-white rounded-2xl hover:bg-primary hover:text-white transition-all group/btn active:scale-95 border border-border shadow-sm">
+                 <button 
+                  onClick={() => toast.info('Time optimization protocol synchronized.')}
+                  className="flex-grow xl:flex-grow-0 p-5 bg-slate-50 dark:bg-white/5 text-secondary dark:text-white rounded-2xl hover:bg-primary hover:text-white transition-all group/btn active:scale-95 border border-border shadow-sm"
+                  title="Route Timer"
+                 >
                     <Clock size={24} className="group-hover/btn:scale-110 transition-transform" />
                  </button>
               </div>
@@ -129,7 +146,10 @@ const MyTrips: React.FC = () => {
                     <span>Synchronize Completion</span>
                   </button>
                 )}
-                <button className="flex-grow flex items-center justify-center space-x-4 bg-white dark:bg-slate-900 border border-border hover:bg-slate-50 dark:hover:bg-white/10 text-secondary dark:text-white px-12 py-6 rounded-[28px] font-black text-sm uppercase tracking-widest transition-all active:scale-[0.98] shadow-sm group/action">
+                <button 
+                  onClick={() => handleLiveRoute(trip.id)}
+                  className="flex-grow flex items-center justify-center space-x-4 bg-white dark:bg-slate-900 border border-border hover:bg-slate-50 dark:hover:bg-white/10 text-secondary dark:text-white px-12 py-6 rounded-[28px] font-black text-sm uppercase tracking-widest transition-all active:scale-[0.98] shadow-sm group/action"
+                >
                   <Navigation size={22} className="group-hover/action:translate-x-1 group-hover/action:-translate-y-1 transition-transform" />
                   <span>Execute Live Route</span>
                 </button>

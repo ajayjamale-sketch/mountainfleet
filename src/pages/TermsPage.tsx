@@ -58,7 +58,7 @@ const TermsPage: React.FC = () => {
               </div>
             </motion.div>
             <div className="relative">
-              <img src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&q=80&w=1000" alt="Logistics Warehouse" className="border border-border grayscale" />
+              <img src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&q=80&w=1000" alt="Logistics Warehouse" className="border border-border shadow-xl" />
             </div>
           </div>
         </div>
@@ -72,11 +72,11 @@ const TermsPage: React.FC = () => {
           </div>
           <h2 className="text-3xl sm:text-5xl font-black uppercase tracking-tighter mb-16">System Desynchronization</h2>
           <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-            <div className="p-10 border border-border bg-background hover:border-primary transition-all text-left">
+            <div className="p-10 border border-border bg-background hover:border-primary transition-all text-left group">
               <h3 className="text-xl font-black uppercase tracking-tight mb-4 text-primary">Voluntary Purge</h3>
               <p className="text-xs text-slate-500 font-medium leading-relaxed">Users may terminate their network synchronization at any time with a 30-day notice period for enterprise nodes.</p>
             </div>
-            <div className="p-10 border border-border bg-background hover:border-primary transition-all text-left">
+            <div className="p-10 border border-border bg-background hover:border-primary transition-all text-left group">
               <h3 className="text-xl font-black uppercase tracking-tight mb-4 text-rose-500">Protocol Breach</h3>
               <p className="text-xs text-slate-500 font-medium leading-relaxed">Violation of network integrity or fair-usage protocols may result in immediate node suspension or terminal desynchronization.</p>
             </div>

@@ -10,7 +10,7 @@ import { toast } from 'react-hot-toast';
 
 const SettingsPage: React.FC = () => {
   const { user, logout } = useAuth();
-  const { theme, toggleTheme } = useTheme();
+  const { theme, setTheme } = useTheme();
   const [activeTab, setActiveTab] = useState('profile');
   
   const tabs = [
@@ -51,6 +51,18 @@ const SettingsPage: React.FC = () => {
     }
   };
 
+  const SubmitButton = () => (
+    <div className="pt-10 border-t border-border mt-10">
+      <button 
+        onClick={handleSave}
+        className="bg-primary hover:bg-primary/90 text-white px-8 py-4 font-bold text-[10px] uppercase tracking-widest transition-all active:translate-y-[1px] flex items-center justify-center space-x-3 shadow-lg shadow-primary/20"
+      >
+        <Save size={16} />
+        <span>Synchronize Parameters</span>
+      </button>
+    </div>
+  );
+
   return (
     <div className="space-y-8 animate-in fade-in duration-700 pb-20">
       {/* Header */}
@@ -61,7 +73,7 @@ const SettingsPage: React.FC = () => {
         </div>
         <button 
           onClick={handleSave}
-          className="bg-primary hover:bg-primary/90 text-white px-8 py-4 font-bold text-[10px] uppercase tracking-widest transition-all active:translate-y-[1px] flex items-center justify-center space-x-3 shadow-lg shadow-primary/20"
+          className="hidden md:flex bg-primary hover:bg-primary/90 text-white px-8 py-4 font-bold text-[10px] uppercase tracking-widest transition-all active:translate-y-[1px] items-center justify-center space-x-3 shadow-lg shadow-primary/20"
         >
           <Save size={16} />
           <span>Synchronize Parameters</span>
@@ -101,7 +113,7 @@ const SettingsPage: React.FC = () => {
 
         {/* Settings Content */}
         <div className="lg:col-span-9">
-          <div className="bg-card border border-border shadow-sm overflow-hidden relative group">
+          <div className="bg-card border border-border shadow-sm overflow-hidden relative group min-h-[500px]">
             <div className="absolute top-0 right-0 p-10 text-primary/5 pointer-events-none group-hover:scale-150 transition-transform duration-1000">
                <Zap size={140} />
             </div>
@@ -173,6 +185,7 @@ const SettingsPage: React.FC = () => {
                         />
                       </div>
                     </div>
+                    <SubmitButton />
                   </motion.div>
                 )}
 
@@ -195,6 +208,7 @@ const SettingsPage: React.FC = () => {
                         </div>
                       </div>
                     ))}
+                    <SubmitButton />
                   </motion.div>
                 )}
 
@@ -205,7 +219,7 @@ const SettingsPage: React.FC = () => {
                     </div>
                     <div className="grid sm:grid-cols-2 gap-6">
                       <button 
-                        onClick={() => theme === 'dark' && toggleTheme()}
+                        onClick={() => { setTheme('light'); toast.success('LIGHT PROTOCOL SYNCHRONIZED'); }}
                         className={`p-10 border transition-all flex flex-col items-center group relative ${theme === 'light' ? 'border-primary bg-primary/5' : 'border-border bg-slate-50'}`}
                       >
                         <div className={`p-4 mb-4 transition-all ${theme === 'light' ? 'bg-primary text-white' : 'bg-white text-slate-400 border border-border'}`}>
@@ -215,7 +229,7 @@ const SettingsPage: React.FC = () => {
                         {theme === 'light' && <div className="absolute top-3 right-3 w-2 h-2 bg-primary animate-pulse" />}
                       </button>
                       <button 
-                        onClick={() => theme === 'light' && toggleTheme()}
+                        onClick={() => { setTheme('dark'); toast.success('DARK PROTOCOL SYNCHRONIZED'); }}
                         className={`p-10 border transition-all flex flex-col items-center group relative ${theme === 'dark' ? 'border-primary bg-primary/5 shadow-xl shadow-primary/10' : 'border-border dark:bg-white/5'}`}
                       >
                         <div className={`p-4 mb-4 transition-all ${theme === 'dark' ? 'bg-primary text-white' : 'bg-white dark:bg-slate-800 text-slate-400 border border-border'}`}>
@@ -258,6 +272,7 @@ const SettingsPage: React.FC = () => {
                         </div>
                       </div>
                     </div>
+                    <SubmitButton />
 
                     <div className="pt-10 border-t border-border mt-10">
                       <div className="bg-red-500/5 border border-red-500/10 p-8 relative overflow-hidden group">

@@ -33,7 +33,7 @@ const AboutPage: React.FC = () => {
         title: "Join the Logistics Revolution",
         subtitle: "Experience the power of a fully synchronized global fleet network today.",
         buttonText: "Explore the Platform",
-        link: "/dashboard"
+        link: "/register"
       }}
     >
       {/* 3. Core Values */}
@@ -73,7 +73,7 @@ const AboutPage: React.FC = () => {
             {[
               { city: "San Francisco", region: "North America", img: "https://images.unsplash.com/photo-1501594907352-04cda38ebc29?auto=format&fit=crop&q=80&w=600" },
               { city: "Berlin", region: "Europe", img: "https://images.unsplash.com/photo-1560969184-10fe8719e047?auto=format&fit=crop&q=80&w=600" },
-              { city: "Singapore", region: "Asia Pacific", img: "https://images.unsplash.com/photo-1525625239513-94c947523285?auto=format&fit=crop&q=80&w=600" }
+              { city: "Singapore", region: "Asia Pacific", img: "https://images.unsplash.com/photo-1525596662741-e94ff9f26de1?auto=format&fit=crop&q=80&w=600" }
             ].map((office, i) => (
               <motion.div 
                 key={i}
@@ -81,17 +81,21 @@ const AboutPage: React.FC = () => {
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1 }}
-                className="group border border-border bg-background overflow-hidden hover:border-primary transition-all"
+                className="group border border-border bg-background overflow-hidden transition-all shadow-lg hover:shadow-xl hover:border-primary/50"
               >
-                <div className="aspect-video overflow-hidden grayscale group-hover:grayscale-0 transition-all duration-700">
-                  <img src={office.img} alt={office.city} className="w-full h-full object-cover" />
+                <div className="aspect-video overflow-hidden">
+                  <img 
+                    src={office.img} 
+                    alt={office.city} 
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
+                    onError={(e) => {
+                      e.currentTarget.src = "https://images.unsplash.com/photo-1449034446853-66c86144b0ad?auto=format&fit=crop&q=80&w=600";
+                    }}
+                  />
                 </div>
-                <div className="p-8 flex justify-between items-center">
-                  <div>
-                    <h3 className="text-xl font-black uppercase tracking-tight">{office.city}</h3>
-                    <p className="text-[10px] uppercase tracking-widest text-slate-400 font-bold">{office.region}</p>
-                  </div>
-                  <ChevronRight size={20} className="text-primary group-hover:translate-x-2 transition-transform" />
+                <div className="p-8">
+                   <h3 className="text-xl font-black uppercase tracking-tight text-secondary dark:text-white">{office.city}</h3>
+                   <p className="text-[10px] uppercase tracking-widest text-primary font-bold">{office.region}</p>
                 </div>
               </motion.div>
             ))}

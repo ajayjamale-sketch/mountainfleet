@@ -171,7 +171,7 @@ const LandingPage: React.FC = () => {
               className="relative"
             >
               <div className="aspect-square bg-background border border-border overflow-hidden p-1">
-                 <img src="https://images.unsplash.com/photo-1580674285054-bed31e145f59?auto=format&fit=crop&q=80&w=1000" alt="Control Center" className="w-full h-full object-cover grayscale opacity-50" />
+                 <img src="https://images.unsplash.com/photo-1580674285054-bed31e145f59?auto=format&fit=crop&q=80&w=1000" alt="Control Center" className="w-full h-full object-cover opacity-80" />
                  <div className="absolute inset-0 technical-grid opacity-20" />
               </div>
               <div className="absolute -bottom-10 -right-10 p-10 bg-primary text-white border border-border hidden xl:block shadow-2xl">
@@ -242,7 +242,7 @@ const LandingPage: React.FC = () => {
                  viewport={{ once: true }}
                  className="aspect-[4/3] border border-white/10 bg-background/20 relative"
                >
-                 <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=1000" alt="Security Grid" className="w-full h-full object-cover grayscale opacity-30" />
+                 <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=1000" alt="Security Grid" className="w-full h-full object-cover opacity-60" />
                  <div className="absolute inset-0 flex items-center justify-center">
                     <Shield size={120} className="text-primary animate-pulse" />
                  </div>

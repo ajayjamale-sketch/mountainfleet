@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { STORAGE_KEYS, storageService } from '../../services/storageService';
-import { Plus, Search, Edit2, Trash2, X, MoreVertical } from 'lucide-react';
+import { Plus, Search, Edit2, Trash2, X, MoreVertical, MapPin, MessageSquare } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { toast } from 'react-hot-toast';
 
@@ -144,14 +144,30 @@ const GenericCRUD: React.FC<GenericCRUDProps> = ({ title, description, storageKe
                   <td className="px-8 py-4 text-right">
                     <div className="flex items-center justify-end space-x-2">
                       <button 
+                        onClick={() => toast.success(`INITIATING LIVE TRACKING FOR ${item.id.slice(0, 8)}...`)} 
+                        className="p-2 bg-slate-50 dark:bg-white/5 border border-border text-slate-500 hover:text-accent transition-all"
+                        title="Live Approach"
+                      >
+                        <MapPin size={14} />
+                      </button>
+                      <button 
+                        onClick={() => toast.success(`ENCRYPTED CHANNEL OPENED WITH ${item.id.slice(0, 8)}`)} 
+                        className="p-2 bg-slate-50 dark:bg-white/5 border border-border text-slate-500 hover:text-primary transition-all"
+                        title="Secure Message"
+                      >
+                        <MessageSquare size={14} />
+                      </button>
+                      <button 
                         onClick={() => openModal(item)} 
                         className="p-2 bg-slate-50 dark:bg-white/5 border border-border text-slate-500 hover:text-primary transition-all"
+                        title="Edit Record"
                       >
                         <Edit2 size={14} />
                       </button>
                       <button 
                         onClick={() => handleDelete(item.id)} 
                         className="p-2 bg-slate-50 dark:bg-white/5 border border-border text-slate-500 hover:text-red-500 transition-all"
+                        title="Delete Record"
                       >
                         <Trash2 size={14} />
                       </button>
