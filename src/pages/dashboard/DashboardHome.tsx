@@ -7,7 +7,7 @@ import {
 import {
   Activity, ArrowUpRight, BrainCircuit, CalendarRange, CircleAlert,
   Download, Fuel, Route, ShieldCheck, Truck, Users, TrendingUp,
-  Zap, Clock, CheckCircle2,
+  Zap, Clock, CheckCircle2, Wrench, Bell,
 } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
 import { getPlatformSnapshot, getTripStatusTone, getVehicleStatusTone } from "../../lib/platformData";

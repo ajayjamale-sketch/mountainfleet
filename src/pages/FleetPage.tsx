@@ -30,7 +30,7 @@ const FleetPage: React.FC = () => {
             <div className="pt-4">
               <a 
                 href="/fleet-showcase" 
-                className="inline-flex items-center gap-2 bg-primary text-white px-6 py-3 text-xs font-black uppercase tracking-widest hover:bg-secondary dark:hover:bg-white dark:hover:text-secondary transition-all"
+                className="inline-flex items-center gap-2 bg-primary text-white px-6 py-3 text-xs font-black uppercase tracking-widest hover:bg-secondary dark:hover:bg-white dark:hover:text-secondary transition-all rounded-xl"
               >
                 <span>Explore Full Fleet</span>
                 <ChevronRight size={14} />
@@ -42,7 +42,7 @@ const FleetPage: React.FC = () => {
               initial={{ opacity: 0, scale: 0.95 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
-              className="mt-8 rounded-sm border border-border overflow-hidden bg-card"
+              className="mt-8 rounded-[32px] border border-border overflow-hidden bg-card"
             >
               <img 
                 src="/assets/fleet/fleet-hero-standard.png" 
@@ -81,7 +81,7 @@ const FleetPage: React.FC = () => {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
             >
-              <div className="inline-flex items-center gap-2 px-3 py-1 bg-primary/10 text-primary border border-primary/20 text-[10px] font-black uppercase tracking-widest mb-6">
+              <div className="inline-flex items-center gap-2 px-3 py-1 bg-primary/10 text-primary border border-primary/20 text-[10px] font-black uppercase tracking-widest mb-6 rounded-full">
                 <Activity size={12} /> Operational Intelligence
               </div>
               <h2 className="text-3xl sm:text-5xl font-black uppercase tracking-tighter mb-8 leading-none">Elite<br /><span className="text-primary">Operations.</span></h2>
@@ -95,7 +95,7 @@ const FleetPage: React.FC = () => {
                   { icon: Activity, title: "Performance Tuning", desc: "Automatic ECU updates via satellite to optimize fuel consumption based on terrain." }
                 ].map((item, i) => (
                   <div key={i} className="flex gap-6">
-                    <div className="flex-shrink-0 w-12 h-12 bg-primary/10 text-primary flex items-center justify-center border border-primary/20">
+                    <div className="flex-shrink-0 w-12 h-12 bg-primary/10 text-primary flex items-center justify-center border border-primary/20 rounded-xl">
                       <item.icon size={20} />
                     </div>
                     <div>
@@ -108,7 +108,7 @@ const FleetPage: React.FC = () => {
 
               <Link 
                 to="/fleet-metrics" 
-                className="inline-flex items-center gap-3 bg-secondary dark:bg-white dark:text-secondary text-white px-8 py-4 text-xs font-black uppercase tracking-widest hover:bg-primary transition-all group"
+                className="inline-flex items-center gap-3 bg-secondary dark:bg-white dark:text-secondary text-white px-8 py-4 text-xs font-black uppercase tracking-widest hover:bg-primary transition-all group rounded-xl"
               >
                 <span>View Global Metrics</span>
                 <ChevronRight size={16} className="group-hover:translate-x-1 transition-transform" />
@@ -117,7 +117,7 @@ const FleetPage: React.FC = () => {
             
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-4">
-                <div className="h-48 bg-card border border-border overflow-hidden">
+                <div className="h-48 bg-card border border-border overflow-hidden rounded-[24px]">
                   <img 
                     src="/assets/fleet/maintenance-diagnostics.png" 
                     className="w-full h-full object-cover" 
@@ -125,17 +125,17 @@ const FleetPage: React.FC = () => {
                     onError={(e) => (e.currentTarget.src = "https://images.unsplash.com/photo-1581092580497-e0d23cbdf1dc?auto=format&fit=crop&q=80&w=800")}
                   />
                 </div>
-                <div className="p-6 bg-secondary text-white border border-border">
+                <div className="p-6 bg-secondary text-white border border-border rounded-[24px]">
                   <div className="text-3xl font-black mb-1">99.8%</div>
                   <div className="text-[10px] uppercase tracking-widest text-white/50">Fleet Uptime</div>
                 </div>
               </div>
               <div className="space-y-4 pt-8">
-                <div className="p-6 bg-primary text-white border border-border">
+                <div className="p-6 bg-primary text-white border border-border rounded-[24px]">
                   <div className="text-3xl font-black mb-1">2,400+</div>
                   <div className="text-[10px] uppercase tracking-widest text-white/50">Weekly Inspections</div>
                 </div>
-                <div className="h-48 bg-card border border-border overflow-hidden">
+                <div className="h-48 bg-card border border-border overflow-hidden rounded-[24px]">
                   <img 
                     src="/assets/fleet/vehicle-inspection.png" 
                     className="w-full h-full object-cover" 
@@ -154,7 +154,7 @@ const FleetPage: React.FC = () => {
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="flex flex-col lg:flex-row gap-16 items-center">
             <div className="lg:w-1/2">
-              <div className="inline-flex items-center gap-2 px-3 py-1 bg-emerald-500/10 text-emerald-500 border border-emerald-500/20 text-[10px] font-black uppercase tracking-widest mb-6">
+              <div className="inline-flex items-center gap-2 px-3 py-1 bg-emerald-500/10 text-emerald-500 border border-emerald-500/20 text-[10px] font-black uppercase tracking-widest mb-6 rounded-full">
                 <Leaf size={12} /> Green Logistics
               </div>
               <h2 className="text-3xl sm:text-5xl font-black uppercase tracking-tighter mb-8 leading-none text-emerald-500">Driving towards<br /><span className="text-foreground">Zero Emissions.</span></h2>
@@ -166,8 +166,8 @@ const FleetPage: React.FC = () => {
                     <span>Electric Conversion Progress</span>
                     <span>32%</span>
                   </div>
-                  <div className="h-2 bg-slate-100 dark:bg-slate-800 border border-border">
-                    <motion.div initial={{ width: 0 }} whileInView={{ width: "32%" }} viewport={{ once: true }} transition={{ duration: 1 }} className="h-full bg-emerald-500" />
+                  <div className="h-2 bg-slate-100 dark:bg-slate-800 border border-border rounded-full overflow-hidden">
+                    <motion.div initial={{ width: 0 }} whileInView={{ width: "32%" }} viewport={{ once: true }} transition={{ duration: 1 }} className="h-full bg-emerald-500 rounded-full" />
                   </div>
                 </div>
                 <div>
@@ -175,8 +175,8 @@ const FleetPage: React.FC = () => {
                     <span>Carbon Offset Goal</span>
                     <span>100% by 2030</span>
                   </div>
-                  <div className="h-2 bg-slate-100 dark:bg-slate-800 border border-border">
-                    <motion.div initial={{ width: 0 }} whileInView={{ width: "75%" }} viewport={{ once: true }} transition={{ duration: 1, delay: 0.2 }} className="h-full bg-primary" />
+                  <div className="h-2 bg-slate-100 dark:bg-slate-800 border border-border rounded-full overflow-hidden">
+                    <motion.div initial={{ width: 0 }} whileInView={{ width: "75%" }} viewport={{ once: true }} transition={{ duration: 1, delay: 0.2 }} className="h-full bg-primary rounded-full" />
                   </div>
                 </div>
               </div>
@@ -186,13 +186,13 @@ const FleetPage: React.FC = () => {
             <div className="lg:w-1/2 grid grid-cols-2 gap-4">
               <img 
                 src="/assets/fleet/ev-truck.png" 
-                className="border border-border hover:scale-105 transition-all duration-500 bg-card aspect-[4/5] object-cover" 
+                className="border border-border hover:scale-105 transition-all duration-500 bg-card aspect-[4/5] object-cover rounded-[32px]" 
                 alt="EV Truck" 
                 onError={(e) => (e.currentTarget.src = "https://images.unsplash.com/photo-1606185540410-d6ca68b0fde3?auto=format&fit=crop&q=80&w=800")}
               />
               <img 
                 src="/assets/fleet/eco-hub.png" 
-                className="border border-border pt-12 hover:scale-105 transition-all duration-500 bg-card aspect-[4/5] object-cover" 
+                className="border border-border pt-12 hover:scale-105 transition-all duration-500 bg-card aspect-[4/5] object-cover rounded-[32px]" 
                 alt="Eco Plant" 
                 onError={(e) => (e.currentTarget.src = "https://images.unsplash.com/photo-1581091226835-a5a24e1d821a?auto=format&fit=crop&q=80&w=800")}
               />

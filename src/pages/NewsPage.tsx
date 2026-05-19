@@ -83,7 +83,7 @@ const NewsPage: React.FC = () => {
                   placeholder="SEARCH DISPATCH..."
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
-                  className="w-full bg-card border border-border pl-10 pr-4 py-3 text-[10px] font-black uppercase tracking-widest focus:outline-none focus:border-primary transition-all"
+                  className="w-full bg-card border border-border pl-10 pr-4 py-3 text-[10px] font-black uppercase tracking-widest focus:outline-none focus:border-primary transition-all rounded-xl"
                 />
               </div>
               <div className="flex gap-2 overflow-x-auto pb-2 sm:pb-0 no-scrollbar">
@@ -91,7 +91,7 @@ const NewsPage: React.FC = () => {
                   <button 
                     key={cat}
                     onClick={() => setActiveCategory(cat)}
-                    className={`px-4 py-3 text-[10px] font-black uppercase tracking-widest border transition-all whitespace-nowrap ${activeCategory === cat ? 'bg-primary border-primary text-white' : 'bg-card border-border text-slate-500 hover:border-primary'}`}
+                    className={`px-4 py-3 text-[10px] font-black uppercase tracking-widest border transition-all whitespace-nowrap rounded-xl ${activeCategory === cat ? 'bg-primary border-primary text-white' : 'bg-card border-border text-slate-500 hover:border-primary'}`}
                   >
                     {cat}
                   </button>
@@ -110,11 +110,11 @@ const NewsPage: React.FC = () => {
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.9 }}
                   transition={{ duration: 0.3 }}
-                  className="group border border-border bg-card overflow-hidden hover:border-primary transition-colors"
+                  className="group border border-border bg-card overflow-hidden hover:border-primary transition-colors rounded-[24px]"
                 >
                   <div className="aspect-video overflow-hidden relative transition-all duration-700">
                     <img src={art.img} alt={art.title} className="w-full h-full object-cover" />
-                    <div className="absolute top-4 left-4 bg-secondary text-white text-[10px] font-black uppercase tracking-widest px-3 py-1">
+                    <div className="absolute top-4 left-4 bg-secondary text-white text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-lg">
                       {art.category}
                     </div>
                   </div>
@@ -133,7 +133,7 @@ const NewsPage: React.FC = () => {
           </div>
 
           {filteredArticles.length === 0 && (
-            <div className="py-20 text-center border border-dashed border-border">
+            <div className="py-20 text-center border border-dashed border-border rounded-[24px]">
               <p className="text-slate-500 font-black uppercase tracking-widest text-xs">No intelligence matching your parameters.</p>
               <button 
                 onClick={() => { setSearch(""); setActiveCategory("All"); }}
@@ -150,7 +150,7 @@ const NewsPage: React.FC = () => {
       <section className="py-16 sm:py-24 border-b border-border bg-secondary text-white overflow-hidden relative">
         <div className="absolute inset-0 technical-grid opacity-10" />
         <div className="max-w-4xl mx-auto px-6 text-center relative z-10">
-          <div className="w-16 h-16 bg-primary text-white flex items-center justify-center mx-auto mb-8">
+          <div className="w-16 h-16 bg-primary text-white flex items-center justify-center mx-auto mb-8 rounded-2xl">
             <Mail size={32} />
           </div>
           <h2 className="text-3xl sm:text-5xl font-black uppercase tracking-tighter mb-6">Logistics Intelligence</h2>
@@ -160,11 +160,11 @@ const NewsPage: React.FC = () => {
             <input 
               type="email" 
               placeholder="ENTER YOUR CORPORATE EMAIL" 
-              className="flex-grow bg-white/5 border border-white/10 px-6 py-4 text-sm font-bold uppercase tracking-widest focus:outline-none focus:border-primary transition-colors"
+              className="flex-grow bg-white/5 border border-white/10 px-6 py-4 text-sm font-bold uppercase tracking-widest focus:outline-none focus:border-primary transition-colors rounded-xl"
             />
             <button 
               onClick={() => toast.success("Node successfully registered for Dispatch updates.")}
-              className="bg-primary text-white px-10 py-4 font-black uppercase tracking-widest hover:bg-white hover:text-primary transition-all"
+              className="bg-primary text-white px-10 py-4 font-black uppercase tracking-widest hover:bg-white hover:text-primary transition-all rounded-xl"
             >
               Join Dispatch
             </button>
@@ -193,7 +193,7 @@ const NewsPage: React.FC = () => {
                   <div 
                     key={i} 
                     onClick={() => toast.success("Manifest download initiated.")}
-                    className="flex items-center justify-between p-6 border border-border bg-card group hover:border-primary cursor-pointer transition-all"
+                    className="flex items-center justify-between p-6 border border-border bg-card group hover:border-primary cursor-pointer transition-all rounded-[20px]"
                   >
                     <span className="text-sm font-black uppercase tracking-tight">{report}</span>
                     <Download size={18} className="text-slate-400 group-hover:text-primary transition-colors" />
@@ -202,10 +202,10 @@ const NewsPage: React.FC = () => {
               </div>
             </motion.div>
             <div className="relative">
-              <div className="aspect-[4/5] bg-secondary border border-border overflow-hidden">
+              <div className="aspect-[4/5] bg-secondary border border-border overflow-hidden rounded-[32px]">
                 <img src="https://images.unsplash.com/photo-1544377193-33dcf4d68fb5?auto=format&fit=crop&q=80&w=1000" alt="Reports" className="w-full h-full object-cover opacity-50" />
               </div>
-              <div className="absolute -bottom-6 -right-6 w-48 h-48 bg-primary p-8 text-white flex flex-col justify-end">
+              <div className="absolute -bottom-6 -right-6 w-48 h-48 bg-primary p-8 text-white flex flex-col justify-end rounded-2xl">
                 <div className="text-4xl font-black mb-2">180+</div>
                 <div className="text-[10px] uppercase tracking-widest font-bold">Pages of Data</div>
               </div>
@@ -223,7 +223,7 @@ const NewsPage: React.FC = () => {
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {[1, 2, 3, 4].map((i) => (
-              <div key={i} className="aspect-square bg-background border border-border relative group overflow-hidden">
+              <div key={i} className="aspect-square bg-background border border-border relative group overflow-hidden rounded-[24px]">
                 <div className="absolute inset-0 bg-secondary/80 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity z-10 p-4 text-center">
                   <p className="text-[10px] text-white font-bold uppercase tracking-wider">Follow @MountainFleet for daily updates.</p>
                 </div>
@@ -242,7 +242,7 @@ const NewsPage: React.FC = () => {
       {/* 5. Press Contact */}
       <section className="py-16 sm:py-20 bg-background border-b border-border">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-12 bg-card p-12 border border-border">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-12 bg-card p-12 border border-border rounded-[32px]">
             <div>
               <h2 className="text-2xl font-black uppercase tracking-tighter mb-4">Press & Media Kit</h2>
               <p className="text-xs text-slate-500 font-medium max-w-md">Need assets or an interview with our leadership team? Access our press kit or contact our media office.</p>
@@ -250,13 +250,13 @@ const NewsPage: React.FC = () => {
             <div className="flex gap-4">
               <button 
                 onClick={handlePressKit}
-                className="flex items-center gap-3 border border-border px-6 py-3 text-xs font-black uppercase tracking-widest hover:bg-secondary hover:text-white transition-all"
+                className="flex items-center gap-3 border border-border px-6 py-3 text-xs font-black uppercase tracking-widest hover:bg-secondary hover:text-white transition-all rounded-xl"
               >
                 <Download size={16} /> Press Kit
               </button>
               <Link 
                 to="/contact"
-                className="flex items-center gap-3 bg-primary text-white px-6 py-3 text-xs font-black uppercase tracking-widest hover:bg-secondary transition-all"
+                className="flex items-center gap-3 bg-primary text-white px-6 py-3 text-xs font-black uppercase tracking-widest hover:bg-secondary transition-all rounded-xl"
               >
                 <Phone size={16} /> Media Contact
               </Link>

@@ -8,12 +8,12 @@ import { toast } from 'react-hot-toast';
 
 const TrackTrip: React.FC = () => {
   const [progress, setProgress] = useState(65);
-  const [activeTrip, setActiveTrip] = useState<any>(null);
+  const [activeTrip, setActiveTrip] = useState<Record<string, unknown>>(null);
   const { theme } = useTheme();
 
   useEffect(() => {
     const trips = storageService.get(STORAGE_KEYS.TRIPS, initialTrips);
-    const trip = trips.find((t: any) => t.status === 'In Transit') || trips[0];
+    const trip = trips.find((t: Record<string, unknown>) => t.status === 'In Transit') || trips[0];
     setActiveTrip(trip);
     
     const interval = setInterval(() => {

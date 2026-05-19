@@ -9,7 +9,7 @@ const MaintenancePage: React.FC = () => {
     { id: '2', vehicle: 'Mercedes Sprinter', task: 'Brake Integrity Check', date: '2024-05-22', cost: 450, status: 'In Progress' },
   ];
 
-  const columns: any[] = [
+  const columns: Record<string, unknown>[] = [
     { key: 'vehicle', label: 'Fleet Unit', type: 'text' },
     { key: 'task', label: 'Calibration Task', type: 'text' },
     { key: 'date', label: 'Protocol Date', type: 'text' },

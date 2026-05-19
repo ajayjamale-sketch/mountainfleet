@@ -46,14 +46,14 @@ const PricingPage: React.FC = () => {
       <section className="py-16 sm:py-24 border-b border-border bg-card">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <h2 className="text-3xl sm:text-5xl font-black uppercase tracking-tighter mb-16 text-center">Feature Comparison</h2>
-          <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse border border-border">
+          <div className="overflow-x-auto border border-border rounded-[24px] overflow-hidden">
+            <table className="w-full text-left border-collapse">
               <thead>
                 <tr className="bg-secondary text-white uppercase text-[10px] tracking-widest">
-                  <th className="p-6 border border-white/10">Feature</th>
-                  <th className="p-6 border border-white/10">Starter</th>
-                  <th className="p-6 border border-white/10">Professional</th>
-                  <th className="p-6 border border-white/10">Enterprise</th>
+                  <th className="p-6 border-b border-white/10">Feature</th>
+                  <th className="p-6 border-b border-white/10">Starter</th>
+                  <th className="p-6 border-b border-white/10">Professional</th>
+                  <th className="p-6 border-b border-white/10">Enterprise</th>
                 </tr>
               </thead>
               <tbody className="text-sm font-medium">
@@ -66,10 +66,10 @@ const PricingPage: React.FC = () => {
                   { name: "Dedicated Manager", s: "No", p: "No", e: "Yes" }
                 ].map((row, i) => (
                   <tr key={i} className="hover:bg-primary/5 transition-colors">
-                    <td className="p-6 border border-border text-secondary dark:text-white uppercase tracking-tight font-bold">{row.name}</td>
-                    <td className="p-6 border border-border text-slate-500">{row.s}</td>
-                    <td className="p-6 border border-border text-slate-500">{row.p}</td>
-                    <td className="p-6 border border-border text-primary font-bold">{row.e}</td>
+                    <td className="p-6 border-b border-border text-secondary dark:text-white uppercase tracking-tight font-bold">{row.name}</td>
+                    <td className="p-6 border-b border-border text-slate-500">{row.s}</td>
+                    <td className="p-6 border-b border-border text-slate-500">{row.p}</td>
+                    <td className="p-6 border-b border-border text-primary font-bold">{row.e}</td>
                   </tr>
                 ))}
               </tbody>
@@ -81,7 +81,7 @@ const PricingPage: React.FC = () => {
       {/* 3. ROI Calculator Component */}
       <section className="py-16 sm:py-24 border-b border-border bg-background">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="bg-secondary p-12 border border-border text-white overflow-hidden relative group">
+          <div className="bg-secondary p-12 border border-border text-white overflow-hidden relative group rounded-[32px]">
             <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-20 transition-opacity">
               <Calculator size={200} />
             </div>
@@ -90,11 +90,11 @@ const PricingPage: React.FC = () => {
               <p className="text-white/40 mb-12 font-medium">Most MountainFleet customers see a 24% reduction in fuel costs and a 40% decrease in idle time within the first 6 months.</p>
               
               <div className="grid grid-cols-2 gap-8">
-                <div className="p-6 border border-white/10 bg-white/5">
+                <div className="p-6 border border-white/10 bg-white/5 rounded-2xl">
                   <div className="text-[10px] uppercase tracking-widest text-primary mb-2">Estimated Savings</div>
                   <div className="text-4xl font-black">$2.4k<span className="text-sm font-normal text-white/40 ml-2">/truck /yr</span></div>
                 </div>
-                <div className="p-6 border border-white/10 bg-white/5">
+                <div className="p-6 border border-white/10 bg-white/5 rounded-2xl">
                   <div className="text-[10px] uppercase tracking-widest text-primary mb-2">Payback Period</div>
                   <div className="text-4xl font-black">3.2<span className="text-sm font-normal text-white/40 ml-2">Months</span></div>
                 </div>
@@ -118,7 +118,7 @@ const PricingPage: React.FC = () => {
               { id: "iot-hub", title: "Custom IoT Hub", desc: "Connect non-standard sensors and hardware to the grid." },
               { id: "global-sla", title: "Global SLA", desc: "Guaranteed uptime and response times for mission-critical ops." }
             ].map((item, i) => (
-              <div key={i} className="p-8 border border-border hover:border-primary bg-background transition-all">
+              <div key={i} className="p-8 border border-border hover:border-primary bg-background transition-all rounded-[24px]">
                 <h3 className="text-lg font-black uppercase tracking-tight mb-3">{item.title}</h3>
                 <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed font-medium mb-6">{item.desc}</p>
                 <Link to={`/addon/${item.id}`} className="text-xs font-bold text-primary flex items-center gap-1 group cursor-pointer hover:underline">
@@ -144,7 +144,7 @@ const PricingPage: React.FC = () => {
             </div>
             <div className="grid grid-cols-3 gap-8">
               {[1, 2, 3].map((i) => (
-                <div key={i} className="h-10 w-24 bg-card border border-border flex items-center justify-center grayscale opacity-50 text-[8px] font-black uppercase tracking-widest text-slate-400">
+                <div key={i} className="h-10 w-24 bg-card border border-border flex items-center justify-center grayscale opacity-50 text-[8px] font-black uppercase tracking-widest text-slate-400 rounded-lg">
                   SECURITY_{i}
                 </div>
               ))}

@@ -32,7 +32,7 @@ const RegisterPage: React.FC = () => {
     }
   };
 
-  const roles: { id: UserRole; name: string; icon: any; color: string }[] = [
+  const roles: { id: UserRole; name: string; icon: Record<string, unknown>; color: string }[] = [
     { id: 'Admin', name: 'Admin', icon: Shield, color: 'text-primary' },
     { id: 'Fleet Manager', name: 'Manager', icon: Briefcase, color: 'text-blue-500' },
     { id: 'Driver', name: 'Driver', icon: Truck, color: 'text-amber-500' },

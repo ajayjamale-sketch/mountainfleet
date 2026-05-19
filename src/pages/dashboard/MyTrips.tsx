@@ -8,7 +8,7 @@ import { useTheme } from '../../context/ThemeContext';
 import { useNavigate } from 'react-router-dom';
 
 const MyTrips: React.FC = () => {
-  const [trips, setTrips] = useState<any[]>([]);
+  const [trips, setTrips] = useState<Record<string, unknown>[]>([]);
   const { theme } = useTheme();
   const navigate = useNavigate();
 

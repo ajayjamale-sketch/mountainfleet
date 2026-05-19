@@ -37,7 +37,7 @@ const SubmitExpense: React.FC = () => {
   const handleDelete = (id: string) => {
     if (window.confirm('TERMINATE LOG ENTRY?')) {
       storageService.deleteItem(STORAGE_KEYS.EXPENSES, id);
-      setExpenses(expenses.filter((e: any) => e.id !== id));
+      setExpenses(expenses.filter((e: Record<string, unknown>) => e.id !== id));
       toast.success('LOG PURGED');
     }
   };
@@ -160,7 +160,7 @@ const SubmitExpense: React.FC = () => {
 
            <div className="space-y-4">
               <AnimatePresence mode="popLayout">
-                {expenses.map((expense: any, i: number) => (
+                {expenses.map((expense: Record<string, unknown>, i: number) => (
                   <motion.div
                     key={expense.id}
                     layout

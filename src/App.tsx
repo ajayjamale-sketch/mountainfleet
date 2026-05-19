@@ -114,6 +114,7 @@ const App: React.FC = () => {
                   {/* Admin Only */}
                   <Route path="users" element={<UserManagement />} />
                   <Route path="finance" element={<FinancePage />} />
+                  <Route path="finance/subscriptions" element={<FinancePage />} />
                   
                   {/* Admin & Manager */}
                   <Route path="fleet" element={<FleetControl />} />

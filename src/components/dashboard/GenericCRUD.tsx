@@ -19,21 +19,21 @@ interface GenericCRUDProps {
   title: string;
   description: string;
   storageKey: string;
-  initialData: any[];
+  initialData: Record<string, unknown>[];
   columns: Column[];
   icon: React.ElementType;
 }
 
 const GenericCRUD: React.FC<GenericCRUDProps> = ({ title, description, storageKey, initialData, columns, icon: Icon }) => {
-  const [items, setItems] = useState<any[]>([]);
+  const [items, setItems] = useState<Record<string, unknown>[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [editingItem, setEditingItem] = useState<any | null>(null);
-  const [formData, setFormData] = useState<any>({});
+  const [editingItem, setEditingItem] = useState<Record<string, unknown> | null>(null);
+  const [formData, setFormData] = useState<Record<string, unknown>>({});
 
   // Telemetry and Communication Drawer States
-  const [trackingItem, setTrackingItem] = useState<any | null>(null);
-  const [messagingItem, setMessagingItem] = useState<any | null>(null);
+  const [trackingItem, setTrackingItem] = useState<Record<string, unknown> | null>(null);
+  const [messagingItem, setMessagingItem] = useState<Record<string, unknown> | null>(null);
   const [newLogMessage, setNewLogMessage] = useState('');
   const [logRefreshKey, setLogRefreshKey] = useState(0);
 
@@ -64,7 +64,7 @@ const GenericCRUD: React.FC<GenericCRUDProps> = ({ title, description, storageKe
     }
   };
 
-  const openModal = (item: any | null = null) => {
+  const openModal = (item: Record<string, unknown> | null = null) => {
     if (item) {
       setEditingItem(item);
       setFormData({ ...item });
@@ -82,7 +82,7 @@ const GenericCRUD: React.FC<GenericCRUDProps> = ({ title, description, storageKe
   };
 
   // Helper to resolve record logs dynamically with local storage persistence
-  const getItemLogs = (item: any): { timestamp: string; author: string; message: string }[] => {
+  const getItemLogs = (item: Record<string, unknown>): { timestamp: string; author: string; message: string }[] => {
     const customLogsKey = `mountainfleet_logs_${storageKey}_${item.id}`;
     const saved = localStorage.getItem(customLogsKey);
     if (saved) {
@@ -102,7 +102,7 @@ const GenericCRUD: React.FC<GenericCRUDProps> = ({ title, description, storageKe
   };
 
   // Helper to generate coordinates based on item ID hash
-  const getItemCoordinates = (item: any) => {
+  const getItemCoordinates = (item: Record<string, unknown>) => {
     const hash = item.id.split('').reduce((acc: number, char: string) => acc + char.charCodeAt(0), 0);
     const lat = (39.7392 + (hash % 100) * 0.001).toFixed(4);
     const lng = (-104.9903 - (hash % 80) * 0.001).toFixed(4);

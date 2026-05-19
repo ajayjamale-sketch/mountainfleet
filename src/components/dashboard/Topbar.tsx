@@ -14,7 +14,7 @@ export function Topbar({ onMenu }: { onMenu: () => void }) {
   useEffect(() => {
     const checkNotifications = () => {
       const items = storageService.get(STORAGE_KEYS.NOTIFICATIONS, initial);
-      setUnread(items.filter((n: any) => !n.read).length);
+      setUnread(items.filter((n: Record<string, unknown>) => !n.read).length);
     };
 
     checkNotifications();

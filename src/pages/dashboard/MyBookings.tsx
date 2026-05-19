@@ -15,7 +15,7 @@ const MyBookings: React.FC = () => {
     return storageService.get(STORAGE_KEYS.BOOKINGS, initialBookings);
   }, []);
 
-  const filteredBookings = bookings.filter((b: any) => {
+  const filteredBookings = bookings.filter((b: Record<string, unknown>) => {
     const matchesSearch = b.service.toLowerCase().includes(searchTerm.toLowerCase()) || 
                           b.pickup.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesStatus = statusFilter === 'All' || b.status === statusFilter;
@@ -32,7 +32,7 @@ const MyBookings: React.FC = () => {
     const headers = ['ID', 'Service Name', 'Origin Hub', 'Destination Node', 'Onboarding Date', 'Sync Time', 'Payload Weight (kg)', 'Total Value ($)', 'Status', 'Created At'];
     
     // Map bookings to CSV rows
-    const rows = bookings.map((b: any) => [
+    const rows = bookings.map((b: Record<string, unknown>) => [
       b.id || '',
       `"${(b.service || '').replace(/"/g, '""')}"`,
       `"${(b.pickup || '').replace(/"/g, '""')}"`,
@@ -46,7 +46,7 @@ const MyBookings: React.FC = () => {
     ]);
 
     // Construct CSV content
-    const csvContent = [headers.join(','), ...rows.map((row: any) => row.join(','))].join('\n');
+    const csvContent = [headers.join(','), ...rows.map((row: Record<string, unknown>) => row.join(','))].join('\n');
     
     // Create blob and trigger native file download
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
@@ -110,7 +110,7 @@ const MyBookings: React.FC = () => {
       {/* Bookings Grid */}
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
         <AnimatePresence mode="popLayout">
-          {filteredBookings.map((booking: any, i: number) => (
+          {filteredBookings.map((booking: Record<string, unknown>, i: number) => (
             <motion.div
               key={booking.id}
               layout

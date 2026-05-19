@@ -15,7 +15,7 @@ const STORAGE_KEYS = {
 };
 
 export const storageService = {
-  get: (key: string, initialData: any) => {
+  get: (key: string, initialData: Record<string, unknown>) => {
     const data = localStorage.getItem(key);
     if (!data) {
       localStorage.setItem(key, JSON.stringify(initialData));
@@ -24,12 +24,12 @@ export const storageService = {
     return JSON.parse(data);
   },
 
-  set: (key: string, data: any) => {
+  set: (key: string, data: Record<string, unknown>) => {
     localStorage.setItem(key, JSON.stringify(data));
   },
 
   // Generic CRUD
-  addItem: (key: string, item: any) => {
+  addItem: (key: string, item: Record<string, unknown>) => {
     const data = storageService.get(key, []);
     const newItem = { ...item, id: Date.now().toString() };
     const updatedData = [...data, newItem];
@@ -37,16 +37,16 @@ export const storageService = {
     return newItem;
   },
 
-  updateItem: (key: string, id: string, updatedItem: any) => {
+  updateItem: (key: string, id: string, updatedItem: Record<string, unknown>) => {
     const data = storageService.get(key, []);
-    const updatedData = data.map((item: any) => (item.id === id ? { ...item, ...updatedItem } : item));
+    const updatedData = data.map((item: Record<string, unknown>) => (item.id === id ? { ...item, ...updatedItem } : item));
     storageService.set(key, updatedData);
     return updatedItem;
   },
 
   deleteItem: (key: string, id: string) => {
     const data = storageService.get(key, []);
-    const updatedData = data.filter((item: any) => item.id !== id);
+    const updatedData = data.filter((item: Record<string, unknown>) => item.id !== id);
     storageService.set(key, updatedData);
   },
 };

@@ -52,7 +52,7 @@ const BookVehicle: React.FC = () => {
     },
   ];
 
-  const handleBook = (v: any) => {
+  const handleBook = (v: Record<string, unknown>) => {
     storageService.addItem(STORAGE_KEYS.BOOKINGS, { 
       ...bookingData, 
       service: v.name, 

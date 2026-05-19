@@ -46,7 +46,7 @@ const ServicesPage: React.FC = () => {
               <h2 className="text-3xl sm:text-5xl font-black uppercase tracking-tighter mb-6">Our Workflow</h2>
               <p className="text-slate-500 dark:text-slate-400 font-medium leading-relaxed">We follow a rigorous, data-driven process to ensure your fleet operations are optimized from day one.</p>
             </div>
-            <div className="bg-primary/5 border border-primary/20 p-4 text-xs font-mono uppercase tracking-widest text-primary">
+            <div className="bg-primary/5 border border-primary/20 p-4 text-xs font-mono uppercase tracking-widest text-primary rounded-xl">
               System_Status: Optimized
             </div>
           </div>
@@ -65,9 +65,9 @@ const ServicesPage: React.FC = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.2 }}
-                className="bg-card border border-border p-8 relative hover:border-primary transition-colors group"
+                className="bg-card border border-border p-8 relative hover:border-primary transition-colors group rounded-[24px]"
               >
-                <div className="w-12 h-12 bg-secondary text-white flex items-center justify-center mb-6 group-hover:bg-primary transition-colors">
+                <div className="w-12 h-12 bg-secondary text-white flex items-center justify-center mb-6 group-hover:bg-primary transition-colors rounded-xl">
                   <step.icon size={24} />
                 </div>
                 <h3 className="text-xl font-black uppercase tracking-tight mb-4">{step.title}</h3>
@@ -111,7 +111,7 @@ const ServicesPage: React.FC = () => {
               initial={{ opacity: 0, scale: 0.95 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
-              className="relative aspect-video bg-background border border-border overflow-hidden"
+              className="relative aspect-video bg-background border border-border overflow-hidden rounded-[32px]"
             >
               <img src="https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?auto=format&fit=crop&q=80&w=1000" alt="Global Network" className="w-full h-full object-cover opacity-80 hover:scale-105 transition-all duration-700" />
               <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
@@ -145,7 +145,7 @@ const ServicesPage: React.FC = () => {
                 whileHover={{ opacity: 1, scale: 1.05 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1 }}
-                className="h-16 flex flex-col items-center justify-center border border-border bg-card p-4 hover:border-primary transition-all cursor-pointer group"
+                className="h-16 flex flex-col items-center justify-center border border-border bg-card p-4 hover:border-primary transition-all cursor-pointer group rounded-2xl"
               >
                 <partner.icon size={18} className="text-slate-400 group-hover:text-primary mb-2 transition-colors" />
                 <div className="text-[10px] font-black tracking-tighter uppercase italic text-slate-500 group-hover:text-secondary dark:group-hover:text-white transition-colors">{partner.name}</div>
