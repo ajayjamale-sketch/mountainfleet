@@ -9,6 +9,9 @@ const STORAGE_KEYS = {
   AUTH: 'mf_auth_session',
   NEWSLETTER: 'mf_newsletter_subs',
   NOTIFICATIONS: 'mf_notifications',
+  DOCUMENTS: 'mf_documents',
+  MESSAGES: 'mf_messages',
+  PREFERENCES: 'mf_preferences',
 };
 
 export const storageService = {

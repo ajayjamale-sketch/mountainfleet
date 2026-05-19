@@ -179,7 +179,7 @@ const BookVehicle: React.FC = () => {
                 <button 
                   onClick={() => setStep(2)}
                   disabled={!bookingData.pickup || !bookingData.destination}
-                  className="w-full sm:w-auto bg-primary hover:bg-primary/90 text-white px-8 py-4.5 rounded-[20px] font-black text-sm shadow-2xl shadow-primary/30 transition-all active:scale-[0.98] disabled:opacity-40 flex items-center justify-center space-x-3"
+                  className="w-full sm:w-auto bg-primary hover:bg-primary/90 text-white px-8 py-4 rounded-[20px] font-black text-sm shadow-2xl shadow-primary/30 transition-all active:scale-[0.98] disabled:opacity-40 flex items-center justify-center space-x-3"
                 >
                   <span>Select Network Fleet</span>
                   <ArrowRight size={18} />
@@ -311,14 +311,14 @@ const BookVehicle: React.FC = () => {
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link 
                 to="/dashboard/track"
-                className="bg-primary hover:bg-primary/90 text-white px-8 py-4.5 rounded-[20px] font-black text-sm transition-all active:scale-[0.98] shadow-2xl shadow-primary/30 flex items-center justify-center space-x-3"
+                className="bg-primary hover:bg-primary/90 text-white px-8 py-4 rounded-[20px] font-black text-sm transition-all active:scale-[0.98] shadow-2xl shadow-primary/30 flex items-center justify-center space-x-3"
               >
                 <Truck size={18} />
                 <span>Track Live Node</span>
               </Link>
               <button 
                 onClick={() => setStep(1)}
-                className="bg-slate-100 dark:bg-white/5 border border-border text-secondary dark:text-white px-8 py-4.5 rounded-[20px] font-black text-sm transition-all active:scale-[0.98] hover:bg-slate-200 dark:hover:bg-white/10"
+                className="bg-slate-100 dark:bg-white/5 border border-border text-secondary dark:text-white px-8 py-4 rounded-[20px] font-black text-sm transition-all active:scale-[0.98] hover:bg-slate-200 dark:hover:bg-white/10"
               >
                 New Orchestration
               </button>

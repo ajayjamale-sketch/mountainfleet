@@ -53,6 +53,8 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
+				success: 'hsl(var(--success))',
+				warning: 'hsl(var(--warning))',
 				'mountain-blue': '#0369A1',
 				'slate-grey': '#334155',
 				'accent-orange': '#F97316',
@@ -73,17 +75,33 @@ export default {
 				sm: 'calc(var(--radius) - 4px)'
 			},
 			fontFamily: {
-				sans: ['Inter', 'system-ui', 'sans-serif'],
+				sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
 				display: ['"Space Grotesk"', 'Inter', 'sans-serif'],
+				mono: ['"JetBrains Mono"', 'monospace'],
 			},
 			keyframes: {
 				'accordion-down': { from: { height: '0' }, to: { height: 'var(--radix-accordion-content-height)' } },
-				'accordion-up': { from: { height: 'var(--radix-accordion-content-height)' }, to: { height: '0' } }
+				'accordion-up': { from: { height: 'var(--radix-accordion-content-height)' }, to: { height: '0' } },
+				'fade-in': { from: { opacity: '0' }, to: { opacity: '1' } },
+				'fade-out': { from: { opacity: '1' }, to: { opacity: '0' } },
+				'slide-up': { from: { opacity: '0', transform: 'translateY(12px)' }, to: { opacity: '1', transform: 'translateY(0)' } },
+				'slide-down': { from: { opacity: '0', transform: 'translateY(-12px)' }, to: { opacity: '1', transform: 'translateY(0)' } },
+				'scale-in': { from: { opacity: '0', transform: 'scale(0.95)' }, to: { opacity: '1', transform: 'scale(1)' } },
+				'shimmer': { '0%': { backgroundPosition: '-200% 0' }, '100%': { backgroundPosition: '200% 0' } },
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
-			}
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				'fade-in': 'fade-in 0.4s ease-out forwards',
+				'fade-out': 'fade-out 0.3s ease-out forwards',
+				'slide-up': 'slide-up 0.5s cubic-bezier(0.16,1,0.3,1) forwards',
+				'slide-down': 'slide-down 0.5s cubic-bezier(0.16,1,0.3,1) forwards',
+				'scale-in': 'scale-in 0.3s ease-out forwards',
+				'shimmer': 'shimmer 2s linear infinite',
+			},
+			screens: {
+				'3xl': '1920px',
+			},
 		}
 	},
 	plugins: [require("tailwindcss-animate")],

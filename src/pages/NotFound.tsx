@@ -1,15 +1,38 @@
-import { Link } from "react-router-dom";
-import { Button } from "@/components/ui/Button";
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { Home, ArrowLeft, Search, Ship } from 'lucide-react';
 
-export default function NotFound() {
+const NotFound: React.FC = () => {
   return (
-    <div className="min-h-screen flex items-center justify-center gradient-hero text-white p-6">
-      <div className="text-center max-w-md">
-        <div className="text-8xl font-bold text-gradient" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>404</div>
-        <h1 className="mt-4 text-3xl font-bold">Off the map</h1>
-        <p className="mt-2 text-slate-400">The page you're looking for has driven off into the mountains.</p>
-        <Link to="/" className="inline-block mt-6"><Button variant="accent" size="lg">Back to base camp</Button></Link>
+    <div className="min-h-screen flex items-center justify-center bg-background px-6">
+      <div className="max-w-lg text-center animate-fade-in">
+        <div className="inline-flex h-20 w-20 items-center justify-center rounded-2xl bg-primary/10 text-primary mb-8">
+          <Ship size={40} />
+        </div>
+        <h1 className="text-8xl font-bold text-foreground tracking-tighter">404</h1>
+        <h2 className="mt-4 text-xl font-semibold text-foreground">Page Not Found</h2>
+        <p className="mt-3 text-sm text-muted-foreground leading-relaxed max-w-md mx-auto">
+          The page you're looking for doesn't exist or has been moved. Check the URL or navigate back to safety.
+        </p>
+        <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
+          <Link
+            to="/"
+            className="inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-medium text-white transition hover:bg-primary/90 shadow-lg shadow-primary/20"
+          >
+            <Home size={16} />
+            Go Home
+          </Link>
+          <button
+            onClick={() => window.history.back()}
+            className="inline-flex items-center gap-2 rounded-xl border border-border bg-card px-6 py-3 text-sm font-medium text-foreground transition hover:bg-slate-50 dark:hover:bg-slate-800"
+          >
+            <ArrowLeft size={16} />
+            Go Back
+          </button>
+        </div>
       </div>
     </div>
   );
-}
+};
+
+export default NotFound;

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, Ship, LogOut, LayoutDashboard, ChevronRight, User, Bell, Settings, Handshake, Truck, DollarSign, Newspaper } from 'lucide-react';
+import { Menu, X, Ship, LogOut, LayoutDashboard, ChevronRight, Handshake, Truck, DollarSign, Newspaper, HelpCircle } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { cn } from '../utils/cn';
 import ThemeToggle from './ThemeToggle';
@@ -18,6 +18,11 @@ const Navbar: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Close mobile menu on route change
+  useEffect(() => {
+    setIsOpen(false);
+  }, [location.pathname]);
+
   const navLinks = [
     { name: 'Services', href: '/services', icon: Handshake },
     { name: 'Fleet', href: '/fleet', icon: Truck },
@@ -30,89 +35,89 @@ const Navbar: React.FC = () => {
       className={cn(
         'fixed top-0 left-0 right-0 z-50 transition-all duration-300',
         scrolled
-          ? 'bg-background/95 backdrop-blur-md border-b border-border py-3 shadow-sm'
-          : 'bg-transparent border-b border-transparent py-6'
+          ? 'bg-white/80 dark:bg-slate-950/80 backdrop-blur-xl border-b border-border shadow-sm py-3'
+          : 'bg-transparent border-b border-transparent py-5'
       )}
+      role="navigation"
+      aria-label="Main navigation"
     >
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 flex items-center justify-between">
-        <Link to="/" className="flex items-center space-x-3 group relative">
-          <div className="w-10 h-10 bg-primary flex items-center justify-center transition-all">
-            <Ship className="text-white w-6 h-6" />
+        {/* Logo */}
+        <Link to="/" className="flex items-center gap-3 group" aria-label="MountainFleet Home">
+          <div className="w-9 h-9 bg-gradient-to-br from-sky-500 to-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-sky-500/20">
+            <Ship className="text-white w-5 h-5" />
           </div>
           <div className="flex flex-col">
-            <span className="text-base font-black text-secondary dark:text-white tracking-tighter leading-none">
-              MOUNTAINFLEET
+            <span className="text-sm font-bold text-foreground tracking-tight leading-none">
+              MountainFleet
             </span>
-            <span className="text-[8px] font-bold text-primary tracking-[0.2em] uppercase mt-1 leading-none">System Hub</span>
+            <span className="text-[9px] font-medium text-primary mt-0.5 leading-none">Logistics OS</span>
           </div>
         </Link>
 
         {/* Desktop Links */}
-        <div className="hidden lg:flex items-center space-x-8">
-          <div className="flex items-center space-x-8">
-            {navLinks.map((link) => (
-              <Link
-                key={link.name}
-                to={link.href}
-                className={cn(
-                  'text-[10px] font-black uppercase tracking-widest transition-all hover:text-primary relative py-2',
-                  location.pathname === link.href ? 'text-primary' : 'text-slate-500 dark:text-slate-400'
-                )}
-              >
-                <div className="flex items-center space-x-2">
-                  {link.icon && <link.icon size={12} className="text-primary/70" />}
-                  <span>{link.name}</span>
-                </div>
-                {location.pathname === link.href && (
-                   <span className="absolute -bottom-1 left-0 w-full h-0.5 bg-primary" />
-                )}
-              </Link>
-            ))}
-          </div>
+        <div className="hidden lg:flex items-center gap-1">
+          {navLinks.map((link) => (
+            <Link
+              key={link.name}
+              to={link.href}
+              className={cn(
+                'px-4 py-2 rounded-lg text-sm font-medium transition-colors',
+                location.pathname === link.href
+                  ? 'text-primary bg-primary/5'
+                  : 'text-muted-foreground hover:text-foreground hover:bg-slate-100 dark:hover:bg-slate-800'
+              )}
+            >
+              {link.name}
+            </Link>
+          ))}
+        </div>
+        
+        {/* Desktop Actions */}
+        <div className="hidden lg:flex items-center gap-3">
+          <ThemeToggle />
           
-          <div className="flex items-center space-x-6 ml-4 pl-4 border-l border-border">
-            <ThemeToggle />
-            
-            {user ? (
-              <div className="flex items-center space-x-3">
-                <Link 
-                  to="/dashboard" 
-                  className="bg-primary text-white px-5 py-2.5 font-bold text-[10px] uppercase tracking-widest shadow-lg shadow-primary/20 transition-all active:translate-y-[1px] flex items-center space-x-2"
-                >
-                  <LayoutDashboard size={14} />
-                  <span>Dashboard</span>
-                </Link>
-                <button
-                  onClick={logout}
-                  className="p-2.5 bg-slate-100 dark:bg-white/5 text-slate-500 hover:text-red-500 transition-all border border-border"
-                  title="Logout"
-                >
-                  <LogOut size={16} />
-                </button>
-              </div>
-            ) : (
-              <div className="flex items-center space-x-6">
-                <Link to="/login" className="text-[10px] font-black uppercase tracking-widest text-slate-500 hover:text-primary transition-colors">
-                  Login
-                </Link>
-                <Link
-                  to="/register"
-                  className="bg-primary text-white px-6 py-2.5 text-[10px] font-black uppercase tracking-widest transition-all active:translate-y-[1px] flex items-center space-x-2"
-                >
-                  <span>Get Started</span>
-                  <ChevronRight size={14} />
-                </Link>
-              </div>
-            )}
-          </div>
+          {user ? (
+            <div className="flex items-center gap-2">
+              <Link 
+                to="/dashboard" 
+                className="inline-flex items-center gap-2 bg-primary text-white px-4 py-2.5 rounded-xl text-sm font-medium shadow-lg shadow-primary/20 transition hover:bg-primary/90"
+              >
+                <LayoutDashboard size={16} />
+                <span>Dashboard</span>
+              </Link>
+              <button
+                onClick={logout}
+                className="p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-muted-foreground hover:text-destructive transition"
+                aria-label="Logout"
+              >
+                <LogOut size={16} />
+              </button>
+            </div>
+          ) : (
+            <div className="flex items-center gap-2">
+              <Link to="/login" className="px-4 py-2.5 rounded-xl text-sm font-medium text-muted-foreground hover:text-foreground transition">
+                Log in
+              </Link>
+              <Link
+                to="/register"
+                className="inline-flex items-center gap-2 bg-primary text-white px-5 py-2.5 rounded-xl text-sm font-medium shadow-lg shadow-primary/20 transition hover:bg-primary/90"
+              >
+                Get Started
+                <ChevronRight size={16} />
+              </Link>
+            </div>
+          )}
         </div>
 
         {/* Mobile Toggle */}
-        <div className="lg:hidden flex items-center space-x-3">
+        <div className="lg:hidden flex items-center gap-2">
           <ThemeToggle />
           <button 
-            className="w-10 h-10 flex items-center justify-center bg-slate-100 dark:bg-white/5 text-secondary dark:text-white border border-border" 
+            className="p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-foreground" 
             onClick={() => setIsOpen(!isOpen)}
+            aria-label={isOpen ? "Close menu" : "Open menu"}
+            aria-expanded={isOpen}
           >
             {isOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
@@ -126,59 +131,51 @@ const Navbar: React.FC = () => {
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            className="lg:hidden absolute top-full left-0 right-0 bg-background/98 backdrop-blur-xl border-b border-border overflow-hidden shadow-2xl"
+            className="lg:hidden absolute top-full left-0 right-0 bg-white/95 dark:bg-slate-950/95 backdrop-blur-xl border-b border-border shadow-xl"
           >
-            <div className="px-6 py-10 space-y-6">
+            <div className="px-6 py-6 space-y-1">
               {navLinks.map((link) => (
                 <Link
                   key={link.name}
                   to={link.href}
-                  onClick={() => setIsOpen(false)}
-                  className="flex items-center justify-between text-base font-black text-secondary dark:text-white hover:text-primary transition-colors group uppercase tracking-tighter"
+                  className="flex items-center justify-between py-3 text-sm font-medium text-foreground hover:text-primary transition"
                 >
-                  <div className="flex items-center space-x-3">
-                    {link.icon && <link.icon size={18} className="text-primary" />}
+                  <div className="flex items-center gap-3">
+                    <link.icon size={18} className="text-primary" />
                     <span>{link.name}</span>
                   </div>
-                  <ChevronRight size={16} className="opacity-40 group-hover:opacity-100 group-hover:translate-x-1 transition-all text-primary" />
+                  <ChevronRight size={16} className="text-muted-foreground" />
                 </Link>
               ))}
-              <div className="pt-6 border-t border-border flex flex-col space-y-4">
+              <div className="pt-4 border-t border-border flex flex-col gap-2">
                 {user ? (
                   <>
                     <Link
                       to="/dashboard"
-                      onClick={() => setIsOpen(false)}
-                      className="bg-primary text-white py-4 font-black text-xs uppercase tracking-widest flex items-center justify-center space-x-3"
+                      className="w-full bg-primary text-white py-3 rounded-xl font-medium text-sm text-center transition hover:bg-primary/90"
                     >
-                      <LayoutDashboard size={18} />
-                      <span>Go to Dashboard</span>
+                      Go to Dashboard
                     </Link>
                     <button
-                      onClick={() => {
-                        logout();
-                        setIsOpen(false);
-                      }}
-                      className="py-4 bg-red-500/5 text-red-500 font-black text-xs uppercase tracking-widest border border-red-500/10"
+                      onClick={logout}
+                      className="w-full py-3 rounded-xl bg-rose-500/10 text-rose-500 font-medium text-sm"
                     >
-                      <span>Terminate Session</span>
+                      Log Out
                     </button>
                   </>
                 ) : (
                   <>
                     <Link
                       to="/register"
-                      onClick={() => setIsOpen(false)}
-                      className="bg-primary text-white py-4 text-center font-black text-xs uppercase tracking-widest"
+                      className="w-full bg-primary text-white py-3 rounded-xl font-medium text-sm text-center"
                     >
-                      Initialize Account
+                      Get Started
                     </Link>
                     <Link 
                       to="/login" 
-                      onClick={() => setIsOpen(false)} 
-                      className="py-4 bg-slate-100 dark:bg-white/5 text-center text-secondary dark:text-white font-black text-xs uppercase tracking-widest border border-border"
+                      className="w-full py-3 rounded-xl bg-slate-100 dark:bg-slate-800 text-foreground font-medium text-sm text-center"
                     >
-                      Login to Portal
+                      Log In
                     </Link>
                   </>
                 )}

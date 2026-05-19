@@ -4,6 +4,7 @@ import { AuthProvider } from './context/AuthContext';
 import { ThemeProvider } from './context/ThemeContext';
 import ProtectedRoute from './routes/ProtectedRoute';
 import ScrollToTop from './components/ScrollToTop';
+import AppErrorBoundary from './components/AppErrorBoundary';
 
 // Layouts
 import MainLayout from './layouts/MainLayout';
@@ -27,6 +28,9 @@ const BookVehicle = lazy(() => import('./pages/dashboard/BookVehicle'));
 const MyBookings = lazy(() => import('./pages/dashboard/MyBookings'));
 const TrackTrip = lazy(() => import('./pages/dashboard/TrackTrip'));
 const SettingsPage = lazy(() => import('./pages/dashboard/SettingsPage'));
+const HelpCenter = lazy(() => import('./pages/dashboard/HelpCenter'));
+const DocumentsPage = lazy(() => import('./pages/dashboard/DocumentsPage'));
+const MessagesPage = lazy(() => import('./pages/dashboard/MessagesPage'));
 const Notifications = lazy(() => import('./pages/Notifications'));
 
 const AboutPage = lazy(() => import('./pages/AboutPage'));
@@ -47,13 +51,19 @@ const TrialRequest = lazy(() => import('./pages/TrialRequest'));
 const AddonDetails = lazy(() => import('./pages/AddonDetails'));
 const NewsDetail = lazy(() => import('./pages/NewsDetail'));
 const SecurityDocsPage = lazy(() => import('./pages/SecurityDocsPage'));
+const NotFound = lazy(() => import('./pages/NotFound'));
 
 
 const LoadingFallback = () => (
   <div className="h-screen w-full flex items-center justify-center bg-background text-foreground">
     <div className="flex flex-col items-center gap-4">
-      <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
-      <p className="text-primary font-bold tracking-widest animate-pulse uppercase">MountainFleet</p>
+      <div className="relative">
+        <div className="w-12 h-12 rounded-2xl border-2 border-primary/20 border-t-primary animate-spin" />
+      </div>
+      <div className="flex flex-col items-center gap-1">
+        <p className="text-sm font-semibold text-foreground">MountainFleet</p>
+        <p className="text-xs text-muted-foreground animate-pulse">Loading...</p>
+      </div>
     </div>
   </div>
 );
@@ -63,9 +73,10 @@ const App: React.FC = () => {
     <Router>
       <ThemeProvider>
         <AuthProvider>
-          <Suspense fallback={<LoadingFallback />}>
-            <ScrollToTop />
-            <Routes>
+          <AppErrorBoundary>
+            <Suspense fallback={<LoadingFallback />}>
+              <ScrollToTop />
+              <Routes>
               {/* Public Routes */}
               <Route path="/" element={<MainLayout />}>
                 <Route index element={<LandingPage />} />
@@ -80,7 +91,6 @@ const App: React.FC = () => {
                 <Route path="trial" element={<TrialRequest />} />
                 <Route path="addon/:id" element={<AddonDetails />} />
                 <Route path="news/:id" element={<NewsDetail />} />
-
                 <Route path="news" element={<NewsPage />} />
                 <Route path="privacy" element={<PrivacyPage />} />
                 <Route path="terms" element={<TermsPage />} />
@@ -93,6 +103,8 @@ const App: React.FC = () => {
               {/* Auth Routes */}
               <Route path="/login" element={<LoginPage />} />
               <Route path="/register" element={<RegisterPage />} />
+              {/* Redirect /signup to /register */}
+              <Route path="/signup" element={<Navigate to="/register" replace />} />
 
               {/* Protected Dashboard Routes */}
               <Route path="/dashboard" element={<ProtectedRoute />}>
@@ -119,16 +131,19 @@ const App: React.FC = () => {
                   <Route path="my-bookings" element={<MyBookings />} />
                   <Route path="track" element={<TrackTrip />} />
                   
+                  {/* Shared Routes */}
                   <Route path="notifications" element={<Notifications />} />
                   <Route path="settings" element={<SettingsPage />} />
-                  <Route path="help" element={<div className="text-foreground">Support Center Coming Soon</div>} />
+                  <Route path="help" element={<HelpCenter />} />
+                  <Route path="documents" element={<DocumentsPage />} />
+                  <Route path="messages" element={<MessagesPage />} />
                 </Route>
               </Route>
 
-              {/* 404 Redirect */}
-              <Route path="*" element={<Navigate to="/" replace />} />
-            </Routes>
-          </Suspense>
+              <Route path="*" element={<NotFound />} />
+              </Routes>
+            </Suspense>
+          </AppErrorBoundary>
         </AuthProvider>
       </ThemeProvider>
     </Router>

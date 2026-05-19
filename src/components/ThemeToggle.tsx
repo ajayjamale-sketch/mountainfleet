@@ -1,25 +1,45 @@
 import React from 'react';
-import { Sun, Moon } from 'lucide-react';
+import { Sun, Moon, Monitor } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
-import { motion } from 'framer-motion';
+import { cn } from '../utils/cn';
 
-const ThemeToggle: React.FC = () => {
+const ThemeToggle: React.FC<{ className?: string }> = ({ className }) => {
   const { theme, setTheme } = useTheme();
 
+  const modes: { value: 'light' | 'system' | 'dark'; icon: React.ReactNode; label: string }[] = [
+    { value: 'light', icon: <Sun size={14} />, label: 'Light' },
+    { value: 'system', icon: <Monitor size={14} />, label: 'System' },
+    { value: 'dark', icon: <Moon size={14} />, label: 'Dark' },
+  ];
+
   return (
-    <button
-      onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-      className="p-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-primary transition-all active:scale-90"
-      title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+    <div
+      className={cn(
+        'inline-flex items-center gap-0.5 rounded-xl bg-slate-100 dark:bg-slate-800 p-1',
+        className
+      )}
+      role="radiogroup"
+      aria-label="Theme selection"
     >
-      <motion.div
-        initial={false}
-        animate={{ rotate: theme === 'dark' ? 180 : 0 }}
-        transition={{ type: 'spring', stiffness: 200, damping: 10 }}
-      >
-        {theme === 'dark' ? <Moon size={20} /> : <Sun size={20} />}
-      </motion.div>
-    </button>
+      {modes.map((mode) => (
+        <button
+          key={mode.value}
+          type="button"
+          role="radio"
+          aria-checked={theme === mode.value}
+          aria-label={`${mode.label} theme`}
+          onClick={() => setTheme(mode.value)}
+          className={cn(
+            'relative flex items-center justify-center rounded-lg p-2 transition-all duration-200',
+            theme === mode.value
+              ? 'bg-white dark:bg-slate-700 text-primary shadow-sm'
+              : 'text-slate-400 hover:text-slate-600 dark:hover:text-slate-300'
+          )}
+        >
+          {mode.icon}
+        </button>
+      ))}
+    </div>
   );
 };
 

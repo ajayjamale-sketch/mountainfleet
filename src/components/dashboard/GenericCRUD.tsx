@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { STORAGE_KEYS, storageService } from '../../services/storageService';
-import { Plus, Search, Edit2, Trash2, X, MoreVertical, MapPin, MessageSquare } from 'lucide-react';
+import { 
+  Plus, Search, Edit2, Trash2, X, MoreVertical, 
+  MapPin, MessageSquare, Radio, Activity, Clock, User as UserIcon
+} from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { toast } from 'react-hot-toast';
 
@@ -26,6 +30,12 @@ const GenericCRUD: React.FC<GenericCRUDProps> = ({ title, description, storageKe
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingItem, setEditingItem] = useState<any | null>(null);
   const [formData, setFormData] = useState<any>({});
+
+  // Telemetry and Communication Drawer States
+  const [trackingItem, setTrackingItem] = useState<any | null>(null);
+  const [messagingItem, setMessagingItem] = useState<any | null>(null);
+  const [newLogMessage, setNewLogMessage] = useState('');
+  const [logRefreshKey, setLogRefreshKey] = useState(0);
 
   useEffect(() => {
     const data = storageService.get(storageKey, initialData);
@@ -69,6 +79,57 @@ const GenericCRUD: React.FC<GenericCRUDProps> = ({ title, description, storageKe
   const closeModal = () => {
     setIsModalOpen(false);
     setEditingItem(null);
+  };
+
+  // Helper to resolve record logs dynamically with local storage persistence
+  const getItemLogs = (item: any): { timestamp: string; author: string; message: string }[] => {
+    const customLogsKey = `mountainfleet_logs_${storageKey}_${item.id}`;
+    const saved = localStorage.getItem(customLogsKey);
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch (e) {
+        // Fallback below
+      }
+    }
+    
+    // Default fallback audit logs
+    const itemName = item.name || item.title || item.operator || item.vehicle || item.id.slice(0, 8);
+    return [
+      { timestamp: '2026-05-16 10:24:12', author: 'SYSTEM_ADMIN', message: `Identity node [${itemName}] successfully registered in MountainFleet database.` },
+      { timestamp: '2026-05-16 14:15:30', author: 'GATEWAY_NODE', message: `Operational status synchronized. Current protocol level active.` }
+    ];
+  };
+
+  // Helper to generate coordinates based on item ID hash
+  const getItemCoordinates = (item: any) => {
+    const hash = item.id.split('').reduce((acc: number, char: string) => acc + char.charCodeAt(0), 0);
+    const lat = (39.7392 + (hash % 100) * 0.001).toFixed(4);
+    const lng = (-104.9903 - (hash % 80) * 0.001).toFixed(4);
+    const speed = hash % 2 === 0 ? `${45 + (hash % 30)} mph` : 'Idle';
+    const signal = `${85 + (hash % 15)}% Secure`;
+    return { lat, lng, speed, signal };
+  };
+
+  // Handle adding log comments permanently to local storage
+  const handleAddLog = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!messagingItem || !newLogMessage.trim()) return;
+
+    const currentLogs = getItemLogs(messagingItem);
+    const newLog = {
+      timestamp: new Date().toISOString().replace('T', ' ').slice(0, 19),
+      author: 'SYSTEM_ADMIN',
+      message: newLogMessage.trim()
+    };
+
+    const updatedLogs = [newLog, ...currentLogs];
+    const customLogsKey = `mountainfleet_logs_${storageKey}_${messagingItem.id}`;
+    localStorage.setItem(customLogsKey, JSON.stringify(updatedLogs));
+
+    setNewLogMessage('');
+    setLogRefreshKey(prev => prev + 1);
+    toast.success('Secure log broadcasted and saved');
   };
 
   const filteredItems = items.filter(item => 
@@ -130,7 +191,7 @@ const GenericCRUD: React.FC<GenericCRUDProps> = ({ title, description, storageKe
                     <td key={col.key} className="px-8 py-4 text-xs text-secondary dark:text-slate-300 font-bold uppercase tracking-tight">
                       {col.type === 'status' ? (
                         <span className={`px-3 py-1 border text-[8px] font-black uppercase tracking-widest ${
-                          item[col.key] === 'Active' || item[col.key] === 'Completed' || item[col.key] === 'Approved' 
+                          item[col.key] === 'Active' || item[col.key] === 'Completed' || item[col.key] === 'Approved' || item[col.key] === 'Available' || item[col.key] === 'On Trip'
                             ? 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20' 
                             : 'bg-red-500/10 text-red-500 border-red-500/20'
                         }`}>
@@ -144,14 +205,14 @@ const GenericCRUD: React.FC<GenericCRUDProps> = ({ title, description, storageKe
                   <td className="px-8 py-4 text-right">
                     <div className="flex items-center justify-end space-x-2">
                       <button 
-                        onClick={() => toast.success(`INITIATING LIVE TRACKING FOR ${item.id.slice(0, 8)}...`)} 
+                        onClick={() => setTrackingItem(item)} 
                         className="p-2 bg-slate-50 dark:bg-white/5 border border-border text-slate-500 hover:text-accent transition-all"
                         title="Live Approach"
                       >
                         <MapPin size={14} />
                       </button>
                       <button 
-                        onClick={() => toast.success(`ENCRYPTED CHANNEL OPENED WITH ${item.id.slice(0, 8)}`)} 
+                        onClick={() => setMessagingItem(item)} 
                         className="p-2 bg-slate-50 dark:bg-white/5 border border-border text-slate-500 hover:text-primary transition-all"
                         title="Secure Message"
                       >
@@ -201,7 +262,7 @@ const GenericCRUD: React.FC<GenericCRUDProps> = ({ title, description, storageKe
                    <p className="text-[8px] font-black text-slate-400 uppercase tracking-widest mb-1">{col.label}</p>
                    {col.type === 'status' ? (
                      <span className={`inline-block px-2 py-0.5 border text-[7px] font-black uppercase tracking-widest ${
-                       item[col.key] === 'Active' || item[col.key] === 'Completed' || item[col.key] === 'Approved' 
+                       item[col.key] === 'Active' || item[col.key] === 'Completed' || item[col.key] === 'Approved' || item[col.key] === 'Available' || item[col.key] === 'On Trip'
                          ? 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20' 
                          : 'bg-red-500/10 text-red-500 border-red-500/20'
                      }`}>
@@ -213,62 +274,239 @@ const GenericCRUD: React.FC<GenericCRUDProps> = ({ title, description, storageKe
                 </div>
               ))}
             </div>
+
+            {/* Direct Mobile Quick Actions */}
+            <div className="flex justify-between items-center pt-4 border-t border-border">
+               <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Direct Actions</span>
+               <div className="flex space-x-2">
+                 <button 
+                   onClick={() => setTrackingItem(item)} 
+                   className="p-3 bg-slate-50 dark:bg-white/5 border border-border text-slate-500 hover:text-accent transition-all rounded-xl"
+                   title="Live Approach"
+                 >
+                   <MapPin size={16} />
+                 </button>
+                 <button 
+                   onClick={() => setMessagingItem(item)} 
+                   className="p-3 bg-slate-50 dark:bg-white/5 border border-border text-slate-500 hover:text-primary transition-all rounded-xl"
+                   title="Secure Message"
+                 >
+                   <MessageSquare size={16} />
+                 </button>
+               </div>
+            </div>
           </div>
         ))}
       </div>
 
       {/* Modal Overlay */}
-      <AnimatePresence>
-        {isModalOpen && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={closeModal} className="absolute inset-0 bg-background/80 backdrop-blur-sm" />
-            <motion.div initial={{ opacity: 0, scale: 0.98 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.98 }} className="relative w-full max-w-lg bg-card border border-border p-8 sm:p-10 shadow-2xl">
-              <div className="flex items-center justify-between mb-8 border-b border-border pb-6">
-                <h2 className="text-xl font-black text-secondary dark:text-white tracking-tighter uppercase">{editingItem ? 'Update' : 'Initialize'} Entity</h2>
-                <button onClick={closeModal} className="p-2 bg-slate-50 dark:bg-white/5 border border-border text-slate-400 hover:text-secondary transition-all">
-                  <X size={20} />
-                </button>
-              </div>
-              <form onSubmit={handleSave} className="space-y-4">
-                <div className="grid gap-4">
-                  {columns.map(col => (
-                    <div key={col.key}>
-                      <label className="block text-[9px] font-black text-slate-500 mb-1.5 uppercase tracking-widest ml-1">{col.label}</label>
-                      {col.type === 'select' || col.type === 'status' ? (
-                        <select 
-                          value={formData[col.key] || ''}
-                          onChange={(e) => setFormData({ ...formData, [col.key]: e.target.value })}
-                          className="w-full bg-slate-100 dark:bg-slate-800 border border-border p-3.5 text-[11px] font-bold text-secondary dark:text-white focus:border-primary outline-none uppercase tracking-widest cursor-pointer"
-                        >
-                          <option value="" className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white">SELECT {col.label.toUpperCase()}</option>
-                          {(col.options || (col.type === 'status' ? ['Active', 'Inactive', 'Completed', 'In Progress', 'Approved', 'Pending'] : [])).map(opt => (
-                            <option key={opt} value={opt} className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white">
-                              {opt.toUpperCase()}
-                            </option>
-                          ))}
-                        </select>
-                      ) : (
-                        <input 
-                          required
-                          type={col.type === 'number' ? 'number' : 'text'}
-                          value={formData[col.key] || ''}
-                          onChange={(e) => setFormData({ ...formData, [col.key]: col.type === 'number' ? Number(e.target.value) : e.target.value })}
-                          className="w-full bg-slate-100 dark:bg-slate-800 border border-border p-3.5 text-[11px] font-bold text-secondary dark:text-white focus:border-primary outline-none uppercase tracking-widest"
-                          placeholder={`Enter ${col.label.toUpperCase()}`}
+      {createPortal(
+        <AnimatePresence>
+          {isModalOpen && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={closeModal} className="absolute inset-0 bg-background/80 backdrop-blur-sm" />
+              <motion.div initial={{ opacity: 0, scale: 0.98 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.98 }} className="relative w-full max-w-lg bg-card border border-border p-8 sm:p-10 shadow-2xl">
+                <div className="flex items-center justify-between mb-8 border-b border-border pb-6">
+                  <h2 className="text-xl font-black text-secondary dark:text-white tracking-tighter uppercase">{editingItem ? 'Update' : 'Initialize'} Entity</h2>
+                  <button onClick={closeModal} className="p-2 bg-slate-50 dark:bg-white/5 border border-border text-slate-400 hover:text-secondary transition-all">
+                    <X size={20} />
+                  </button>
+                </div>
+                <form onSubmit={handleSave} className="space-y-4">
+                  <div className="grid gap-4">
+                    {columns.map(col => (
+                      <div key={col.key}>
+                        <label className="block text-[9px] font-black text-slate-500 mb-1.5 uppercase tracking-widest ml-1">{col.label}</label>
+                        {col.type === 'select' || col.type === 'status' ? (
+                          <select 
+                            value={formData[col.key] || ''}
+                            onChange={(e) => setFormData({ ...formData, [col.key]: e.target.value })}
+                            className="w-full bg-slate-100 dark:bg-slate-800 border border-border p-3.5 text-[11px] font-bold text-secondary dark:text-white focus:border-primary outline-none uppercase tracking-widest cursor-pointer"
+                          >
+                            <option value="" className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white">SELECT {col.label.toUpperCase()}</option>
+                            {(col.options || (col.type === 'status' ? ['Active', 'Inactive', 'Completed', 'In Progress', 'Approved', 'Pending', 'Available', 'On Trip', 'Off Duty'] : [])).map(opt => (
+                              <option key={opt} value={opt} className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white">
+                                {opt.toUpperCase()}
+                              </option>
+                            ))}
+                          </select>
+                        ) : (
+                          <input 
+                            required
+                            type={col.type === 'number' ? 'number' : 'text'}
+                            value={formData[col.key] || ''}
+                            onChange={(e) => setFormData({ ...formData, [col.key]: col.type === 'number' ? Number(e.target.value) : e.target.value })}
+                            className="w-full bg-slate-100 dark:bg-slate-800 border border-border p-3.5 text-[11px] font-bold text-secondary dark:text-white focus:border-primary outline-none uppercase tracking-widest"
+                            placeholder={`Enter ${col.label.toUpperCase()}`}
+                          />
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                  <div className="flex gap-3 pt-6">
+                    <button type="button" onClick={closeModal} className="flex-grow py-3.5 bg-slate-100 dark:bg-white/5 hover:bg-slate-200 text-secondary dark:text-white font-black text-[10px] uppercase tracking-widest border border-border">Cancel</button>
+                    <button type="submit" className="flex-grow py-3.5 bg-primary hover:bg-primary/90 text-white font-black text-[10px] uppercase tracking-widest shadow-xl shadow-primary/20 transition-all">Execute Sync</button>
+                  </div>
+                </form>
+              </motion.div>
+            </div>
+          )}
+        </AnimatePresence>,
+        document.body
+      )}
+
+      {/* 1. REAL-TIME TELEMETRY GEOGRAPHIC RADAR MODAL - Portaled */}
+      {createPortal(
+        <AnimatePresence>
+          {trackingItem && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center p-6">
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setTrackingItem(null)} className="absolute inset-0 bg-secondary/60 dark:bg-slate-950/80 backdrop-blur-md" />
+              <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }} className="relative w-full max-w-lg bg-card border border-border rounded-[32px] p-8 shadow-2xl text-center overflow-hidden">
+                <div className="flex justify-between items-center mb-6">
+                  <span className="flex items-center space-x-2 text-[10px] font-black bg-primary/10 text-primary px-4 py-1.5 rounded-full uppercase tracking-widest">
+                    <Radio size={12} className="animate-pulse" />
+                    <span>Live Tracking Node</span>
+                  </span>
+                  <button onClick={() => setTrackingItem(null)} className="w-10 h-10 flex items-center justify-center bg-slate-50 dark:bg-white/5 border border-border rounded-xl text-slate-400 hover:text-secondary dark:hover:text-white transition-all">
+                    <X size={18} />
+                  </button>
+                </div>
+
+                <div className="py-6 relative flex justify-center">
+                  <svg viewBox="0 0 200 200" className="w-48 h-48 text-emerald-500">
+                    <circle cx="100" cy="100" r="80" fill="none" stroke="currentColor" strokeWidth="1" strokeOpacity="0.1" />
+                    <circle cx="100" cy="100" r="60" fill="none" stroke="currentColor" strokeWidth="1" strokeOpacity="0.2" />
+                    <circle cx="100" cy="100" r="40" fill="none" stroke="currentColor" strokeWidth="1" strokeOpacity="0.3" />
+                    <circle cx="100" cy="100" r="20" fill="none" stroke="currentColor" strokeWidth="1" strokeOpacity="0.4" />
+                    
+                    <line x1="100" y1="10" x2="100" y2="190" stroke="currentColor" strokeWidth="1" strokeOpacity="0.2" />
+                    <line x1="10" y1="100" x2="190" y2="100" stroke="currentColor" strokeWidth="1" strokeOpacity="0.2" />
+                    
+                    <g transform="translate(140, 70)">
+                      <circle cx="0" cy="0" r="8" fill="currentColor">
+                        <animate attributeName="r" values="4;12;4" dur="2.5s" repeatCount="indefinite" />
+                        <animate attributeName="fill-opacity" values="1;0.2;1" dur="2.5s" repeatCount="indefinite" />
+                      </circle>
+                      <circle cx="0" cy="0" r="4" fill="currentColor" />
+                    </g>
+                    
+                    <g transform="translate(100, 100)">
+                      <line x1="0" y1="0" x2="80" y2="0" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                        <animateTransform 
+                          attributeName="transform" 
+                          type="rotate" 
+                          from="0" 
+                          to="360" 
+                          dur="4s" 
+                          repeatCount="indefinite" 
                         />
-                      )}
+                      </line>
+                    </g>
+                  </svg>
+                </div>
+
+                <div className="space-y-4 text-left">
+                  <div className="border-b border-border pb-3">
+                    <h3 className="text-xl font-black text-secondary dark:text-white tracking-tight">
+                      {trackingItem.name || trackingItem.title || trackingItem.operator || trackingItem.vehicle || trackingItem.id.slice(0, 8)}
+                    </h3>
+                    <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mt-1">Identity UID: {trackingItem.id}</p>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="p-4 rounded-2xl bg-slate-50 dark:bg-white/5 border border-border">
+                      <p className="text-[8px] font-black text-slate-400 uppercase tracking-widest mb-1 flex items-center space-x-1.5">
+                        <MapPin size={10} className="text-primary" />
+                        <span>Coordinates</span>
+                      </p>
+                      <p className="text-xs font-black text-secondary dark:text-white truncate">{getItemCoordinates(trackingItem).lat}° N</p>
+                      <p className="text-xs font-black text-slate-500 truncate">{getItemCoordinates(trackingItem).lng}° W</p>
+                    </div>
+                    <div className="p-4 rounded-2xl bg-slate-50 dark:bg-white/5 border border-border">
+                      <p className="text-[8px] font-black text-slate-400 uppercase tracking-widest mb-1 flex items-center space-x-1.5">
+                        <Activity size={10} className="text-emerald-500" />
+                        <span>Velocity</span>
+                      </p>
+                      <p className="text-base font-black text-secondary dark:text-white">{getItemCoordinates(trackingItem).speed}</p>
+                    </div>
+                  </div>
+
+                  <div className="p-4 rounded-2xl bg-slate-50 dark:bg-white/5 border border-border flex items-center justify-between">
+                    <div>
+                      <p className="text-[8px] font-black text-slate-400 uppercase tracking-widest mb-0.5">Signal integrity</p>
+                      <p className="text-xs font-black text-emerald-500">{getItemCoordinates(trackingItem).signal}</p>
+                    </div>
+                    <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping" />
+                  </div>
+                </div>
+              </motion.div>
+            </div>
+          )}
+        </AnimatePresence>,
+        document.body
+      )}
+
+      {/* 2. SECURE COMM LOG DRIVER / NOTE MODAL - Portaled */}
+      {createPortal(
+        <AnimatePresence>
+          {messagingItem && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center p-6">
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setMessagingItem(null)} className="absolute inset-0 bg-secondary/60 dark:bg-slate-950/80 backdrop-blur-md" />
+              <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }} className="relative w-full max-w-xl bg-card border border-border rounded-[32px] p-8 lg:p-10 shadow-2xl flex flex-col max-h-[90vh]">
+                <div className="flex justify-between items-center border-b border-border pb-5 mb-5 shrink-0">
+                  <div>
+                    <h3 className="text-2xl font-black text-secondary dark:text-white tracking-tighter">Secure Comm Manifest</h3>
+                    <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mt-1">
+                      Identity Channel: {messagingItem.name || messagingItem.title || messagingItem.operator || messagingItem.vehicle || messagingItem.id.slice(0, 8)}
+                    </p>
+                  </div>
+                  <button onClick={() => setMessagingItem(null)} className="w-12 h-12 flex items-center justify-center bg-slate-50 dark:bg-white/5 border border-border rounded-2xl text-slate-400 hover:text-secondary dark:hover:text-white transition-all">
+                    <X size={20} />
+                  </button>
+                </div>
+
+                {/* Audit Logs Scroller */}
+                <div className="flex-grow overflow-y-auto space-y-4 pr-2 mb-6">
+                  {getItemLogs(messagingItem).map((log, idx) => (
+                    <div key={`${logRefreshKey}-${idx}`} className="p-5 rounded-2xl bg-slate-50 dark:bg-white/5 border border-border space-y-2">
+                      <div className="flex justify-between items-center text-[9px] font-black text-slate-400 uppercase tracking-widest">
+                        <span className="flex items-center space-x-1.5">
+                          <UserIcon size={10} className="text-primary" />
+                          <span>{log.author}</span>
+                        </span>
+                        <span className="flex items-center space-x-1.5">
+                          <Clock size={10} />
+                          <span>{log.timestamp}</span>
+                        </span>
+                      </div>
+                      <p className="text-xs font-bold text-secondary dark:text-slate-200 leading-relaxed">{log.message}</p>
                     </div>
                   ))}
                 </div>
-                <div className="flex gap-3 pt-6">
-                  <button type="button" onClick={closeModal} className="flex-grow py-3.5 bg-slate-100 dark:bg-white/5 hover:bg-slate-200 text-secondary dark:text-white font-black text-[10px] uppercase tracking-widest border border-border">Cancel</button>
-                  <button type="submit" className="flex-grow py-3.5 bg-primary hover:bg-primary/90 text-white font-black text-[10px] uppercase tracking-widest shadow-xl shadow-primary/20 transition-all">Execute Sync</button>
-                </div>
-              </form>
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
+
+                {/* Broadcast Form */}
+                <form onSubmit={handleAddLog} className="border-t border-border pt-5 shrink-0 space-y-4">
+                  <div className="group">
+                    <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest ml-4 mb-2.5 block group-focus-within:text-primary transition-colors">Broadcast Secure Log / Note</label>
+                    <textarea 
+                      required
+                      rows={3}
+                      value={newLogMessage}
+                      onChange={(e) => setNewLogMessage(e.target.value)}
+                      placeholder="Type secure comment, manifest notes, or routing instructions..."
+                      className="w-full bg-slate-50 dark:bg-white/5 border border-border rounded-2xl py-3.5 px-5 outline-none focus:ring-4 focus:ring-primary/10 focus:border-primary transition-all font-bold text-sm text-secondary dark:text-white resize-none"
+                    />
+                  </div>
+                  <button type="submit" className="w-full py-4 bg-primary hover:bg-primary/90 rounded-2xl text-white font-black text-xs uppercase tracking-widest shadow-xl shadow-primary/20 transition-all active:scale-[0.98]">
+                    Broadcast Comm Entry
+                  </button>
+                </form>
+              </motion.div>
+            </div>
+          )}
+        </AnimatePresence>,
+        document.body
+      )}
     </div>
   );
 };
